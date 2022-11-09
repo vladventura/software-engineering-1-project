@@ -4,6 +4,10 @@ It's just the good ol' CRA, but better. This is particularly useful for people w
 
 Removed boilerplate, showing only some text.
 
+Use 
+```npm start```
+to run the app. Please make sure you have [Node.JS](https://nodejs.org/en/) installed. This project was started with Node v18, and npm v8.
+
 Redux is set up. With thunk. It has a combined reducer so you can add more than one store to keep your data.
 
 React router dom is already installed.
