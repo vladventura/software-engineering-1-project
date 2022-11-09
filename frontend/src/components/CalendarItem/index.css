@@ -1,0 +1,13 @@
+.calendar-item {
+    font-family: 'Barlow', 'sans-serif';
+    background-color: #ffc;
+    width: 10rem;
+    height: 10rem;
+    display: flex;
+    flex-direction: column;
+    padding: 0.25rem;
+}
+
+.calendar-item-number {
+    text-align: right;
+}
