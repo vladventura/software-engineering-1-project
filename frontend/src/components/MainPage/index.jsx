@@ -1,10 +1,10 @@
-import personalCalendar from "../../mocks/calendar";
+import personalCalendar, { singleDay } from "../../mocks/calendar";
 import { CalendarItem } from "../CalendarItem";
 
 const MainPage = () => {
   return (
     <div className="main-page container">
-      <CalendarItem number={22} events={[]} isToday={true}/>
+      <CalendarItem number={singleDay.number} events={singleDay.events} isToday={true}/>
     </div>
   );
 };
