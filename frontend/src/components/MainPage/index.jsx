@@ -1,7 +1,6 @@
-import personalCalendar, { singleDay } from "../../mocks/calendar";
 import { CalendarDisplay } from "../CalendarDisplay";
-import { CalendarItem } from "../CalendarItem";
 import { Header } from "../Header";
+import { Sidebar } from "../Sidebar";
 import "./index.css";
 
 const MainPage = () => {
@@ -10,11 +9,11 @@ const MainPage = () => {
       <div className="header-section">
         <Header />
       </div>
-      <div className="body-section">
-        <div className="body-section-sidebar"></div>
-        <div className="body-section-calendar">
-          <CalendarDisplay />
-        </div>
+      <div className="body-section-sidebar">
+        <Sidebar />
+      </div>
+      <div className="body-section-calendar">
+        <CalendarDisplay />
       </div>
     </div>
   );
