@@ -20,12 +20,6 @@ export const Header = () => {
         onClick={logoOnClick}
       />
       <div className="avatar-container">
-        {/* <a
-          className="avatar-link"
-          href="https://uml.edu"
-          rel="noreferrer"
-          target="_blank"
-        > */}
         <img
           src={avatar}
           alt="User Avatar"
