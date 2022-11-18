@@ -5,9 +5,9 @@
 
 .avatar-container {
   display: grid;
-  grid-template-rows: 5rem 5rem;
+  grid-template-rows: 60% 40%;
   grid-template-columns: auto;
-  margin-top: 1rem;
+  margin: 0.5rem 0;
 }
 
 .avatar-picture {
