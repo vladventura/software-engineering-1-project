@@ -1,0 +1,13 @@
+.calendar-toggle {
+  display: grid;
+  grid-template-columns: 30% 70%;
+  grid-template-rows: auto;
+}
+
+.calendar-toggle:hover {
+  cursor: pointer;
+}
+
+.calendar-toggle-name {
+  user-select: none;
+}
