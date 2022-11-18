@@ -1,0 +1,12 @@
+.sidebar-container {
+  display: grid;
+  grid-template-columns: auto;
+  height: 100%;
+}
+
+.sidebar-buttons-container {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  row-gap: 1rem;
+}
