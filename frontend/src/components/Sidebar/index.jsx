@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Modal } from "../Modal";
 import { SidebarToggleCalendar } from "../SidebarToggleCalendar";
 import "./index.css";
 
@@ -7,6 +8,10 @@ export const Sidebar = () => {
     { name: "Personal Calendar", color: "aquamarine" },
   ]);
 
+  const [modalOpen, setModalOpen] = useState(false);
+  const [mTitle, setMTitle] = useState("");
+  const [mBody, setMBody] = useState("");
+
   const createCalendarOnClick = () => {
     // alert("Please make-believe this is a create calendar pop-up");
     const newCalendar = { name: "Another new calendar", color: "yellow" };
@@ -14,7 +19,9 @@ export const Sidebar = () => {
   };
 
   const createEventOnClick = () => {
-    alert("Please make-believe this is a create event pop-up");
+    setMTitle("Create Event");
+    setMBody("Please make-believe this is a create event pop-up");
+    setModalOpen(true);
   };
 
   const createNotificationOnClick = () => {
@@ -49,6 +56,9 @@ export const Sidebar = () => {
           Create Notification
         </button>
       </div>
+      {modalOpen && (
+        <Modal setOpenModal={setModalOpen} title={mTitle} body={mBody} />
+      )}
     </div>
   );
 };
