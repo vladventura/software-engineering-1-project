@@ -5,6 +5,7 @@ let personalCalendar = {
   color: "#facfad",
   days: [],
   name: "Personal Calendar",
+  visible: true,
 };
 
 for (let x = 1; x < 32; x++) {
