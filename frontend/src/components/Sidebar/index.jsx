@@ -13,6 +13,11 @@ export const Sidebar = ({ toggleViewCalendar, viewCalendar }) => {
   const [mBody, setMBody] = useState("");
 
   const createCalendarOnClick = () => {
+    setMTitle("Create Notification");
+    setMBody(
+      "Please make-believe this is a create event pop-up. Added mock calendar."
+    );
+    setModalOpen(true);
     const newCalendar = { name: "Another new calendar", color: "yellow" };
     addCalendar([...calendars, newCalendar]);
   };

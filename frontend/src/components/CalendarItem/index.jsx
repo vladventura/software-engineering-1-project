@@ -6,6 +6,7 @@ export const CalendarItem = ({
   events = [],
   isToday = false,
   month,
+  showEvents,
 }) => {
   const itemOnDblClick = () => {
     alert(
@@ -21,12 +22,14 @@ export const CalendarItem = ({
         {number}
       </div>
       <div className="calendar-item-events-container">
-        <CalendarEvent
-          dueTime={events[0].dueTime}
-          name={events[0].name}
-          official={events[0].official}
-          description={events[0].description}
-        />
+        {showEvents && (
+          <CalendarEvent
+            dueTime={events[0].dueTime}
+            name={events[0].name}
+            official={events[0].official}
+            description={events[0].description}
+          />
+        )}
       </div>
     </div>
   );
