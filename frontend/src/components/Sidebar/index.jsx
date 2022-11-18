@@ -1,3 +1,4 @@
+import { SidebarToggleCalendar } from "../SidebarToggleCalendar";
 import "./index.css";
 
 export const Sidebar = () => {
@@ -26,7 +27,7 @@ export const Sidebar = () => {
         </div>
       </div>
       <div className="calendars-toggle-container">
-        <div className="calendar-toggle">A personal calendar</div>
+        <SidebarToggleCalendar name="Personal Calendar" color="aquamarine" />
       </div>
       <div className="sidebar-buttons-container">
         <button className="add-event-button" onClick={createEventOnClick}>

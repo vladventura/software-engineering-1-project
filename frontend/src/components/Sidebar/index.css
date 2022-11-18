@@ -2,6 +2,7 @@
   display: grid;
   grid-template-columns: auto;
   height: 100%;
+  padding-right: 1rem;
 }
 
 .sidebar-buttons-container {
