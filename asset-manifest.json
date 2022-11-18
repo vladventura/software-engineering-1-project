@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/software-engineering-1-project/static/css/main.4cdf0f39.css",
+    "main.js": "/software-engineering-1-project/static/js/main.db3d0406.js",
+    "static/media/avatar.png": "/software-engineering-1-project/static/media/avatar.deeebbe32324554c6933.png",
+    "static/media/uml_logo.png": "/software-engineering-1-project/static/media/uml_logo.e45d60d8e75679179da4.png",
+    "index.html": "/software-engineering-1-project/index.html",
+    "main.4cdf0f39.css.map": "/software-engineering-1-project/static/css/main.4cdf0f39.css.map",
+    "main.db3d0406.js.map": "/software-engineering-1-project/static/js/main.db3d0406.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.4cdf0f39.css",
+    "static/js/main.db3d0406.js"
+  ]
+}
