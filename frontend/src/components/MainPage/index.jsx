@@ -1,22 +1,28 @@
-import { connect } from "react-redux";
+import { useState } from "react";
+import { CalendarDisplay } from "../CalendarDisplay";
+import { Header } from "../Header";
+import { Sidebar } from "../Sidebar";
+import "./index.css";
 
-const MainPage = (props) => {
-    const { mainReducer } = props;
-    const { loaded, message, body } = mainReducer;
-    Object.keys(body).forEach(key => console.log(key))
+const MainPage = () => {
+  const [viewC, toggleViewC] = useState(true);
+  const toggleCalendar = (name) => {
+    toggleViewC(!viewC);
+  };
 
-    return <>
-        {loaded ? <div>
-            <h1>{message}</h1>
-            {Object.keys(body).map(key => <p key={key}>{key} =&gt; {body[key]}</p>)}
-        </div> : <div>loading</div>}
-    </>
+  return (
+    <div className="main-page-container">
+      <div className="header-section">
+        <Header />
+      </div>
+      <div className="body-section-sidebar">
+        <Sidebar toggleViewCalendar={toggleCalendar} viewCalendar={viewC} />
+      </div>
+      <div className="body-section-calendar">
+        <CalendarDisplay viewCal={viewC} />
+      </div>
+    </div>
+  );
 };
 
-const mapStateToProps = (state) => {
-    return {
-        mainReducer: state.mainReducer
-    };
-};
-
-export default connect(mapStateToProps)(MainPage);
+export default MainPage;
