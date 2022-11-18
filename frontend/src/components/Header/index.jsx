@@ -19,6 +19,22 @@ export const Header = () => {
         className="school-logo clickable-img"
         onClick={logoOnClick}
       />
+      <div className="month-name-container">
+        <div className="month-name">November</div>
+        <div className="month-arrows">
+          <button>{"<"}</button>
+          <button>{">"}</button>
+        </div>
+      </div>
+      <div className="display-mode-change-container">
+        <form>
+          <select id="modes">
+            <option value="day">Day</option>
+            <option value="wk">Week</option>
+            <option value="mth">Month</option>
+          </select>
+        </form>
+      </div>
       <div className="avatar-container">
         <img
           src={avatar}

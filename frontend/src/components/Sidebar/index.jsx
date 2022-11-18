@@ -34,6 +34,12 @@ export const Sidebar = ({ toggleViewCalendar, viewCalendar }) => {
     setModalOpen(true);
   };
 
+  const saveCalendarOnClick = () => {
+    setMTitle("Save Calendar");
+    setMBody("Please make-believe this is an export calendar pop-up");
+    setModalOpen(true);
+  };
+
   return (
     <div className="sidebar-container">
       <div className="new-calendar-container">
@@ -65,6 +71,9 @@ export const Sidebar = ({ toggleViewCalendar, viewCalendar }) => {
           onClick={createNotificationOnClick}
         >
           Create Notification
+        </button>
+        <button className="save-calendar-button" onClick={saveCalendarOnClick}>
+          Export Calendar
         </button>
       </div>
       {modalOpen && (
