@@ -2,7 +2,7 @@
   display: grid;
   grid-template-columns: auto;
   height: 100%;
-  padding-right: 1rem;
+  margin-right: 1rem;
 }
 
 .sidebar-buttons-container {
@@ -10,4 +10,9 @@
   flex-direction: column;
   padding: 1rem;
   row-gap: 1rem;
+}
+
+.new-calendar-container {
+  justify-self: center;
+  margin-top: 1rem;
 }
