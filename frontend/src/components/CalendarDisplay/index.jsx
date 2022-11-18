@@ -6,7 +6,12 @@ export const CalendarDisplay = () => {
   return (
     <div className="grid-container">
       {personalCalendar.days.map((d) => (
-        <CalendarItem number={d.number} isToday={false} events={d.events} />
+        <CalendarItem
+          number={d.number}
+          isToday={false}
+          events={d.events}
+          month={d.month}
+        />
       ))}
     </div>
   );
