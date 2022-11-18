@@ -11,7 +11,7 @@
 
 .calendar-item-number {
   text-align: right;
-  margin-right: 0.25rem;
+  margin: 0.25rem 0.5rem;
 }
 
 .calendar-item-events-container {
