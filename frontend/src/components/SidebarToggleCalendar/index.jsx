@@ -1,11 +1,17 @@
-import { useState } from "react";
+// import { useState } from "react";
 import "./index.css";
 
-export const SidebarToggleCalendar = ({ name, color }) => {
-  const [checked, setChecked] = useState(true);
+export const SidebarToggleCalendar = ({
+  name,
+  color,
+  onCalendarToggled,
+  calendarToggled,
+}) => {
+  //   const [checked, setChecked] = useState(calen);
 
   const changeChecked = () => {
-    setChecked(!checked);
+    // setChecked(!checked);
+    onCalendarToggled?.(name);
   };
 
   return (
@@ -16,7 +22,7 @@ export const SidebarToggleCalendar = ({ name, color }) => {
     >
       <input
         className="calendar-toggle-checkmark"
-        checked={checked}
+        checked={calendarToggled}
         onChange={changeChecked}
         type="checkbox"
       />

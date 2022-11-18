@@ -3,7 +3,7 @@ import { Modal } from "../Modal";
 import { SidebarToggleCalendar } from "../SidebarToggleCalendar";
 import "./index.css";
 
-export const Sidebar = () => {
+export const Sidebar = ({ toggleViewCalendar, viewCalendar }) => {
   const [calendars, addCalendar] = useState([
     { name: "Personal Calendar", color: "aquamarine" },
   ]);
@@ -13,7 +13,6 @@ export const Sidebar = () => {
   const [mBody, setMBody] = useState("");
 
   const createCalendarOnClick = () => {
-    // alert("Please make-believe this is a create calendar pop-up");
     const newCalendar = { name: "Another new calendar", color: "yellow" };
     addCalendar([...calendars, newCalendar]);
   };
@@ -25,7 +24,9 @@ export const Sidebar = () => {
   };
 
   const createNotificationOnClick = () => {
-    alert("Please make-beleive this is a create notification pop-up");
+    setMTitle("Create Notification");
+    setMBody("Please make-believe this is a create notification pop-up");
+    setModalOpen(true);
   };
 
   return (
@@ -42,7 +43,12 @@ export const Sidebar = () => {
       </div>
       <div className="calendars-toggle-container">
         {calendars.map((c) => (
-          <SidebarToggleCalendar name={c.name} color={c.color} />
+          <SidebarToggleCalendar
+            name={c.name}
+            color={c.color}
+            onCalendarToggled={toggleViewCalendar}
+            calendarToggled={viewCalendar}
+          />
         ))}
       </div>
       <div className="sidebar-buttons-container">
