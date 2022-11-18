@@ -22,7 +22,7 @@ for (let x = 1; x < 32; x++) {
     number: x,
     dueTime: "1:00pm",
     description: `An event ${x}`,
-    official: x % 2 == 0,
+    official: x % 2 === 0,
     calendar: "",
     name: `Event${x}`,
     color: personalCalendar.color,
