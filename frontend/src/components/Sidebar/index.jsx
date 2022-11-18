@@ -1,9 +1,16 @@
+import { useState } from "react";
 import { SidebarToggleCalendar } from "../SidebarToggleCalendar";
 import "./index.css";
 
 export const Sidebar = () => {
+  const [calendars, addCalendar] = useState([
+    { name: "Personal Calendar", color: "aquamarine" },
+  ]);
+
   const createCalendarOnClick = () => {
-    alert("Please make-believe this is a create calendar pop-up");
+    // alert("Please make-believe this is a create calendar pop-up");
+    const newCalendar = { name: "Another new calendar", color: "yellow" };
+    addCalendar([...calendars, newCalendar]);
   };
 
   const createEventOnClick = () => {
@@ -27,7 +34,9 @@ export const Sidebar = () => {
         </div>
       </div>
       <div className="calendars-toggle-container">
-        <SidebarToggleCalendar name="Personal Calendar" color="aquamarine" />
+        {calendars.map((c) => (
+          <SidebarToggleCalendar name={c.name} color={c.color} />
+        ))}
       </div>
       <div className="sidebar-buttons-container">
         <button className="add-event-button" onClick={createEventOnClick}>

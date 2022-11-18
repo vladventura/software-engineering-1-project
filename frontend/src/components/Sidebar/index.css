@@ -16,3 +16,21 @@
   justify-self: center;
   margin-top: 1rem;
 }
+
+.calendar-preview-container {
+  margin: 1rem 0.5rem;
+}
+
+.calendar-preview-frame {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  height: 100%;
+  background-color: bisque;
+}
+
+.calendar-preview-frame > p {
+  margin: 0;
+  padding: 0;
+}
