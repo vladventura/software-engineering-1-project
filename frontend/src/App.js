@@ -1,21 +1,10 @@
-import { connect } from "react-redux";
-import { getAll } from "./store/actions/reducerActions";
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-  Switch,
-} from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import MainPage from "./components/MainPage";
-import { useEffect } from "react";
 
+// Do not change, this is for deploying on github pages
 const repoHomePath = "/software-engineering-1-project";
 
-const AppComponent = (props) => {
-  useEffect(() => {
-    props.getAll();
-  }, []);
-
+const AppComponent = () => {
   return (
     <Routes>
       <Route exact path={repoHomePath} element={<MainPage />} />
@@ -23,10 +12,4 @@ const AppComponent = (props) => {
   );
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    getAll: () => dispatch(getAll()),
-  };
-};
-
-export default connect(null, mapDispatchToProps)(AppComponent);
+export default AppComponent;
