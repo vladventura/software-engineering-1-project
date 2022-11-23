@@ -1,12 +1,13 @@
 import personalCalendar from "../../mocks/calendar";
-import { CalendarItem } from "../CalendarItem";
+import { CalendarDay } from "./CalendarDay";
 import "./index.css";
 
 export const CalendarDisplay = ({ viewCal }) => {
+  // Calendar should filter
   return (
     <div className="grid-container">
       {personalCalendar.days.map((d) => (
-        <CalendarItem
+        <CalendarDay
           number={d.number}
           isToday={false}
           events={d.events}
