@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { connect } from "react-redux";
 import { toggleCalendar } from "../../store/actions/calendarActions";
+import { getTextForColor } from "../../utils";
 import "./index.css";
 
 const SidebarToggleCalendarComponent = ({ calendar, toggleViewCalendar }) => {
@@ -22,7 +23,11 @@ const SidebarToggleCalendarComponent = ({ calendar, toggleViewCalendar }) => {
         onChange={changeChecked}
         type="checkbox"
       />
-      <div className="calendar-toggle-name" onClick={changeChecked}>
+      <div
+        className="calendar-toggle-name"
+        onClick={changeChecked}
+        style={{ color: getTextForColor(color) }}
+      >
         {name}
       </div>
     </div>
