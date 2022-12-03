@@ -1,4 +1,5 @@
 import {
+  CLOSE_MODAL,
   CREATE_CALENDAR_FAIL,
   OPEN_CREATE_MODAL,
 } from "../actions/actionTypes";
@@ -18,6 +19,12 @@ export const modalReducer = (state = initState, action) => {
         ...state,
         modalType: action.payload,
         isOpen: true,
+      };
+    case CLOSE_MODAL:
+      return {
+        ...state,
+        modalType: "",
+        isOpen: action.payload,
       };
     default:
       return state;
