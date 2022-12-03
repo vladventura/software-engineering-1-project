@@ -6,6 +6,7 @@ let personalCalendar = {
   name: "Personal Calendar",
   events: [],
   visible: true,
+  course: false,
 };
 
 for (let x = 1; x < 32; x++) {
