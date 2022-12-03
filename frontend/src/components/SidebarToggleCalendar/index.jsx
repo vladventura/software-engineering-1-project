@@ -1,5 +1,5 @@
 import { connect } from "react-redux";
-import { toggleCalendar } from "../../store/actions/reducerActions";
+import { toggleCalendar } from "../../store/actions/calendarActions";
 import "./index.css";
 
 const SidebarToggleCalendarComponent = ({ calendar, toggleViewCalendar }) => {
