@@ -3,6 +3,7 @@
 # - The manager should set it as a system timed event and the event activates notification on event handler
 
 import time
+from database import Database
 from enum import Enum
 
 class NotificationMethod(Enum):
@@ -23,6 +24,7 @@ class Notification:
         self.info = NotificationInfo()
         self.calendar = ""  # string identifier for calendar
         self.event = ""     # string identifier for event
+        self.method = NotificationMethod.MUTE
 
     def sendNotification(self):
         pass
@@ -39,18 +41,42 @@ class Notification:
 # 4. editNotification
 #    - requires writing to database as well.
 class NotificationManager:
-    def __init__(self):
-        self.notifications = []  # hmm need to think about data class to handle this
-                                 # TODO Potentially use python dictionary?
+    def __init__(self, database: Database):
+        # NOTE: notification contains reference to notifications portion of the data
+        self.notifications = database.readAllNotifData()
+
+        # TODO ADD all events in notifications to future events
     
-    # TODO implement
-    def createNotification(self, calendar, event, window, repeats, frequency, method):
-        pass
+    # After calling this methode. Make sure to ask db to update to keep it up to date
+    def createNotification(self, calendar, event, window, repeats, frequency, method, date):
+        new_notif = Notification()
+        new_notif.calendar = calendar
+        new_notif.event = event
+        new_notif.info.date = date
+        new_notif.info.triggerWindow = window
+        new_notif.info.repeat = repeats
+        new_notif.info.frequency = frequency
+        new_notif.method = method
+
+        # now that new notification has been configured. Insert into database.
+        self.notifications[calendar+event] = {
+            "calendar": calendar,
+            "event": event,
+            "date": date,     # FIXME needs to convert this to string
+            "window": window, # FIXME needs to convert this to string
+            "repeats": repeats,
+            "methode": new_notif.method.name
+        }
+
+        # TODO ADD this notification to event handler
+
 
     # TODO implement
     def deleteNotification(self, calendar, event):
         pass
 
+
     # TODO implement
     def editNotification(self, calendar, event, repeats, method):
         pass
+

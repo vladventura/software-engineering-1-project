@@ -25,39 +25,37 @@ import json
 class Database:
     def __init__(self, db_file='data.json'):
         self.out = db_file
-        try:
-            with open(db_file) as json_f:
-                self.data = json.load(json_f)  
-            # Now that the file is open. close file.
-            json_f.close()
-        except OSError:
-            raise OSError
+        with open(db_file) as json_f:
+            self.data = json.load(json_f)  
+        # Now that the file is open. close file.
 
     # Internal function to update the data base when writing.
-    def _update(self):
-        with open("data.json", "w") as outfile:
+    def update(self):
+        with open(self.out, "w") as outfile:
             json.dump(self.data, outfile)
     
-    
-    def writeEvent(self, targE):
-        # Read in Event data structure and convert into JSON
-        # Append to current JSON database file
-        
-        self._update() # all write methode will need update.
 
-    def readEvent(self, targE):
-        # Open JSON database file
-        # Find Event object with the same name as the one specified by targE
-        # Must be in the calendar we are requesting
+    # ############### potentially not needed ##############
+    # # Each write event requires identifications for the main python object
+    # def writeEvent(self, calendar, event, event_object):
+    #     # Read in Event data structure and convert into JSON
+    #     # Append to current JSON database file
         
-        pass    # return event
+    #     self.update() # all write methode will need update.
 
-    def writeCalendar(self, targC):
-        # Read in Calendar data structure and convert into JSON
-        # Append to current JSON database file
+    # def readEvent(self, targE):
+    #     # Open JSON database file
+    #     # Find Event object with the same name as the one specified by targE
+    #     # Must be in the calendar we are requesting
         
-        pass
-        self._update() # all write methode will need update.
+    #     pass    # return event
+
+    # def writeCalendar(self, targC):
+    #     # Read in Calendar data structure and convert into JSON
+    #     # Append to current JSON database file
+        
+    #     pass
+    #     self.update() # all write methode will need update.
 
     def readCalendar(self, targC): 
         # Open JSON database file
@@ -65,13 +63,13 @@ class Database:
         
         pass    # return calendar
     
-    def writeNotification(self, targN):
-        # Read in Notification data structure and convert into JSON
-        # Put into appropriate Event object within correct Calendar
-        # Append to current JSON database file
+    # def writeNotification(self, targN):
+    #     # Read in Notification data structure and convert into JSON
+    #     # Put into appropriate Event object within correct Calendar
+    #     # Append to current JSON database file
         
-        pass
-        self._update() # all write methode will need update.
+    #     pass
+    #     self.update() # all write methode will need update.
 
     def readNotification(self, targN):
         # Open JSON database file
@@ -86,7 +84,7 @@ class Database:
         # Copy into destination Calendar
         # Delete event from original (source) Calendar
         
-        self._update() # all write methode will need update.
+        self.update() # all write methode will need update.
 
     def readAllCalendarData(self):
         # Read in data from JSON database file
@@ -95,10 +93,10 @@ class Database:
 
         pass    # return calendars = a list of Calendar objects
 
+        
     def readAllNotifData(self):
-        # Read in data from JSON database file
-        # Find all Notification objects
-        # Just Notifications within a certain Calendar?
-        # Create a list of Notification objects
-
-        pass    # return notifications = a list of Notification objects
+        notifications = self.data["data"]["notifications"]
+        
+        if len(notifications) == 0:  # error checker to see if valid dictionary exists
+            raise Exception("readAllNotifData error - cannot find notifications.")
+        return notifications

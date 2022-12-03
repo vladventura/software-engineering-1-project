@@ -62,6 +62,7 @@ notifications = {
     "class1Homework1": {
         "calendar": "class1",
         "event": "Homework1",
+        "date": "2022-12-10",
         "window":0,       # This probably should be a deltatime object
         "repeats": False, # boolean field
         "frequency":0,
