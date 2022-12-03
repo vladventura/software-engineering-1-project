@@ -15,8 +15,8 @@ class Event:
     title = str
     description = str
 
-    date = datetime
-    duration = datetime
+    date = datetime.datetime
+    duration = datetime.datetime
 
     repeats = bool
 
