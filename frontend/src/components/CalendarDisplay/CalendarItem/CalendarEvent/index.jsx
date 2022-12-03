@@ -1,3 +1,4 @@
+import { getTextForColor } from "../../../../utils";
 import "./index.css";
 
 export const CalendarEvent = ({ event }) => {
@@ -9,7 +10,7 @@ export const CalendarEvent = ({ event }) => {
     <div
       className="calendar-event"
       onClick={eventOnClick}
-      style={{ backgroundColor: color }}
+      style={{ backgroundColor: color, color: getTextForColor(color) }}
     >
       <p className="calendar-event-due">{dueTime}</p>
       <p className="calendar-event-name">{name}</p>
