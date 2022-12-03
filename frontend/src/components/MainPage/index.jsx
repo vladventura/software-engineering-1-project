@@ -1,8 +1,8 @@
+import "./index.css";
 import { useState } from "react";
 import { CalendarDisplay } from "../CalendarDisplay";
 import { Header } from "../Header";
 import { Sidebar } from "../Sidebar";
-import "./index.css";
 
 const MainPage = () => {
   const [viewC, toggleViewC] = useState(true);
