@@ -29,9 +29,9 @@ export const Header = () => {
       <div className="display-mode-change-container">
         <form>
           <select id="modes">
+            <option value="mth">Month</option>
             <option value="day">Day</option>
             <option value="wk">Week</option>
-            <option value="mth">Month</option>
           </select>
         </form>
       </div>
