@@ -5,7 +5,7 @@ import "./index.css";
 
 export const Modal = ({ setOpenModal, title, body }) => {
   const closeModal = () => {
-    setOpenModal(false);
+    setOpenModal?.(false);
   };
 
   return (
