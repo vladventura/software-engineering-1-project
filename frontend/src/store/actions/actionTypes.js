@@ -1,2 +1,3 @@
-export const GET_ALL = "GET_ALL";
+export const GET_ALL_CALENDARS = "GET_ALL";
 export const TOGGLE_CALENDAR = "TOGGLE_CALENDAR";
+export const GET_INITIAL_INFO = "GET_INITIAL_INFO";

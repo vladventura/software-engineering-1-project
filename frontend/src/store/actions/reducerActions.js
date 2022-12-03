@@ -1,25 +1,17 @@
-import axios from "axios";
-import { GET_ALL, TOGGLE_CALENDAR } from "./actionTypes";
+import personalCalendar from "../../mocks/calendar";
+import {
+  GET_ALL_CALENDARS,
+  GET_INITIAL_INFO,
+  TOGGLE_CALENDAR,
+} from "./actionTypes";
 
-const bodyData = {
-  code: "Talker",
-  dot: "Polka",
-  gear: "Guilty",
-};
-const messageData = "Hello World";
-
-export const getAll = () => {
+export const getAllCalendars = () => {
   return (dispatch, getState) => {
-    const url = "" + "";
     // return axios....
     const fakePromise = (response) => {
       dispatch({
-        type: GET_ALL,
-        payload: {
-          body: bodyData,
-          message: messageData,
-          loaded: true,
-        },
+        type: GET_ALL_CALENDARS,
+        payload: [personalCalendar],
       });
     };
     return new Promise(fakePromise);
@@ -28,9 +20,33 @@ export const getAll = () => {
 
 export const toggleCalendar = (calendarName) => {
   return (dispatch, getState) => {
-    dispatch({
-      type: TOGGLE_CALENDAR,
-      payload: calendarName,
-    });
+    return new Promise(() =>
+      dispatch({
+        type: TOGGLE_CALENDAR,
+        payload: calendarName,
+      })
+    );
+  };
+};
+
+export const getInitialInfo = () => {
+  return (dispatch, getState) => {
+    const selectedDate = new Date();
+    const selectedMonth = selectedDate.getMonth() + 1;
+    const selectedYear = selectedDate.getFullYear();
+    const selectedDay = selectedDate.getDate();
+    const daysInMonth = new Date(selectedYear, selectedMonth, 0).getDate();
+    return new Promise(() =>
+      dispatch({
+        type: GET_INITIAL_INFO,
+        payload: {
+          selectedDate,
+          selectedMonth,
+          selectedYear,
+          daysInMonth,
+          selectedDay,
+        },
+      })
+    );
   };
 };
