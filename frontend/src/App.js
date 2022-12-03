@@ -6,26 +6,35 @@ import {
   getInitialInfo,
 } from "./store/actions/calendarActions";
 import MainPage from "./components/MainPage";
+import { Modal } from "./components/Modal";
 
 // Do not change, this is for deploying on github pages
 const repoHomePath = "/software-engineering-1-project";
 
-const AppComponent = ({ getAll, getInitial }) => {
+const AppComponent = ({ getAll, getInitial, modal }) => {
+  const { isOpen, modalType } = modal;
   useEffect(() => {
     getAll();
     getInitial();
   }, [getAll, getInitial]);
 
   return (
-    <Routes>
-      <Route exact path={repoHomePath} element={<MainPage />} />
-    </Routes>
+    <>
+      {isOpen && <Modal type={modalType} />}
+      <Routes>
+        <Route exact path={repoHomePath} element={<MainPage />} />
+      </Routes>
+    </>
   );
 };
+
+const stateToProps = (state) => ({
+  modal: state.modal,
+});
 
 const dispatchToProps = (dispatch) => ({
   getAll: () => dispatch(getAllCalendars()),
   getInitial: () => dispatch(getInitialInfo()),
 });
 
-export default connect(null, dispatchToProps)(AppComponent);
+export default connect(stateToProps, dispatchToProps)(AppComponent);
