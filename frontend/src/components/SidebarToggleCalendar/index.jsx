@@ -1,17 +1,12 @@
-// import { useState } from "react";
+import { connect } from "react-redux";
+import { toggleCalendar } from "../../store/actions/reducerActions";
 import "./index.css";
 
-export const SidebarToggleCalendar = ({
-  name,
-  color,
-  onCalendarToggled,
-  calendarToggled,
-}) => {
-  //   const [checked, setChecked] = useState(calen);
+const SidebarToggleCalendarComponent = ({ calendar, toggleViewCalendar }) => {
+  const { name, color, visible } = calendar;
 
   const changeChecked = () => {
-    // setChecked(!checked);
-    onCalendarToggled?.(name);
+    toggleViewCalendar(name);
   };
 
   return (
@@ -22,7 +17,7 @@ export const SidebarToggleCalendar = ({
     >
       <input
         className="calendar-toggle-checkmark"
-        checked={calendarToggled}
+        checked={visible}
         onChange={changeChecked}
         type="checkbox"
       />
@@ -30,3 +25,12 @@ export const SidebarToggleCalendar = ({
     </div>
   );
 };
+
+const dispatchToProps = (dispatch) => ({
+  toggleViewCalendar: (name) => dispatch(toggleCalendar(name)),
+});
+
+export const SidebarToggleCalendar = connect(
+  null,
+  dispatchToProps
+)(SidebarToggleCalendarComponent);
