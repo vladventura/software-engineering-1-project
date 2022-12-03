@@ -1,1 +1,1 @@
-{}
+{"student": "Example Student", "email": "jaec1989@gmail.com", "data": {"calendars": {"classes": {"class1": {"homework1": {"title": "Homework1", "description": "Dummy Homework", "date": "some date", "duration": "some duration", "repeats": false, "frequency": 3}}}, "personal": {}}, "notifications": {"1": {"calendar": "class1", "event": "homework1", "window": 0, "repeats": 0, "requency": 0, "method": 0}}}, "password": 1203875}

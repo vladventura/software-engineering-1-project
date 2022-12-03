@@ -16,13 +16,17 @@
 
 import json
 
+
+# Data is held at member data
+# This data is converted from json style string to python dictionary
+# per the table in documentation https://docs.python.org/3/library/json.html
 class Database:
     def __init__(self, db_file='data.json'):
         try:
-            dbf = open(db_file, 'w')
-            self.file = dbf
-            json.dump({}, dbf)      # Initialize to empty database
-            db_file.close()
+            with open(db_file) as json_f:
+                self.data = json.load(json_f)  
+            # Now that the file is open. close file.
+            json_f.close()
         except OSError:
             raise OSError
     

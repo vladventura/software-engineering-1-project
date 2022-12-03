@@ -54,5 +54,5 @@ data_set = {
 }
  
 
-with open("sample.json", "w") as outfile:
+with open("data.json", "w") as outfile:
     json.dump(data_set, outfile)
