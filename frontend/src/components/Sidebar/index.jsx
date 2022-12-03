@@ -59,6 +59,7 @@ export const Sidebar = ({ toggleViewCalendar, viewCalendar }) => {
             color={c.color}
             onCalendarToggled={toggleViewCalendar}
             calendarToggled={viewCalendar}
+            key={`sidebar-${c.name}`}
           />
         ))}
       </div>
