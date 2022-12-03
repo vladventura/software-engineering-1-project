@@ -22,13 +22,7 @@ export const CalendarItem = ({
       </div>
       <div className="calendar-item-events-container">
         {events.map((e) => (
-          <CalendarEvent
-            dueTime={e.dueTime}
-            name={e.name}
-            official={e.official}
-            description={e.description}
-            key={`event-${e.name}-${e.number}`}
-          />
+          <CalendarEvent event={e} key={`event-${e.name}-${e.number}`} />
         ))}
       </div>
     </div>
