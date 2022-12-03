@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import {
   getAllCalendars,
   getInitialInfo,
-} from "./store/actions/reducerActions";
+} from "./store/actions/calendarActions";
 import MainPage from "./components/MainPage";
 
 // Do not change, this is for deploying on github pages
