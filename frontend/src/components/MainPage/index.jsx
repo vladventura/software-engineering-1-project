@@ -2,10 +2,8 @@ import "./index.css";
 import { CalendarDisplay } from "../CalendarDisplay";
 import { Header } from "../Header";
 import { Sidebar } from "../Sidebar";
-import { connect } from "react-redux";
 
-const MainPage = ({ modal }) => {
-  console.log(modal);
+const MainPage = () => {
   return (
     <div className="main-page-container">
       <div className="header-section">
@@ -21,8 +19,4 @@ const MainPage = ({ modal }) => {
   );
 };
 
-const stateToProps = (state) => ({
-  modal: state.modal,
-});
-
-export default connect(stateToProps)(MainPage);
+export default MainPage;
