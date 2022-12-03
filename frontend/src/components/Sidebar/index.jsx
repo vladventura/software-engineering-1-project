@@ -1,44 +1,12 @@
-import { useState } from "react";
 import { connect } from "react-redux";
-import { Modal } from "../Modal";
+import { openCreateModal } from "../../store/actions/modalActions";
 import { SidebarToggleCalendar } from "../SidebarToggleCalendar";
 import "./index.css";
 
-const SidebarComponent = ({ allCalendars }) => {
-  const [calendars, addCalendar] = useState([
-    { name: "Personal Calendar", color: "aquamarine" },
-  ]);
-
-  const [modalOpen, setModalOpen] = useState(false);
-  const [mTitle, setMTitle] = useState("");
-  const [mBody, setMBody] = useState("");
-
+const SidebarComponent = ({ allCalendars, openCreate }) => {
   const createCalendarOnClick = () => {
-    setMTitle("Create Notification");
-    setMBody(
-      "Please make-believe this is a create event pop-up. Added mock calendar."
-    );
-    setModalOpen(true);
-    const newCalendar = { name: "Another new calendar", color: "yellow" };
-    addCalendar([...calendars, newCalendar]);
-  };
-
-  const createEventOnClick = () => {
-    setMTitle("Create Event");
-    setMBody("Please make-believe this is a create event pop-up");
-    setModalOpen(true);
-  };
-
-  const createNotificationOnClick = () => {
-    setMTitle("Create Notification");
-    setMBody("Please make-believe this is a create notification pop-up");
-    setModalOpen(true);
-  };
-
-  const saveCalendarOnClick = () => {
-    setMTitle("Save Calendar");
-    setMBody("Please make-believe this is an export calendar pop-up");
-    setModalOpen(true);
+    // Just opens Modal for calendar creation
+    openCreate();
   };
 
   return (
@@ -59,22 +27,16 @@ const SidebarComponent = ({ allCalendars }) => {
         ))}
       </div>
       <div className="sidebar-buttons-container">
-        <button className="add-event-button" onClick={createEventOnClick}>
+        <button className="add-event-button" onClick={() => {}}>
           Create Event
         </button>
-        <button
-          className="add-notification-button"
-          onClick={createNotificationOnClick}
-        >
+        <button className="add-notification-button" onClick={() => {}}>
           Create Notification
         </button>
-        <button className="save-calendar-button" onClick={saveCalendarOnClick}>
+        <button className="save-calendar-button" onClick={() => {}}>
           Export Calendar
         </button>
       </div>
-      {modalOpen && (
-        <Modal setOpenModal={setModalOpen} title={mTitle} body={mBody} />
-      )}
     </div>
   );
 };
@@ -83,4 +45,8 @@ const stateToProps = (state) => ({
   allCalendars: state.calendars.allCalendars,
 });
 
-export const Sidebar = connect(stateToProps)(SidebarComponent);
+const dispatchToProps = (dispatch) => ({
+  openCreate: () => dispatch(openCreateModal()),
+});
+
+export const Sidebar = connect(stateToProps, dispatchToProps)(SidebarComponent);
