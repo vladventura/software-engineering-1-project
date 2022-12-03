@@ -1,4 +1,4 @@
-import { OPEN_CREATE_MODAL } from "./actionTypes";
+import { CLOSE_MODAL, OPEN_CREATE_MODAL } from "./actionTypes";
 
 export const openCreateModal = () => {
   return (dispatch, getState) => {
@@ -10,5 +10,16 @@ export const openCreateModal = () => {
           payload: "create",
         });
       });
+  };
+};
+
+export const closeModal = () => {
+  return (dispatch, getState) => {
+    return new Promise(() => {
+      dispatch({
+        type: CLOSE_MODAL,
+        payload: false,
+      });
+    });
   };
 };
