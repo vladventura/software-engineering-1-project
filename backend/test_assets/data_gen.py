@@ -55,16 +55,17 @@ calendars = {
 }
 
 
-# Notifications should contain multiple as an exmample below
-# TODO need to figure string format for some of these.
+# Notifications should contain dictionaries - each defining a notification object.
+# For this particular one - there are two identifiers so we should combine two strings....
+# example class1 + Homework1 = class1Homework1
 notifications = {
-    "1": {
+    "class1Homework1": {
         "calendar": "class1",
-        "event": "homework1",
-        "window":0, # ?
-        "repeats":0, # ?
-        "requency":0, # ?
-        "method":0 # ?
+        "event": "Homework1",
+        "window":0,       # This probably should be a deltatime object
+        "repeats": False, # boolean field
+        "frequency":0,
+        "method": "EMAIL" # string matching the enum class in notifications.py
     }
 }
 
@@ -79,7 +80,8 @@ data_set = {
     "student": "Example Student",
     "email": "jaec1989@gmail.com",
     "data": data,
-    "password": 1203875
+    "password": 1203875,
+    "phonenumber": "xxx-xx-xxxx"
 }
  
 
