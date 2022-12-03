@@ -86,6 +86,7 @@ export const createCalendar = (name, color) => {
     const { code } = response;
     if (code === 200) {
       return new Promise(() =>
+        // Might need to dispatch two actions here
         dispatch({
           type: CREATE_CALENDAR,
           payload: response.body,
