@@ -22,7 +22,7 @@ export const CalendarItem = ({
       </div>
       <div className="calendar-item-events-container">
         {events.map((e) => (
-          <CalendarEvent event={e} key={`event-${e.name}-${e.number}`} />
+          <CalendarEvent event={e} key={`event-${e.name}-${e.calendar}`} />
         ))}
       </div>
     </div>
