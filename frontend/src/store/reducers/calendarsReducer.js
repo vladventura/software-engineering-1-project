@@ -11,6 +11,7 @@ const initState = {
   selectedYear: 0,
   selectedDay: 0,
   daysInMonth: 0,
+  monthName: "",
 };
 
 export const calendarsReducer = (state = initState, action) => {
