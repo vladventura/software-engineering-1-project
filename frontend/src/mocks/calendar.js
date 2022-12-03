@@ -2,7 +2,7 @@
 let events = [];
 let days = [];
 let personalCalendar = {
-  color: "#facfad",
+  color: "#fadfff",
   name: "Personal Calendar",
   events: [],
   visible: true,
