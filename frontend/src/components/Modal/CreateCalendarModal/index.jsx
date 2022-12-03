@@ -1,21 +1,29 @@
+import "./index.css";
 import { useState } from "react";
 import { connect } from "react-redux";
 import { createCalendar } from "../../../store/actions/calendarActions";
 import { closeModal } from "../../../store/actions/modalActions";
-import "./index.css";
+import { ChromePicker as Picker } from "react-color";
 
 export const CreateCalendarModalComponent = ({ close, create }) => {
   const [name, setName] = useState("");
-  const [color, setColor] = useState("#fadfac");
+  const [color, setColor] = useState({
+    hex:
+      "#" +
+      Math.floor(Math.random() * 16777215)
+        .toString(16)
+        .padStart(6, 0),
+  });
   const onChangeName = (e) => {
     setName(e.target.value);
   };
 
   const submit = () => {
     // Should verify if name empty and flashbar/alert addequately
-    if (name === "" || color === "") alert("Color and name are required");
+    if (name === "" || color.hex.toString() === "")
+      alert("Color and name are required");
     else {
-      create(name, color);
+      create(name, color.hex);
       alert("Calendar Created!");
       close();
     }
@@ -38,6 +46,7 @@ export const CreateCalendarModalComponent = ({ close, create }) => {
             value={name}
             onChange={onChangeName}
           />
+          <Picker color={color} onChange={(c, e) => setColor(c)} />
         </form>
       </div>
       <div className="footer">
