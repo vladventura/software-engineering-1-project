@@ -1,9 +1,10 @@
 import { useState } from "react";
+import { connect } from "react-redux";
 import { Modal } from "../Modal";
 import { SidebarToggleCalendar } from "../SidebarToggleCalendar";
 import "./index.css";
 
-export const Sidebar = ({ toggleViewCalendar, viewCalendar }) => {
+const SidebarComponent = ({ allCalendars }) => {
   const [calendars, addCalendar] = useState([
     { name: "Personal Calendar", color: "aquamarine" },
   ]);
@@ -53,14 +54,8 @@ export const Sidebar = ({ toggleViewCalendar, viewCalendar }) => {
         </div>
       </div>
       <div className="calendars-toggle-container">
-        {calendars.map((c) => (
-          <SidebarToggleCalendar
-            name={c.name}
-            color={c.color}
-            onCalendarToggled={toggleViewCalendar}
-            calendarToggled={viewCalendar}
-            key={`sidebar-${c.name}`}
-          />
+        {allCalendars.map((c) => (
+          <SidebarToggleCalendar calendar={c} key={`sidebar-${c.name}`} />
         ))}
       </div>
       <div className="sidebar-buttons-container">
@@ -83,3 +78,9 @@ export const Sidebar = ({ toggleViewCalendar, viewCalendar }) => {
     </div>
   );
 };
+
+const stateToProps = (state) => ({
+  allCalendars: state.calendars.allCalendars,
+});
+
+export const Sidebar = connect(stateToProps)(SidebarComponent);
