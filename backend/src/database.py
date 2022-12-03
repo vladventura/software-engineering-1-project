@@ -57,12 +57,15 @@ class Database:
     #     pass
     #     self.update() # all write methode will need update.
 
+    # FIXME marked for potential deletion
     def readCalendar(self, targC): 
         # Open JSON database file
         # Find Calendar object with the same name as the one specified by targC
         
         pass    # return calendar
     
+
+    # FIXME marked for potential deletion
     # def writeNotification(self, targN):
     #     # Read in Notification data structure and convert into JSON
     #     # Put into appropriate Event object within correct Calendar
@@ -71,6 +74,8 @@ class Database:
     #     pass
     #     self.update() # all write methode will need update.
 
+
+    # FIXME marked for potential deletion
     def readNotification(self, targN):
         # Open JSON database file
         # Find Notification object with the same name as the one specified by targN
@@ -78,6 +83,8 @@ class Database:
         
         pass    # return notification
 
+
+    # FIXME marked for potential deletion
     def transferEvent(self, source, dest, event):
         # Read data from JSON database file
         # Find event in source Calendar
@@ -86,14 +93,16 @@ class Database:
         
         self.update() # all write methode will need update.
 
+    # returns reference to calendars dictionary of database
     def readAllCalendarData(self):
-        # Read in data from JSON database file
-        # Find all Calendar objects
-        # Create a list of Calendar objects
+        calendars = self.data["data"]["calendars"]
 
-        pass    # return calendars = a list of Calendar objects
+        if len(calendars) == 0: # error checker for if data base didnt loas
+            raise Exception("readAllCalendarData error - cannot find calendars.")
 
-        
+        return calendars
+
+    # return notifications dictionary of database
     def readAllNotifData(self):
         notifications = self.data["data"]["notifications"]
         
