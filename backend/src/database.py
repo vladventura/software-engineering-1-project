@@ -17,7 +17,7 @@
 import json
 
 class Database:
-    def __init__(self, db_file='database.json'):
+    def __init__(self, db_file='data.json'):
         try:
             dbf = open(db_file, 'w')
             self.file = dbf
