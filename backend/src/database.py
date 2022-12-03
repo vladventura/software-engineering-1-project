@@ -20,8 +20,11 @@ import json
 # Data is held at member data
 # This data is converted from json style string to python dictionary
 # per the table in documentation https://docs.python.org/3/library/json.html
+# NOTE: Key changes - data is a python dictionary that contains dictionary.
+# NOTE  - Any changes done needs to modify this dictionary - meaning we need key information to access right part.
 class Database:
     def __init__(self, db_file='data.json'):
+        self.out = db_file
         try:
             with open(db_file) as json_f:
                 self.data = json.load(json_f)  
@@ -29,12 +32,18 @@ class Database:
             json_f.close()
         except OSError:
             raise OSError
+
+    # Internal function to update the data base when writing.
+    def _update(self):
+        with open("data.json", "w") as outfile:
+            json.dump(self.data, outfile)
+    
     
     def writeEvent(self, targE):
         # Read in Event data structure and convert into JSON
         # Append to current JSON database file
         
-        pass
+        self._update() # all write methode will need update.
 
     def readEvent(self, targE):
         # Open JSON database file
@@ -48,6 +57,7 @@ class Database:
         # Append to current JSON database file
         
         pass
+        self._update() # all write methode will need update.
 
     def readCalendar(self, targC): 
         # Open JSON database file
@@ -61,6 +71,7 @@ class Database:
         # Append to current JSON database file
         
         pass
+        self._update() # all write methode will need update.
 
     def readNotification(self, targN):
         # Open JSON database file
@@ -75,7 +86,7 @@ class Database:
         # Copy into destination Calendar
         # Delete event from original (source) Calendar
         
-        pass
+        self._update() # all write methode will need update.
 
     def readAllCalendarData(self):
         # Read in data from JSON database file
