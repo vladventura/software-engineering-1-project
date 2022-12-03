@@ -2,7 +2,7 @@
 # - Notification is to be set at beginning of the launch of the program.
 # - The manager should set it as a system timed event and the event activates notification on event handler
 
-import time
+import datetime
 from database import Database
 from enum import Enum
 
@@ -44,10 +44,30 @@ class NotificationManager:
     def __init__(self, database: Database):
         # NOTE: notification contains reference to notifications portion of the data
         self.notifications = database.readAllNotifData()
+        self.notifs_table = {} # dictionary containing Notification objects
+
+        # convert json data table into actual notification objects.
+        for json_object in self.notifications:
+            # create key string for the table and insert in elements
+            self.notifs_table[json_object["calendar"]+json_object["event"]] = self._jsonToNotification(json_object)
 
         # TODO ADD all events in notifications to future events
+
+    # create notification from json object
+    def _jsonToNotification(json_o):
+        notif = Notification()
+        notif.calendar = json_o["calendar"]
+        notif.event = json_o["event"]
+        notif.info.date = datetime.fromisoformat(json_o["date"])
+        notif.info.triggerWindow = json_o["window"]
+        notif.info.repeat = json_o["repeats"]
+        notif.info.frequency = json_o["frequency"]
+        notif.method = json_o["method"]
+        
+        return notif
     
     # After calling this methode. Make sure to ask db to update to keep it up to date
+    # NOTE database should be called to update after creating notification
     def createNotification(self, calendar, event, window, repeats, frequency, method, date):
         new_notif = Notification()
         new_notif.calendar = calendar
@@ -58,11 +78,14 @@ class NotificationManager:
         new_notif.info.frequency = frequency
         new_notif.method = method
 
+        # add onto notification table
+        self.notifs_table[calendar+event] = new_notif
+
         # now that new notification has been configured. Insert into database.
         self.notifications[calendar+event] = {
             "calendar": calendar,
             "event": event,
-            "date": date,     # FIXME needs to convert this to string
+            "date": date.isoformat(),     # FIXME needs to convert this to string
             "window": window, # FIXME needs to convert this to string
             "repeats": repeats,
             "methode": new_notif.method.name
@@ -71,9 +94,20 @@ class NotificationManager:
         # TODO ADD this notification to event handler
 
 
-    # TODO implement
+    # Removes associated notification from database and internal table storage for notifications
+    # Also removes the notifications from event pool TODO-implement this feature
     def deleteNotification(self, calendar, event):
-        pass
+        key = calendar+event
+        #TODO add removal of notifications from event
+        
+        # remove from database with stored reference to the json dictionary.
+        if (key) in self.notifications:
+            del self.notifications.pop[key]
+
+        # remove from table as well
+        if (key) in self.notifs_table:
+            del self.notifs_table.pop[key]
+
 
 
     # TODO implement
