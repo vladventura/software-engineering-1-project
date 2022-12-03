@@ -14,7 +14,11 @@ export const CreateCalendarModalComponent = ({ close, create }) => {
   const submit = () => {
     // Should verify if name empty and flashbar/alert addequately
     if (name === "" || color === "") alert("Color and name are required");
-    else create(name, color);
+    else {
+      create(name, color);
+      alert("Calendar Created!");
+      close();
+    }
   };
 
   return (
