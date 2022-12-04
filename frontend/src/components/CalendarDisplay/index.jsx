@@ -6,16 +6,34 @@ const CalendarDisplayComponent = ({
   allCalendars,
   daysInMonth,
   selectedMonth,
-  selectedDay,
+  selectedYear,
 }) => {
   const viewableEvents = [];
   allCalendars.forEach((c) => {
     if (c.visible) {
       c.events.forEach((e) => {
-        if (e.month === selectedMonth) viewableEvents.push(e);
+        const splt = e.date.split("/");
+        const incomingYear = splt[2];
+
+        if (
+          e.month === selectedMonth &&
+          incomingYear === selectedYear.toString()
+        )
+          viewableEvents.push(e);
       });
     }
   });
+
+  // Not good
+  // Opportunity to use dynamic programming
+  const today = new Date();
+
+  const checkIsToday = (i) => {
+    if (selectedMonth !== today.getMonth() + 1) return false;
+    if (selectedYear !== today.getFullYear()) return false;
+    if (i !== today.getDate()) return false;
+    return true;
+  };
 
   const eventsPerDay = {};
   viewableEvents.map((e) =>
@@ -32,7 +50,7 @@ const CalendarDisplayComponent = ({
           key={`calendar-${i + 1}-day`}
           events={eventsPerDay[i + 1]}
           month={selectedMonth}
-          isToday={selectedDay === i + 1}
+          isToday={checkIsToday(i)}
         />
       ))}
     </div>
@@ -45,6 +63,7 @@ const stateToProps = (state) => {
     daysInMonth: state.calendars.daysInMonth,
     selectedMonth: state.calendars.selectedMonth,
     selectedDay: state.calendars.selectedDay,
+    selectedYear: state.calendars.selectedYear,
   };
 };
 
