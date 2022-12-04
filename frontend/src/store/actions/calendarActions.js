@@ -119,20 +119,11 @@ export const createEvent = (event) => {
   return (dispatch, getState) => {
     // Server must return if valid operation or not
     const { calendars } = getState();
-    const { date, name, description, dueTime, calendar, number, month, color } =
-      event;
 
     const response = {
       code: 200,
       body: {
-        name,
-        date,
-        number,
-        month,
-        dueTime,
-        description,
-        calendar,
-        color,
+        ...event,
         official: false,
       },
       error: "Name in use",
