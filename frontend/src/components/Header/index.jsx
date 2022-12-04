@@ -1,8 +1,18 @@
 import logo from "../../assets/uml_logo.png";
 import avatar from "../../assets/avatar.png";
 import "./index.css";
+import { connect } from "react-redux";
+import {
+  goBackMonthly,
+  goForwardMonthly,
+} from "../../store/actions/calendarActions";
 
-export const Header = () => {
+const HeaderComponent = ({
+  goBackMonth,
+  goForwardMonth,
+  monthName,
+  selectedYear,
+}) => {
   const avatarOnClick = () => {
     alert("Please make-believe that this is a proper user status pop-up");
   };
@@ -20,10 +30,11 @@ export const Header = () => {
         onClick={logoOnClick}
       />
       <div className="month-name-container">
-        <div className="month-name text">November</div>
+        <div className="month-name text">{monthName}</div>
+        <div className="month-year text">{selectedYear}</div>
         <div className="month-arrows">
-          <button>{"<"}</button>
-          <button>{">"}</button>
+          <button onClick={goBackMonth}>{"<"}</button>
+          <button onClick={goForwardMonth}>{">"}</button>
         </div>
       </div>
       <div className="display-mode-change-container">
@@ -47,3 +58,15 @@ export const Header = () => {
     </div>
   );
 };
+
+const stateToProps = (state) => ({
+  monthName: state.calendars.monthName,
+  selectedYear: state.calendars.selectedYear,
+});
+
+const dispatchToProps = (dispatch) => ({
+  goBackMonth: () => dispatch(goBackMonthly()),
+  goForwardMonth: () => dispatch(goForwardMonthly()),
+});
+
+export const Header = connect(stateToProps, dispatchToProps)(HeaderComponent);
