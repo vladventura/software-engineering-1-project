@@ -38,6 +38,7 @@ export const AddEventModalComponent = ({
     const month = date.getMonth() + 1;
     const dateString = `${month}/${number}/${date.getFullYear()}`;
 
+    // Do not rename properties
     const event = {
       name,
       date: dateString,
