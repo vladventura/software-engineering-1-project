@@ -5,39 +5,40 @@ import {
   OPEN_CREATE_MODAL,
 } from "./actionTypes";
 
-export const openCreateModal = () => {
+export const openCreateModal = (modalData = false) => {
   return (dispatch, getState) => {
     const { modal } = getState();
     if (!modal.isOpen)
       return new Promise(() =>
         dispatch({
           type: OPEN_CREATE_MODAL,
-          payload: "create",
+          payload: { modalType: "create", modalData },
         })
       );
   };
 };
 
-export const openAddEventModal = () => {
+export const openAddEventModal = (modalData = false) => {
   return (dispatch, getState) => {
     const { modal } = getState();
+
     if (!modal.isOpen)
       return new Promise(() =>
         dispatch({
           type: OPEN_ADD_EVENT_MODAL,
-          payload: "addevent",
+          payload: { modalType: "addevent", modalData },
         })
       );
   };
 };
-export const openAddNotifModal = () => {
+export const openAddNotifModal = (modalData = false) => {
   return (dispatch, getState) => {
     const { modal } = getState();
     if (!modal.isOpen)
       return new Promise(() =>
         dispatch({
           type: OPEN_ADD_NOTIF_MODAL,
-          payload: "addnotif",
+          payload: { modalType: "addnotif", modalData },
         })
       );
   };
