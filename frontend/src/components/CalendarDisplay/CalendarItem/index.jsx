@@ -16,10 +16,11 @@ export const CalendarItem = ({
     );
   };
   return (
-    <div className="calendar-item" onDoubleClick={itemOnDblClick}>
-      <div className={`calendar-item-number ${isToday ? "today" : ""}`}>
-        {number}
-      </div>
+    <div
+      className={`calendar-item ${isToday ? "today" : ""}`}
+      onDoubleClick={itemOnDblClick}
+    >
+      <div className="calendar-item-number">{number}</div>
       <div className="calendar-item-events-container">
         {events.map((e) => (
           <CalendarEvent event={e} key={`event-${e.name}-${e.calendar}`} />

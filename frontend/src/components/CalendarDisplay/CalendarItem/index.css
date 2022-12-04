@@ -9,6 +9,10 @@
   height: 100%;
 }
 
+.calendar-item.today {
+  background-color: #ffc500;
+}
+
 .calendar-item-number {
   text-align: right;
   margin: 0.25rem 0.5rem;
