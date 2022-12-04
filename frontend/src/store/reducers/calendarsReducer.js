@@ -4,6 +4,8 @@ import {
   CREATE_NOTIF,
   GET_ALL_CALENDARS,
   GET_INITIAL_INFO,
+  GO_BACK_MONTHLY,
+  GO_FORWARD_MONTHLY,
   TOGGLE_CALENDAR,
 } from "../actions/actionTypes";
 
@@ -46,6 +48,12 @@ export const calendarsReducer = (state = initState, action) => {
         allCalendars: [...action.payload],
       };
     case GET_INITIAL_INFO:
+      return {
+        ...state,
+        ...action.payload,
+      };
+    case GO_BACK_MONTHLY:
+    case GO_FORWARD_MONTHLY:
       return {
         ...state,
         ...action.payload,
