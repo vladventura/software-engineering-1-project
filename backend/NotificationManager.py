@@ -7,31 +7,17 @@
 #
 
 import datetime
-#import Notification.py
-
-#PLACEHOLDER CLASS, GET NOTIFICATION CLASS ASAP
-class Notification:
-    calendar = str
-    event = str
-    window = datetime.time
-
-    repeats = bool
-
-    frequency = int
-
-    method = int
-
-    def __init__(self, calendar, event, window, repeats, frequency, method):
-        self.calendar = calendar
-        self.event = event
-        self.window = window
-        self.repeats = repeats
-        self.frequency = frequency
-        self.method = method
+import Notification
 
 class NotificationManager:
-    
-    notifList = list
+
+    targetEmail = str
+    #change this later to have a target email from the database
+
+    def checkNotifications():
+        pass
+    # If current date is after (Event date - window)
+    # Then call notif's SendNotification()
 
     def createNotification(self, calendar, event, window, repeats, frequency, method):
         temp = Notification(calendar, event, window, repeats, frequency, method)
@@ -45,7 +31,7 @@ class NotificationManager:
                 if(i.event == event):
                     self.notifList.remove
                     #Update database
-                
+
 
     def editNotification(self, calendar, event, window = None,
                  repeats = None, frequency = None, method = None):
