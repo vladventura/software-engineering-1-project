@@ -1,5 +1,6 @@
 import {
   CREATE_CALENDAR,
+  CREATE_EVENT,
   GET_ALL_CALENDARS,
   GET_INITIAL_INFO,
   TOGGLE_CALENDAR,
@@ -36,6 +37,11 @@ export const calendarsReducer = (state = initState, action) => {
       return {
         ...state,
         allCalendars: [...state.allCalendars, action.payload],
+      };
+    case CREATE_EVENT:
+      return {
+        ...state,
+        allCalendars: [...action.payload],
       };
     case GET_INITIAL_INFO:
       return {
