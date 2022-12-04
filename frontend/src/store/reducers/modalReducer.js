@@ -9,6 +9,7 @@ import {
 const initState = {
   modalType: "",
   isOpen: false,
+  modalData: false,
 };
 
 export const modalReducer = (state = initState, action) => {
@@ -21,13 +22,14 @@ export const modalReducer = (state = initState, action) => {
     case OPEN_ADD_NOTIF_MODAL:
       return {
         ...state,
-        modalType: action.payload,
+        ...action.payload,
         isOpen: true,
       };
     case CLOSE_MODAL:
       return {
         ...state,
         modalType: "",
+        modalData: false,
         isOpen: action.payload,
       };
     default:
