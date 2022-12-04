@@ -22,16 +22,20 @@ class Notification:
         BOTH = 3
     
     calendar = str
-    event = Event # to store event's info
+    event = str
+
+    date = datetime.datetime
     window = datetime.time
 
     repeats = bool
-    frequency = int
+    frequency = datetime.time
     method = int
 
-    def __init__(self, calendar, event, window, repeats=False, frequency=0, method=0):
+    def __init__(self, calendar, event, date, window=datetime.time(0), 
+    repeats=False, frequency=0, method=0):
         self.calendar = calendar
         self.event = event
+        self.date = date
         self.window = window
         self.repeats = repeats
         self.frequency = frequency
@@ -45,12 +49,20 @@ class Notification:
     email = "sofengcalbot@gmail.com"
     password = "ntrtiaxuuciofaxt"
 
-    message = "Your event " + event.title + "from " + calendar
-    + "is occurring soon! \n\n" 
-    + "Description: " + event.description + "\n"
-    + "Occurring on: " + event.date.strftime("%m/%d/%Y") + "\n"
-    + "At: " + event.date.strftime("%H:%M:%S") + "\n\n"
-    + "\t - Blackboard Calendar"
+    msg1 = "Your event "
+    msg2 = "from "
+    msg3 = " is occurring soon! \n\n"
+    msgwhen = "Occurring on: "
+    msgwhen2 = "At: "
+    msgEnd = "\t - Blackboard Calendar"
+    msgDate1 = str(date)[:10]
+    msgDate2 = str(date)[10:19]
+    msgnl = "\n"
+
+    message = (msg1 + str(event) + msg2 +
+    str(calendar) + msg3 + msgnl + msgwhen +
+    msgDate1 + msgnl + msgwhen2 + msgDate2 + msgnl 
+    + msgnl + msgEnd)
 
     context = ssl.create_default_context()
 
@@ -67,10 +79,6 @@ class Notification:
 #sofengcalbot@gmail.com
 # ntrtiaxuuciofaxt
 
-
-# use debugging server with "python -m smtpd -c DebuggingServer -n localhost:1025" in cmd shell.
-
-
 # Couple things to deal with for this class
 # 1. We need to be able to pull data from database for notifications
 #    - on construction - the notificationmanager should pull data from database.
@@ -81,6 +89,3 @@ class Notification:
 #    - deletes from database everytime this is successfully handled.
 # 4. editNotification
 #    - requires writing to database as well.
-
-
-# Added NotificationManager.py
