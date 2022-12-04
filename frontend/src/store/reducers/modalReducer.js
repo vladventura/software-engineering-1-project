@@ -4,6 +4,7 @@ import {
   OPEN_ADD_EVENT_MODAL,
   OPEN_ADD_NOTIF_MODAL,
   OPEN_CREATE_MODAL,
+  OPEN_EDIT_EVENT_MODAL,
 } from "../actions/actionTypes";
 
 const initState = {
@@ -20,6 +21,7 @@ export const modalReducer = (state = initState, action) => {
     case OPEN_CREATE_MODAL:
     case OPEN_ADD_EVENT_MODAL:
     case OPEN_ADD_NOTIF_MODAL:
+    case OPEN_EDIT_EVENT_MODAL:
       return {
         ...state,
         ...action.payload,
