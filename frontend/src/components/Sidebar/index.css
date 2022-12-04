@@ -12,6 +12,11 @@
   row-gap: 1rem;
 }
 
+/* So weird that this is necessary */
+.sidebar-buttons-container > button:hover {
+  cursor: pointer;
+}
+
 .new-calendar-container {
   justify-self: center;
   margin-top: 1rem;

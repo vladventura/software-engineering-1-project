@@ -1,21 +1,18 @@
 import { connect } from "react-redux";
-import { openCreateModal } from "../../store/actions/modalActions";
+import {
+  openAddEventModal,
+  openCreateModal,
+} from "../../store/actions/modalActions";
 import { SidebarToggleCalendar } from "../SidebarToggleCalendar";
 import "./index.css";
 
-const SidebarComponent = ({ allCalendars, openCreate }) => {
-  const createCalendarOnClick = () => {
-    // Just opens Modal for calendar creation
-    openCreate();
-  };
+const SidebarComponent = ({ allCalendars, openCreate, openAddEvent }) => {
+  const openAddNotification = () => {};
+
+  const exportDisplayed = () => {};
 
   return (
     <div className="sidebar-container">
-      <div className="new-calendar-container">
-        <button className="new-calendar-button" onClick={createCalendarOnClick}>
-          Create Calendar
-        </button>
-      </div>
       <div className="calendar-preview-container">
         <div className="calendar-preview-frame">
           <p>Calendar Preview</p>
@@ -27,14 +24,20 @@ const SidebarComponent = ({ allCalendars, openCreate }) => {
         ))}
       </div>
       <div className="sidebar-buttons-container">
-        <button className="add-event-button" onClick={() => {}}>
-          Create Event
+        <button className="new-calendar-button" onClick={openCreate}>
+          Create Calendar
         </button>
-        <button className="add-notification-button" onClick={() => {}}>
-          Create Notification
+        <button className="add-event-button" onClick={openAddEvent}>
+          Add Event
         </button>
-        <button className="save-calendar-button" onClick={() => {}}>
-          Export Calendar
+        <button
+          className="add-notification-button"
+          onClick={openAddNotification}
+        >
+          Add Notification
+        </button>
+        <button className="save-calendar-button" onClick={exportDisplayed}>
+          Export Displayed Calendars
         </button>
       </div>
     </div>
@@ -47,6 +50,7 @@ const stateToProps = (state) => ({
 
 const dispatchToProps = (dispatch) => ({
   openCreate: () => dispatch(openCreateModal()),
+  openAddEvent: () => dispatch(openAddEventModal()),
 });
 
 export const Sidebar = connect(stateToProps, dispatchToProps)(SidebarComponent);
