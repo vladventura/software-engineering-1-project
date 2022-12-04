@@ -2,6 +2,8 @@ import personalCalendar from "../../mocks/calendar";
 import {
   CREATE_CALENDAR,
   CREATE_CALENDAR_FAIL,
+  CREATE_EVENT,
+  CREATE_EVENT_FAIL,
   GET_ALL_CALENDARS,
   GET_INITIAL_INFO,
   TOGGLE_CALENDAR,
@@ -108,6 +110,53 @@ export const createCalendar = (name, color) => {
     return new Promise(() =>
       dispatch({
         type: CREATE_CALENDAR_FAIL,
+        payload: response.error,
+      })
+    );
+  };
+};
+export const createEvent = (event) => {
+  return (dispatch, getState) => {
+    // Server must return if valid operation or not
+    const { calendars } = getState();
+    const { date, name, description, dueTime, calendar, number, month, color } =
+      event;
+
+    const response = {
+      code: 200,
+      body: {
+        name,
+        date,
+        number,
+        month,
+        dueTime,
+        description,
+        calendar,
+        color,
+        official: false,
+      },
+      error: "Name in use",
+    };
+    const { code, body } = response;
+
+    const newAllCals = [...calendars.allCalendars];
+    newAllCals.forEach((c) => {
+      if (c.name === body.calendar) {
+        c.events.push(body);
+      }
+    });
+    if (code === 200) {
+      return new Promise(() =>
+        // Might need to dispatch two actions here
+        dispatch({
+          type: CREATE_EVENT,
+          payload: newAllCals,
+        })
+      );
+    }
+    return new Promise(() =>
+      dispatch({
+        type: CREATE_EVENT_FAIL,
         payload: response.error,
       })
     );
