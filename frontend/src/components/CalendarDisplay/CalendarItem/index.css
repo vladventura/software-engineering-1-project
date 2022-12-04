@@ -1,6 +1,6 @@
 .calendar-item {
   font-family: "Barlow", "sans-serif";
-  background-color: #ffc;
+  background-color: #eae2b7;
   display: flex;
   flex-direction: column;
   border: 1px solid #777;
@@ -10,7 +10,7 @@
 }
 
 .calendar-item.today {
-  background-color: #ffc500;
+  background-color: #fcbf49;
 }
 
 .calendar-item-number {

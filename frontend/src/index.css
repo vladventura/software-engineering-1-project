@@ -11,3 +11,7 @@ body {
 .text {
   color: white;
 }
+
+button {
+  background-color: #f77f00;
+}

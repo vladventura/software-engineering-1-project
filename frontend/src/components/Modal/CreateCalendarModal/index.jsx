@@ -32,20 +32,25 @@ export const CreateCalendarModalComponent = ({ close, create }) => {
   return (
     <div className="modalContainer">
       <div className="titleCloseBtn">
-        <button onClick={close}>X</button>
+        <button className="text" onClick={close}>
+          X
+        </button>
       </div>
-      <div className="title">
+      <div className="title text">
         <h1>Create Calendar</h1>
       </div>
       <div className="body">
         <form className="create-calendar-form">
-          <label htmlFor="cal-name">Calendar Name</label>
+          <label className="text" htmlFor="cal-name">
+            Calendar Name
+          </label>
           <input
             id="cal-name"
             name="cal-name"
             value={name}
             onChange={onChangeName}
           />
+          <label className="text">Color Picker</label>
           <Picker color={color} onChange={(c, e) => setColor(c)} />
         </form>
       </div>
