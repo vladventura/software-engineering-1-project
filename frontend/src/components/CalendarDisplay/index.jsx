@@ -35,6 +35,8 @@ const CalendarDisplayComponent = ({
     return true;
   };
 
+  const makeDateString = (day) => `${selectedMonth}/${day}/${selectedYear}`;
+
   const eventsPerDay = {};
   viewableEvents.map((e) =>
     eventsPerDay[e.number]
@@ -49,8 +51,8 @@ const CalendarDisplayComponent = ({
           number={i + 1}
           key={`calendar-${i + 1}-day`}
           events={eventsPerDay[i + 1]}
-          month={selectedMonth}
-          isToday={checkIsToday(i)}
+          isToday={checkIsToday(i + 1)}
+          dateString={makeDateString(i + 1)}
         />
       ))}
     </div>
