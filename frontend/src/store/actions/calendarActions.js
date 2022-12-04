@@ -6,6 +6,8 @@ import {
   CREATE_EVENT_FAIL,
   CREATE_NOTIF,
   CREATE_NOTIF_FAIL,
+  DELETE_EVENT,
+  DELETE_EVENT_FAIL,
   EDIT_EVENT,
   GET_ALL_CALENDARS,
   GET_INITIAL_INFO,
@@ -138,7 +140,7 @@ export const createCalendar = (name, color) => {
             date: `12/11/2022`,
             number: 11,
             month: 12,
-            dueTime: "1:00pm",
+            dueTime: "1:00",
             description: `An event ${11}`,
             official: 11 % 2 === 0,
             calendar: name,
@@ -265,6 +267,62 @@ export const editEvent = (event) => {
     return new Promise(() =>
       dispatch({
         type: CREATE_EVENT_FAIL,
+        payload: response.error,
+      })
+    );
+  };
+};
+
+export const deleteEvent = (event) => {
+  return (dispatch, getState) => {
+    // Server must return if valid operation or not
+    const { calendars } = getState();
+
+    const response = {
+      code: 200,
+      body: {
+        ...event,
+        official: false,
+      },
+      error: "Name in use",
+    };
+    const { code, body } = response;
+
+    const newAllCals = [...calendars.allCalendars];
+    let cI = 0;
+    let eI = 0;
+    newAllCals.every((c, i) => {
+      if (c.name === body.calendar) {
+        c.events.every((e, ei) => {
+          if (
+            e.name === body.name &&
+            e.description === body.description &&
+            e.date === body.date &&
+            e.calendar === body.calendar
+          ) {
+            cI = i;
+            eI = ei;
+            return false;
+          }
+          return true;
+        });
+        return false;
+      }
+      return true;
+    });
+    delete newAllCals[cI].events[eI];
+    if (code === 200) {
+      return new Promise(() =>
+        // Might need to dispatch two actions here
+        dispatch({
+          type: DELETE_EVENT,
+          payload: newAllCals,
+        })
+      );
+    }
+    return new Promise(() =>
+      dispatch({
+        type: DELETE_EVENT_FAIL,
         payload: response.error,
       })
     );
