@@ -11,13 +11,13 @@ import { notificationTimepair, notifMethodList } from "../modalConsts";
 export const AddEventModalComponent = ({
   close,
   allCalendars,
-  targetDate,
+  modalData,
   create,
 }) => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [date, setDate] = useState(
-    targetDate ? new Date(targetDate) : new Date()
+    modalData ? new Date(modalData) : new Date()
   );
   const [time, setTime] = useState("10:00");
   const [calendarIndex, setCalendarIndex] = useState(0);
@@ -170,6 +170,7 @@ export const AddEventModalComponent = ({
 
 const stateToProps = (state) => ({
   allCalendars: state.calendars.allCalendars,
+  modalData: state.modal.modalData,
 });
 
 const dispatchToProps = (dispatch) => ({
