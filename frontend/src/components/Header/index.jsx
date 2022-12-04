@@ -23,28 +23,36 @@ const HeaderComponent = ({
 
   return (
     <div className="header-container">
-      <img
-        src={logo}
-        alt="School Logo"
-        className="school-logo clickable-img"
-        onClick={logoOnClick}
-      />
-      <div className="month-name-container">
-        <div className="month-name text">{monthName}</div>
-        <div className="month-year text">{selectedYear}</div>
-        <div className="month-arrows">
-          <button onClick={goBackMonth}>{"<"}</button>
-          <button onClick={goForwardMonth}>{">"}</button>
-        </div>
+      <div className="school-logo-container">
+        <img
+          src={logo}
+          alt="School Logo"
+          className="school-logo clickable-img"
+          onClick={logoOnClick}
+        />
       </div>
-      <div className="display-mode-change-container">
-        <form>
+      <div className="month-name-container">
+        <div className="display-mode-change-container">
           <select id="modes">
             <option value="mth">Month</option>
             <option value="day">Day</option>
             <option value="wk">Week</option>
           </select>
-        </form>
+        </div>
+        <div className="month-info-container">
+          <div className="month-name-year-container">
+            <p className="month-name">{monthName}</p>
+            <p className="month-year">{selectedYear}</p>
+          </div>
+          <div className="month-arrows">
+            <button className="control-arrows" onClick={goBackMonth}>
+              {"<"}
+            </button>
+            <button className="control-arrows" onClick={goForwardMonth}>
+              {">"}
+            </button>
+          </div>
+        </div>
       </div>
       <div className="avatar-container">
         <img
@@ -53,7 +61,7 @@ const HeaderComponent = ({
           className="avatar-picture clickable-img"
           onClick={avatarOnClick}
         />
-        <div className="student-name text">John Doe</div>
+        <div className="student-name">John Doe</div>
       </div>
     </div>
   );
