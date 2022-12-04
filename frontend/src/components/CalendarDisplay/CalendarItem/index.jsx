@@ -1,20 +1,19 @@
+import { connect } from "react-redux";
+import { openAddEventModal } from "../../../store/actions/modalActions";
 import { CalendarEvent } from "./CalendarEvent";
 import "./index.css";
 
-export const CalendarItem = ({
+const CalendarItemComponent = ({
   number,
   events = [],
   isToday = false,
-  month,
+  dateString,
+  openAddEvent,
 }) => {
   const itemOnDblClick = () => {
-    alert(
-      "Please make-believe this is an Add Event dialog for now on day " +
-        number +
-        " of month " +
-        month
-    );
+    openAddEvent(dateString);
   };
+
   return (
     <div
       className={`calendar-item ${isToday ? "today" : ""}`}
@@ -29,3 +28,12 @@ export const CalendarItem = ({
     </div>
   );
 };
+
+const dispatchToProps = (dispatch) => ({
+  openAddEvent: (dateString) => dispatch(openAddEventModal(dateString)),
+});
+
+export const CalendarItem = connect(
+  null,
+  dispatchToProps
+)(CalendarItemComponent);
