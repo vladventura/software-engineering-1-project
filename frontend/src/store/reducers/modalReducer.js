@@ -1,6 +1,7 @@
 import {
   CLOSE_MODAL,
   CREATE_CALENDAR_FAIL,
+  OPEN_ADD_EVENT_MODAL,
   OPEN_CREATE_MODAL,
 } from "../actions/actionTypes";
 
@@ -15,6 +16,7 @@ export const modalReducer = (state = initState, action) => {
       console.log("WOW");
       return state;
     case OPEN_CREATE_MODAL:
+    case OPEN_ADD_EVENT_MODAL:
       return {
         ...state,
         modalType: action.payload,
