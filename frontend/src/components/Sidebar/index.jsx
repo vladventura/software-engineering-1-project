@@ -1,14 +1,18 @@
 import { connect } from "react-redux";
 import {
   openAddEventModal,
+  openAddNotifModal,
   openCreateModal,
 } from "../../store/actions/modalActions";
 import { SidebarToggleCalendar } from "../SidebarToggleCalendar";
 import "./index.css";
 
-const SidebarComponent = ({ allCalendars, openCreate, openAddEvent }) => {
-  const openAddNotification = () => {};
-
+const SidebarComponent = ({
+  allCalendars,
+  openCreate,
+  openAddEvent,
+  openAddNotif,
+}) => {
   const exportDisplayed = () => {};
 
   return (
@@ -30,10 +34,7 @@ const SidebarComponent = ({ allCalendars, openCreate, openAddEvent }) => {
         <button className="add-event-button" onClick={openAddEvent}>
           Add Event
         </button>
-        <button
-          className="add-notification-button"
-          onClick={openAddNotification}
-        >
+        <button className="add-notification-button" onClick={openAddNotif}>
           Add Notification
         </button>
         <button className="save-calendar-button" onClick={exportDisplayed}>
@@ -51,6 +52,7 @@ const stateToProps = (state) => ({
 const dispatchToProps = (dispatch) => ({
   openCreate: () => dispatch(openCreateModal()),
   openAddEvent: () => dispatch(openAddEventModal()),
+  openAddNotif: () => dispatch(openAddNotifModal()),
 });
 
 export const Sidebar = connect(stateToProps, dispatchToProps)(SidebarComponent);
