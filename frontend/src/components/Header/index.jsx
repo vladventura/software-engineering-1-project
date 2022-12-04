@@ -20,7 +20,7 @@ export const Header = () => {
         onClick={logoOnClick}
       />
       <div className="month-name-container">
-        <div className="month-name">November</div>
+        <div className="month-name text">November</div>
         <div className="month-arrows">
           <button>{"<"}</button>
           <button>{">"}</button>
@@ -42,7 +42,7 @@ export const Header = () => {
           className="avatar-picture clickable-img"
           onClick={avatarOnClick}
         />
-        <div className="student-name">Student Name</div>
+        <div className="student-name text">John Doe</div>
       </div>
     </div>
   );
