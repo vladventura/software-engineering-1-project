@@ -2,10 +2,10 @@ import unittest
 from database import Database
 
 class DatabaseTest(unittest.TestCase):
-    file = "test_data.json"
     def testConstruction(self):
+        self.file = "test_data.json"
         db = Database()
-        self.assertEqual(len(db.data), 0)
+        self.assertNotEqual(len(db.data), 0)
         
 
 

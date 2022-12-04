@@ -43,7 +43,7 @@ class Notification:
 class NotificationManager:
     def __init__(self, database: Database):
         # NOTE: notification contains reference to notifications portion of the data
-        self.notifications = database.readAllNotifData()
+        self.notifications = database.getNotifData()
         self.notifs_table = {} # dictionary containing Notification objects
 
         # convert json data table into actual notification objects.

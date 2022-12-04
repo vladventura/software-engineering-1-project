@@ -33,68 +33,10 @@ class Database:
     def update(self):
         with open(self.out, "w") as outfile:
             json.dump(self.data, outfile)
-    
 
-    # ############### potentially not needed ##############
-    # # Each write event requires identifications for the main python object
-    # def writeEvent(self, calendar, event, event_object):
-    #     # Read in Event data structure and convert into JSON
-    #     # Append to current JSON database file
-        
-    #     self.update() # all write methode will need update.
-
-    # def readEvent(self, targE):
-    #     # Open JSON database file
-    #     # Find Event object with the same name as the one specified by targE
-    #     # Must be in the calendar we are requesting
-        
-    #     pass    # return event
-
-    # def writeCalendar(self, targC):
-    #     # Read in Calendar data structure and convert into JSON
-    #     # Append to current JSON database file
-        
-    #     pass
-    #     self.update() # all write methode will need update.
-
-    # FIXME marked for potential deletion
-    def readCalendar(self, targC): 
-        # Open JSON database file
-        # Find Calendar object with the same name as the one specified by targC
-        
-        pass    # return calendar
-    
-
-    # FIXME marked for potential deletion
-    # def writeNotification(self, targN):
-    #     # Read in Notification data structure and convert into JSON
-    #     # Put into appropriate Event object within correct Calendar
-    #     # Append to current JSON database file
-        
-    #     pass
-    #     self.update() # all write methode will need update.
-
-
-    # FIXME marked for potential deletion
-    def readNotification(self, targN):
-        # Open JSON database file
-        # Find Notification object with the same name as the one specified by targN
-        # Must be in correct Event, with correct Calendar
-        
-        pass    # return notification
-
-
-    # FIXME marked for potential deletion
-    def transferEvent(self, source, dest, event):
-        # Read data from JSON database file
-        # Find event in source Calendar
-        # Copy into destination Calendar
-        # Delete event from original (source) Calendar
-        
-        self.update() # all write methode will need update.
 
     # returns reference to calendars dictionary of database
-    def readAllCalendarData(self):
+    def getCalendarData(self):
         calendars = self.data["data"]["calendars"]
 
         if len(calendars) == 0: # error checker for if data base didnt loas
@@ -103,7 +45,7 @@ class Database:
         return calendars
 
     # return notifications dictionary of database
-    def readAllNotifData(self):
+    def getNotifData(self):
         notifications = self.data["data"]["notifications"]
         
         if len(notifications) == 0:  # error checker to see if valid dictionary exists

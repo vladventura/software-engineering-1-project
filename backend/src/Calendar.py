@@ -9,7 +9,7 @@
 
 import Event
 import datetime
-import database
+from database import Database
 
 class Calendar:
     def __init__(self, title: str, color: str, official: bool):
@@ -52,9 +52,12 @@ class Calendar:
     def deleteEvent(self, event: str):
         self.events.pop(event)
 
+
 class CalendarManager:
-    def __init__(self):
+    def __init__(self, database: Database):
         self.calendars = {}
+        # initialize database
+        self.calendars_db = database.getCalendarData()
 
     def createCalendar(self, title: str, color: str, official: bool):
         self.calendars[title] = Calendar(title, color, official)

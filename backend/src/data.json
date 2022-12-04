@@ -23,7 +23,8 @@
             "frequency": 3
           }
         },
-        "is_class": true
+        "is_class": true,
+        "color": "#FE3A11"
       },
       "Personal1": {
         "title": "Personal1",
@@ -37,7 +38,8 @@
             "frequency": 0
           }
         },
-        "is_class": false
+        "is_class": false,
+        "color": "#1C9730"
       }
     },
     "notifications": {
