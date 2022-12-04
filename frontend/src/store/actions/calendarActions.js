@@ -6,6 +6,7 @@ import {
   CREATE_EVENT_FAIL,
   CREATE_NOTIF,
   CREATE_NOTIF_FAIL,
+  EDIT_EVENT,
   GET_ALL_CALENDARS,
   GET_INITIAL_INFO,
   GO_BACK_MONTHLY,
@@ -168,6 +169,7 @@ export const createCalendar = (name, color) => {
     );
   };
 };
+
 export const createEvent = (event) => {
   return (dispatch, getState) => {
     // Server must return if valid operation or not
@@ -194,6 +196,68 @@ export const createEvent = (event) => {
         // Might need to dispatch two actions here
         dispatch({
           type: CREATE_EVENT,
+          payload: newAllCals,
+        })
+      );
+    }
+    return new Promise(() =>
+      dispatch({
+        type: CREATE_EVENT_FAIL,
+        payload: response.error,
+      })
+    );
+  };
+};
+
+export const editEvent = (event) => {
+  return (dispatch, getState) => {
+    // Server must return if valid operation or not
+    const { calendars } = getState();
+    const { oldVersion } = event;
+    delete event["oldVersion"];
+
+    const response = {
+      code: 200,
+      body: {
+        ...event,
+        official: false,
+      },
+      error: "Name in use",
+    };
+    const { code, body } = response;
+    console.log(body);
+
+    const newAllCals = [...calendars.allCalendars];
+    let cI = 0;
+    let eI = 0;
+    newAllCals.every((c, i) => {
+      if (c.name === body.calendar) {
+        c.events.every((e, ei) => {
+          console.log(e, oldVersion);
+          if (
+            e.name === oldVersion.name &&
+            e.description === oldVersion.description &&
+            e.date === oldVersion.date &&
+            e.calendar === oldVersion.calendar
+          ) {
+            console.log("Found");
+            cI = i;
+            eI = ei;
+            return false;
+          }
+          return true;
+        });
+        return false;
+      }
+      return true;
+    });
+    newAllCals[cI].events[eI] = { ...event };
+    console.log(newAllCals[cI].events[eI]);
+    if (code === 200) {
+      return new Promise(() =>
+        // Might need to dispatch two actions here
+        dispatch({
+          type: EDIT_EVENT,
           payload: newAllCals,
         })
       );
