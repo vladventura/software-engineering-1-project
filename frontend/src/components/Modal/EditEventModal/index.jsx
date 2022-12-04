@@ -10,9 +10,14 @@ import {
 } from "../modalConsts";
 import DatePicker from "react-datepicker";
 import TimePicker from "react-time-picker";
-import { editEvent } from "../../../store/actions/calendarActions";
+import { deleteEvent, editEvent } from "../../../store/actions/calendarActions";
 
-const EditEventModalComponent = ({ close, edit, modalData: incomingEvent }) => {
+const EditEventModalComponent = ({
+  close,
+  edit,
+  removeEvent,
+  modalData: incomingEvent,
+}) => {
   const [name, setName] = useState(incomingEvent.name);
   const [description, setDescription] = useState(incomingEvent.description);
   const [date, setDate] = useState(new Date(incomingEvent.date));
@@ -70,6 +75,12 @@ const EditEventModalComponent = ({ close, edit, modalData: incomingEvent }) => {
       setNotifMethod(notifMethodList[0]);
     }
     setUseNotif(!useNotif);
+  };
+
+  const remove = () => {
+    removeEvent(incomingEvent);
+    alert("Event deleted");
+    close();
   };
 
   return (
@@ -159,8 +170,8 @@ const EditEventModalComponent = ({ close, edit, modalData: incomingEvent }) => {
         </form>
       </div>
       <div className="footer">
-        <button onClick={close} id="cancelBtn">
-          Cancel
+        <button onClick={remove} id="cancelBtn">
+          Delete
         </button>
         <button onClick={submit}>Continue</button>
       </div>
@@ -176,6 +187,7 @@ const stateToProps = (state) => ({
 const dispatchToProps = (dispatch) => ({
   close: () => dispatch(closeModal()),
   edit: (event) => dispatch(editEvent(event)),
+  removeEvent: (event) => dispatch(deleteEvent(event)),
 });
 
 export const EditEventModal = connect(
