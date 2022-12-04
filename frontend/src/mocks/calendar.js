@@ -14,7 +14,7 @@ for (let x = 1; x < 32; x++) {
     date: `12/${x}/2022`,
     number: x,
     month: 12,
-    dueTime: "1:00pm",
+    dueTime: "1:00",
     description: `An event ${x}`,
     official: x % 2 === 0,
     calendar: personalCalendar.name,
