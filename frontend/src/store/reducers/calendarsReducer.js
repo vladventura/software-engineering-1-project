@@ -2,6 +2,7 @@ import {
   CREATE_CALENDAR,
   CREATE_EVENT,
   CREATE_NOTIF,
+  DELETE_EVENT,
   EDIT_EVENT,
   GET_ALL_CALENDARS,
   GET_INITIAL_INFO,
@@ -45,6 +46,7 @@ export const calendarsReducer = (state = initState, action) => {
     case CREATE_EVENT:
     case CREATE_NOTIF:
     case EDIT_EVENT:
+    case DELETE_EVENT:
       return {
         ...state,
         allCalendars: [...action.payload],
