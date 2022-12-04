@@ -6,6 +6,7 @@ import { closeModal } from "../../../store/actions/modalActions";
 import DatePicker from "react-datepicker";
 import TimePicker from "react-time-picker";
 import { createEvent } from "../../../store/actions/calendarActions";
+import { notificationTimepair, notifMethodList } from "../modalConsts";
 
 export const AddEventModalComponent = ({
   close,
@@ -20,6 +21,11 @@ export const AddEventModalComponent = ({
   );
   const [time, setTime] = useState("10:00");
   const [calendarIndex, setCalendarIndex] = useState(0);
+
+  const [useNotif, setUseNotif] = useState(false);
+  // Same approach to calendars
+  const [notifIndex, setNotifIndex] = useState(0);
+  const [notifMethod, setNotifMethod] = useState(notifMethodList[0]);
 
   const dropdownChange = (e) => {
     setCalendarIndex(e.target.value);
@@ -42,7 +48,21 @@ export const AddEventModalComponent = ({
       calendar: targetCalendar.name,
       color,
     };
+    if (useNotif)
+      event["notification"] = {
+        time: notificationTimepair[notifIndex],
+        method: notifMethod,
+      };
     create(event);
+  };
+
+  // React v18 groups these together ♥
+  const checkUseNotif = () => {
+    if (useNotif) {
+      setNotifIndex(0);
+      setNotifMethod(notifMethodList[0]);
+    }
+    setUseNotif(!useNotif);
   };
 
   return (
@@ -56,7 +76,7 @@ export const AddEventModalComponent = ({
         <h1>Add Event</h1>
       </div>
       <div className="body">
-        <form className="create-calendar-form">
+        <form className="create-event-form">
           <label className="text" htmlFor="event-name">
             Event Name
           </label>
@@ -96,6 +116,43 @@ export const AddEventModalComponent = ({
               </option>
             ))}
           </select>
+          <div className="use-notif-container">
+            <div className="use-notif-banner">
+              <label htmlFor="use-notif-check" className="text">
+                Use Notification
+              </label>
+              <input
+                id="use-notif-check"
+                className="use-notification-checkmark"
+                checked={useNotif}
+                onChange={checkUseNotif}
+                type="checkbox"
+              />
+            </div>
+            {/* This is not good */}
+            {useNotif && (
+              <label className="text">Event Notification Method</label>
+            )}
+            {useNotif && (
+              <select id="notif-select-method">
+                {notifMethodList.map((nm) => (
+                  <option key={`notif-method-${nm}`} value={nm}>
+                    {nm}
+                  </option>
+                ))}
+              </select>
+            )}
+            {useNotif && <label className="text">Notify Time Before</label>}
+            {useNotif && (
+              <select id="notif-select-method">
+                {notificationTimepair.map((tp, i) => (
+                  <option key={`notif-method-${i}`} value={i}>
+                    {`${tp.time}${tp.measure}`}
+                  </option>
+                ))}
+              </select>
+            )}
+          </div>
         </form>
       </div>
       <div className="footer">
