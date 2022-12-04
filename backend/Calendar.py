@@ -9,6 +9,7 @@
 
 import Event
 import datetime
+from Event import ClassEvent
 
 class Calendar:
     def __init__(self, title: str, color: str, official: bool):
@@ -23,9 +24,13 @@ class Calendar:
             date: datetime.datetime, 
             duration: datetime.datetime, 
             repeats: bool,
-            frequency):
-        self.events[title] = Event(
-            title, description, date, duration, repeats, frequency)
+            frequency: int):
+        if self.official == False:
+            self.events[title] = Event(
+                title, description, date, duration, repeats, frequency)
+        else:
+            self.events[title] = ClassEvent(
+                title, description, date, duration, repeats, frequency)
 
     def editEvent(self, 
             event: str, 
@@ -34,19 +39,28 @@ class Calendar:
             date: datetime.datetime = None, 
             duration: datetime.datetime = None, 
             repeats: bool = None,
-            frequency: int = None):
+            frequency: int = None,
+            submitted: bool = None,
+            grade: float = None):
         if title != None:
             self.events[event].title = title
         if description != None:
-            self.events[event].title = description
+            self.events[event].description = description
         if date != None:
-            self.events[event].title = date
+            self.events[event].date = date
         if duration != None:
-            self.events[event].title = duration
+            self.events[event].duration = duration
         if repeats != None:
-            self.events[event].title = repeats
+            self.events[event].repeats = repeats
         if frequency != None:
-            self.events[event].title = frequency
+            self.events[event].frequency = frequency
+
+        if self.official == True:
+            if submitted != None: 
+                self.events[event].submitted = submitted
+            if grade != None: 
+                self.events[event].grade = grade
+
 
     def deleteEvent(self, event: str):
         self.events.pop(event)
@@ -80,9 +94,9 @@ class CalendarManager:
         duration: datetime.datetime, 
         repeats: bool,
         frequency: int):
-        if (self.calendars[calendar].official == False):
-            self.calendars[calendar].createEvent(
-                title, description, date, duration, repeats, frequency)
+        self.calendars[calendar].createEvent(
+            title, description, date, duration, repeats, frequency)
+
 
     def editEvent(self,
         calendar: str,
@@ -92,10 +106,13 @@ class CalendarManager:
         date: datetime.datetime = None, 
         duration: datetime.datetime = None, 
         repeats: bool = None,
-        frequency: int = None):
-        if (self.calendars[calendar].official == False):
-            self.calendar[calendar].editEvent(
-                event, title, description, date, duration, repeats, frequency)
+        frequency: int = None,
+        submitted: bool = None,
+        grade: float = None):
+        self.calendar[calendar].editEvent(
+            event, title, description, date, duration, 
+            repeats, frequency, submitted, grade)
+        
 
     def deleteEvent(self, calendar: str, event: str):
         if (self.calendars[calendar].official == False):
