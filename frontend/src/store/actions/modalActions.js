@@ -3,6 +3,7 @@ import {
   OPEN_ADD_EVENT_MODAL,
   OPEN_ADD_NOTIF_MODAL,
   OPEN_CREATE_MODAL,
+  OPEN_EDIT_EVENT_MODAL,
 } from "./actionTypes";
 
 export const openCreateModal = (modalData = false) => {
@@ -31,6 +32,21 @@ export const openAddEventModal = (modalData = false) => {
       );
   };
 };
+
+export const openEditEventModal = (modalData) => {
+  return (dispatch, getState) => {
+    const { modal } = getState();
+
+    if (!modal.isOpen && modalData)
+      return new Promise(() =>
+        dispatch({
+          type: OPEN_EDIT_EVENT_MODAL,
+          payload: { modalType: "editevent", modalData },
+        })
+      );
+  };
+};
+
 export const openAddNotifModal = (modalData = false) => {
   return (dispatch, getState) => {
     const { modal } = getState();
