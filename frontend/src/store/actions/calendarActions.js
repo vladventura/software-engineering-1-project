@@ -8,6 +8,8 @@ import {
   CREATE_NOTIF_FAIL,
   GET_ALL_CALENDARS,
   GET_INITIAL_INFO,
+  GO_BACK_MONTHLY,
+  GO_FORWARD_MONTHLY,
   TOGGLE_CALENDAR,
 } from "./actionTypes";
 
@@ -45,6 +47,55 @@ export const toggleCalendar = (calendarName) => {
       dispatch({
         type: TOGGLE_CALENDAR,
         payload: calendarName,
+      })
+    );
+  };
+};
+
+export const goBackMonthly = () => {
+  return (dispatch, getState) => {
+    const { calendars } = getState();
+    const newSelectedDate = new Date(calendars.selectedDate.getTime());
+    newSelectedDate.setMonth(newSelectedDate.getMonth() - 1);
+    const selectedMonth = newSelectedDate.getMonth() + 1;
+    const monthName = monthNames[selectedMonth];
+    const selectedYear = newSelectedDate.getFullYear();
+    const daysInMonth = new Date(selectedYear, selectedMonth, 0).getDate();
+    const payload = {
+      selectedYear,
+      selectedMonth,
+      monthName,
+      daysInMonth,
+      selectedDate: newSelectedDate,
+    };
+    return new Promise(() =>
+      dispatch({
+        payload,
+        type: GO_BACK_MONTHLY,
+      })
+    );
+  };
+};
+export const goForwardMonthly = () => {
+  return (dispatch, getState) => {
+    const { calendars } = getState();
+    const newSelectedDate = new Date(calendars.selectedDate.getTime());
+    newSelectedDate.setMonth(newSelectedDate.getMonth() + 1);
+    const selectedMonth = newSelectedDate.getMonth() + 1;
+    const monthName = monthNames[selectedMonth];
+    const selectedYear = newSelectedDate.getFullYear();
+    const daysInMonth = new Date(selectedYear, selectedMonth, 0).getDate();
+    const payload = {
+      selectedYear,
+      selectedMonth,
+      monthName,
+      daysInMonth,
+      selectedDate: newSelectedDate,
+    };
+    return new Promise(() =>
+      dispatch({
+        payload,
+        type: GO_FORWARD_MONTHLY,
       })
     );
   };
