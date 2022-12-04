@@ -13,3 +13,7 @@ export const OPEN_CREATE_MODAL = "OPEN_CREATE_MODAL";
 export const OPEN_ADD_EVENT_MODAL = "OPEN_ADD_EVENT_MODAL";
 export const OPEN_ADD_NOTIF_MODAL = "OPEN_ADD_NOTIF_MODAL";
 export const CLOSE_MODAL = "CLOSE_MODAL";
+
+// Calendar Display Control Actions
+export const GO_BACK_MONTHLY = "GO_BACK_MONTHLY";
+export const GO_FORWARD_MONTHLY = "GO_FORWARD_MONTHLY";
