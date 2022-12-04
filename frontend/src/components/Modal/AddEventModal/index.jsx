@@ -55,6 +55,8 @@ export const AddEventModalComponent = ({
         method: notifMethod,
       };
     create(event);
+    alert("Event Created!");
+    close();
   };
 
   // React v18 groups these together ♥
