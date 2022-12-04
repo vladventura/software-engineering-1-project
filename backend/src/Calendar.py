@@ -9,6 +9,7 @@
 
 import Event
 import datetime
+import database
 
 class Calendar:
     def __init__(self, title: str, color: str, official: bool):
