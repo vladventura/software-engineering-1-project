@@ -4,6 +4,8 @@ import {
   CREATE_CALENDAR_FAIL,
   CREATE_EVENT,
   CREATE_EVENT_FAIL,
+  CREATE_NOTIF,
+  CREATE_NOTIF_FAIL,
   GET_ALL_CALENDARS,
   GET_INITIAL_INFO,
   TOGGLE_CALENDAR,
@@ -148,6 +150,41 @@ export const createEvent = (event) => {
     return new Promise(() =>
       dispatch({
         type: CREATE_EVENT_FAIL,
+        payload: response.error,
+      })
+    );
+  };
+};
+
+export const createNotification = (notif) => {
+  return (dispatch, getState) => {
+    // Server must return if valid operation or not
+    const { calendars } = getState();
+
+    const response = {
+      code: 200,
+      body: {
+        ...notif,
+      },
+    };
+    const { code } = response;
+
+    let newAllCals = [...calendars.allCalendars];
+    newAllCals[notif.calendarIndex].events[notif.eventIndex].notification =
+      notif;
+
+    if (code === 200) {
+      return new Promise(() =>
+        // Might need to dispatch two actions here
+        dispatch({
+          type: CREATE_NOTIF,
+          payload: newAllCals,
+        })
+      );
+    }
+    return new Promise(() =>
+      dispatch({
+        type: CREATE_NOTIF_FAIL,
         payload: response.error,
       })
     );
