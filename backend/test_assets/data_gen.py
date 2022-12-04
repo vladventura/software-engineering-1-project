@@ -25,7 +25,7 @@ c1_dict = {
 class1 = {
     "title": "class1",
     "events": c1_dict,
-    "is_class": True,
+    "is_official": True,
     "color": "#FE3A11"
 }
 
@@ -44,7 +44,7 @@ p_dict = {
 personal1 = {
     "title": "Personal1",
     "events": p_dict,
-    "is_class": False,
+    "is_official": False,
     "color": "#1C9730"
 }
 
