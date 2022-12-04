@@ -1,10 +1,13 @@
-import { getTextForColor } from "../../../../utils";
 import "./index.css";
+import { getTextForColor } from "../../../../utils";
+import { connect } from "react-redux";
+import { openEditEventModal } from "../../../../store/actions/modalActions";
 
-export const CalendarEvent = ({ event }) => {
-  const { description, name, dueTime, official, color } = event;
+const CalendarEventComponent = ({ event, openEdit }) => {
+  const { name, dueTime, official, color } = event;
   const eventOnClick = () => {
-    alert("Event Info " + description);
+    if (!official) openEdit(event);
+    // else openPreview(event)
   };
   return (
     <div
@@ -18,3 +21,13 @@ export const CalendarEvent = ({ event }) => {
     </div>
   );
 };
+
+const dispatchToProps = (dispatch) => ({
+  openEdit: (data) => dispatch(openEditEventModal(data)),
+  // openPreview: (data) => dispatch(openPreviewEventModal(data))
+});
+
+export const CalendarEvent = connect(
+  null,
+  dispatchToProps
+)(CalendarEventComponent);
