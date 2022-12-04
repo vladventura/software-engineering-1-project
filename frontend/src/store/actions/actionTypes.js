@@ -9,6 +9,8 @@ export const CREATE_EVENT_FAIL = "CREATE_EVENT_FAIL";
 export const EDIT_EVENT_FAIL = "EDIT_EVENT_FAIL";
 export const CREATE_NOTIF = "CREATE_NOTIF";
 export const CREATE_NOTIF_FAIL = "CREATE_NOTIF_FAIL";
+export const DELETE_EVENT = "DELETE_EVENT";
+export const DELETE_EVENT_FAIL = "DELETE_EVENT_FAIL";
 
 // Modal Actions
 export const OPEN_CREATE_MODAL = "OPEN_CREATE_MODAL";
