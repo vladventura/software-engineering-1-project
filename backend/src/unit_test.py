@@ -105,6 +105,28 @@ class UnitTest(unittest.TestCase):
         self.assertFalse(new_title in cm.calendars_tb)
         self.assertFalse(new_title in cm.calendar_db)
 
+        # testing create Event
+        # checkint to see if appropriate event exists in both database and calendar object's event dictionary
+        date = datetime(2015, 1, 1, 12, 30, 59, 0)
+        cm.createEvent(
+            "Personal1",
+            "test event",
+            "test description",
+            date,
+            date )
+        self.assertTrue("test event" in cm.calendars_tb["Personal1"].events)
+        self.assertTrue("test event" in cm.calendar_db["Personal1"])
+
+        # edit event test.
+        cm.editEvent("Personal1", "test event", repeats=True, frequency=1)
+        self.assertEqual(cm.calendars_tb["Personal1"].events["test event"].repeats, True)
+        self.assertEqual(cm.calendar_db["Personal1"]["test event"]["frequency"], 1)
+
+        # event deletion check
+        cm.deleteEvent("Personal1", "test event")
+        self.assertFalse("test event" in cm.calendars_tb["Personal1"].events)
+        self.assertFalse("test event" in cm.calendar_db["Personal1"])
+
         
 
 if __name__ == '__main__':

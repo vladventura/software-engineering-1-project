@@ -38,18 +38,13 @@ class Calendar:
                         repeats: bool = None,
                         frequency: int = None):
 
-        if title != None:
-            self.events[event].title = title
-        if description != None:
-            self.events[event].title = description
-        if date != None:
-            self.events[event].title = date
-        if duration != None:
-            self.events[event].title = duration
-        if repeats != None:
-            self.events[event].title = repeats
-        if frequency != None:
-            self.events[event].title = frequency
+        item = self.events[event]
+        if title is not None:       item.title = title
+        if description is not None: item.description = description
+        if date is not None:        item.date = date
+        if duration is not None:    item.duration = duration
+        if repeats is not None:     item.repeats = repeats
+        if frequency is not None:   item.frequency = frequency
 
 
     def deleteEvent(self, event: str):
@@ -150,6 +145,7 @@ class CalendarManager:
                 item["color"] = color
 
 
+    # find and delete objects identified by the calendar string from database and table.
     def deleteCalendar(self, calendar: str):
         if (self.calendars_tb[calendar].official == False) and (calendar in self.calendars_tb):
             del self.calendars_tb[calendar]
@@ -157,17 +153,34 @@ class CalendarManager:
 
 
 
+    # create a specified - insert this object into appropriate database and table
     def createEvent(self,   calendar: str,
                             title: str, 
                             description: str, 
                             date: datetime, 
                             duration: datetime, 
-                            repeats: bool,
-                            frequency: int):
+                            repeats: bool = False,
+                            frequency: int = 0):
+        # we cannot create events for an official calendar
         if (self.calendars_tb[calendar].official == False):
             self.calendars_tb[calendar].createEvent(
                 title, description, date, duration, repeats, frequency)
+            entry = {  # entry to be inserted into the database
+                "title":        title,
+                "description":  description,
+                "date":         str(date),
+                "duration":     str(duration),
+                "repeats":      repeats,
+                "frequency":    frequency
+            }
+            self.calendar_db[calendar][title] = entry
 
+
+
+    def _updateTitle(self, json_calendar, event, new_title):
+        item  = json_calendar.pop(event)
+        item["title"] = new_title
+        json_calendar[event] = item
 
     def editEvent(self, calendar: str,
                         event: str,
@@ -178,13 +191,21 @@ class CalendarManager:
                         repeats: bool = None,
                         frequency: int = None):
         if (self.calendars_tb[calendar].official == False):
-            self.calendar[calendar].editEvent(
+            self.calendars_tb[calendar].editEvent(
                 event, title, description, date, duration, repeats, frequency)
+            item = self.calendar_db[calendar][event]
+            if title        is not None: self._updateTitle(self.calendar_db[calendar], event, title)
+            if description  is not None: item["description"]    = description
+            if date         is not None: item["date"]           = str(date)
+            if duration     is not None: item["duration"]       = str(duration)
+            if repeats      is not None: item["repeats"]        = repeats
+            if frequency    is not None: item["frequency"]      = frequency
 
 
     def deleteEvent(self, calendar: str, event: str):
         if (self.calendars_tb[calendar].official == False):
             self.calendars_tb[calendar].deleteEvent(event)
+            del self.calendar_db[calendar][event]  # deletes line from database
 
 
     def transferEvent(self, source: str, 
