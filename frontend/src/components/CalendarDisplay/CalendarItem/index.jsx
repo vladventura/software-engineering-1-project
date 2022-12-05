@@ -27,7 +27,6 @@ const CalendarItemComponent = ({
 
   useEffect(() => {
     if (shouldPaginate) {
-      console.log("Should Page");
       const paginated = events.reduce((acc, _, index, evs) => {
         if (index % 2 === 0) acc.push(evs.slice(index, index + 2));
         return acc;
@@ -56,8 +55,6 @@ const CalendarItemComponent = ({
     }
   };
 
-  console.log(pageIndex, shouldShowLeftArrow());
-
   return (
     <div className={`calendar-item ${isToday ? "today" : ""}`}>
       <div className="calendar-item-number" onDoubleClick={itemOnDblClick}>
@@ -67,9 +64,14 @@ const CalendarItemComponent = ({
         className="calendar-item-events-container"
         onDoubleClick={itemOnDblClick}
       >
-        {currentPage.map((e) => (
-          <CalendarEvent event={e} key={`event-${e.name}-${e.calendar}`} />
-        ))}
+        {/* KLUDGE: I can promise you this shouldn't have to be a thing */}
+        {shouldPaginate
+          ? currentPage.map((e) => (
+              <CalendarEvent event={e} key={`event-${e.name}-${e.calendar}`} />
+            ))
+          : events.map((e) => (
+              <CalendarEvent event={e} key={`event-${e.name}-${e.calendar}`} />
+            ))}
       </div>
       {shouldPaginate && (
         <div className="calendar-item-pagination-arrows">
