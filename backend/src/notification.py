@@ -89,7 +89,7 @@ class NotificationManager:
             "date":      str(date),
             "window":    str(time),
             "repeats":   repeats,
-            "methode":   new_notif.method.name
+            "method":   new_notif.method.name
         }
 
         # TODO ADD this notification to event handler
@@ -103,11 +103,11 @@ class NotificationManager:
         try:
             # remove from database with stored reference to the json dictionary.
             if (key) in self.notifications:
-                del self.notifications.pop[key]
+                del self.notifications[key]
 
             # remove from table as well
             if (key) in self.notifs_table:
-                del self.notifs_table.pop[key]
+                del self.notifs_table[key]
         except:
             print("ERROR: deleteNotification")
 
