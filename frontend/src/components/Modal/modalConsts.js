@@ -1,4 +1,4 @@
-export const notificationTimepair = [
+const notificationTimepair = [
   { time: 15, measure: "min" },
   { time: 30, measure: "min" },
   { time: 45, measure: "min" },
@@ -7,6 +7,13 @@ export const notificationTimepair = [
   { time: 5, measure: "hr" },
   { time: 1, measure: "day" },
 ];
+
+export const toSelectValue = (tp) => ({
+  value: tp,
+  label: tp.time + tp.measure,
+});
+
+export const ntpSelect = notificationTimepair.map(toSelectValue);
 
 export const findIndexOfTimepair = (tp) => {
   let a = 0;
