@@ -26,7 +26,7 @@ class DisplayMode(Enum):
     WEEKLY = 2
     DAILY = 3
 
-class CalendarDisplay:
+class MainCalendarDisplay:
     def __init__(self):
         self.date = datetime.date
         self.mode = DisplayMode.MONTHLY
