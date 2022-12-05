@@ -26,6 +26,8 @@ class UnitTest(unittest.TestCase):
         self.assertDictEqual(db.data["data"]["calendars"], calendars)
         self.assertDictEqual(db.data["data"]["notifications"], notifications)
 
+        db.update()
+
     def testNotifications(self):
         self.file = "test_data.json"
         db = Database(self.file)
@@ -100,11 +102,6 @@ class UnitTest(unittest.TestCase):
         self.assertFalse("blank" in cm.calendars_tb)
         self.assertFalse("blank" in cm.calendar_db)
 
-        # check if delete works
-        cm.deleteCalendar(new_title)
-        self.assertFalse(new_title in cm.calendars_tb)
-        self.assertFalse(new_title in cm.calendar_db)
-
         # testing create Event
         # checkint to see if appropriate event exists in both database and calendar object's event dictionary
         date = datetime(2015, 1, 1, 12, 30, 59, 0)
@@ -122,11 +119,23 @@ class UnitTest(unittest.TestCase):
         self.assertEqual(cm.calendars_tb["Personal1"].events["test event"].repeats, True)
         self.assertEqual(cm.calendar_db["Personal1"]["test event"]["frequency"], 1)
 
+        # check if the event is in the new calendar
+        cm.transferEvent("Personal1", "Unga Bunga", "test event")
+        self.assertTrue("test event" in cm.calendar_db["Unga Bunga"])
+        self.assertTrue("test event" in cm.calendars_tb["Unga Bunga"].events)
+        cm.transferEvent("Unga Bunga", "Personal1", "test event")
+
         # event deletion check
         cm.deleteEvent("Personal1", "test event")
         self.assertFalse("test event" in cm.calendars_tb["Personal1"].events)
         self.assertFalse("test event" in cm.calendar_db["Personal1"])
 
+
+
+        # check if delete works
+        cm.deleteCalendar(new_title)
+        self.assertFalse(new_title in cm.calendars_tb)
+        self.assertFalse(new_title in cm.calendar_db)
         
 
 if __name__ == '__main__':

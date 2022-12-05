@@ -219,3 +219,10 @@ class CalendarManager:
 
             self.calendars_tb[dest].events[event] = original
             self.calendars_tb[source].deleteEvent(event)
+            
+            db_src = self.calendar_db[source]
+            db_dst = self.calendar_db[dest]
+            if event in db_src:
+                item = db_src.pop(event)
+                db_dst[event] = item
+
