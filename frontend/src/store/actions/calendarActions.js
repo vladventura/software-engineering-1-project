@@ -6,6 +6,8 @@ import {
   CREATE_EVENT_FAIL,
   CREATE_NOTIF,
   CREATE_NOTIF_FAIL,
+  DELETE_CALENDAR,
+  DELETE_CALENDAR_FAIL,
   DELETE_EVENT,
   DELETE_EVENT_FAIL,
   EDIT_CALENDAR,
@@ -328,6 +330,42 @@ export const editCalendar = (newName, newColor, oldName) => {
     return new Promise(() =>
       dispatch({
         type: EDIT_CALENDAR_FAIL,
+        payload: response.error,
+      })
+    );
+  };
+};
+
+export const deleteCalendar = (name) => {
+  return (dispatch, getState) => {
+    // Server must return if valid operation or not
+    const { calendars } = getState();
+
+    const response = {
+      code: 200,
+      body: {
+        name,
+      },
+      error: "Name in use",
+    };
+
+    const { code, body } = response;
+
+    const newAllCals = [
+      ...calendars.allCalendars.filter((x) => x.name !== body.name),
+    ];
+
+    if (code === 200) {
+      return new Promise(() =>
+        dispatch({
+          type: DELETE_CALENDAR,
+          payload: newAllCals,
+        })
+      );
+    }
+    return new Promise(() =>
+      dispatch({
+        type: DELETE_CALENDAR_FAIL,
         payload: response.error,
       })
     );
