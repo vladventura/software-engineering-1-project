@@ -140,19 +140,7 @@ export const createCalendar = (name, color) => {
       body: {
         name: name,
         color: color,
-        events: [
-          {
-            date: `12/11/2022`,
-            number: 11,
-            month: 12,
-            dueTime: "1:00",
-            description: `An event ${11}`,
-            official: 11 % 2 === 0,
-            calendar: name,
-            name: `Event11`,
-            color: color,
-          },
-        ],
+        events: [],
         visible: true,
         course: false,
       },
