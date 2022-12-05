@@ -2,31 +2,82 @@
 # - Notification is to be set at beginning of the launch of the program.
 # - The manager should set it as a system timed event and the event activates notification on event handler
 
-import time
+#
+#   Cowritten by: Max Tighe
+#
+
+
+import datetime
+import smtplib, ssl #email functionality
 from enum import Enum
 
-class NotificationMethod(Enum):
-    EMAIL = Enum.auto ()
-    SMS = Enum.auto()
-    BOTH = Enum.auto()
-    MUTE = Enum.auto()
-
-class NotificationInfo:
-    def __init__(self):
-        self.date = None
-        self.triggerWindow = None
-        self.frequency = 0  # amount of time for this notification to be triggered by
-        self.repeat = False # boolean for how many times this notification is to be handled.
+import Event
 
 class Notification:
-    def __init__(self):
-        self.info = NotificationInfo()
-        self.calendar = ""  # string identifier for calendar
-        self.event = ""     # string identifier for event
+    
+class NotificationMethod(Enum):
+        MUTE = 0
+        EMAIL = 1
+        SMS = 2
+        BOTH = 3
+    
+    calendar = str
+    event = str
 
-    def sendNotification(self):
+    date = datetime.datetime
+    window = datetime.time
+
+    repeats = bool
+    frequency = datetime.time
+    method = int
+
+    def __init__(self, calendar, event, date, window=datetime.time(0), 
+    repeats=False, frequency=0, method=0):
+        self.calendar = calendar
+        self.event = event
+        self.date = date
+        self.window = window
+        self.repeats = repeats
+        self.frequency = frequency
+        self.method = method
+
+    #This email login portion should be moved to Notification Manager
+    #once functionality has been tested.
+    port = 465
+    targetEmail = "etighe238@gmail.com"
+    #change this later to have a target email from the database
+    email = "sofengcalbot@gmail.com"
+    password = "ntrtiaxuuciofaxt"
+
+    msg1 = "Your event "
+    msg2 = "from "
+    msg3 = " is occurring soon! \n\n"
+    msgwhen = "Occurring on: "
+    msgwhen2 = "At: "
+    msgEnd = "\t - Blackboard Calendar"
+    msgDate1 = str(date)[:10]
+    msgDate2 = str(date)[10:19]
+    msgnl = "\n"
+
+    message = (msg1 + str(event) + msg2 +
+    str(calendar) + msg3 + msgnl + msgwhen +
+    msgDate1 + msgnl + msgwhen2 + msgDate2 + msgnl 
+    + msgnl + msgEnd)
+
+    context = ssl.create_default_context()
+
+    def sendNotification(self, targetEmail):
+        if(self.method == 0):
         pass
 
+        elif(self.method == 1):
+            with smtplib.SMTP_SSL("smtp.gmail.com", self.port, context=self.context) as server:
+                server.login("sofengcalbot@gmail.com", "ntrtiaxuuciofaxt")
+                server.sendmail("sofengcalbot@gmail.com", targetEmail, "Test email")
+                #change this later to have a target email from the database
+
+#sofengcalbot@gmail.com
+# ntrtiaxuuciofaxt
 
 # Couple things to deal with for this class
 # 1. We need to be able to pull data from database for notifications
@@ -38,19 +89,3 @@ class Notification:
 #    - deletes from database everytime this is successfully handled.
 # 4. editNotification
 #    - requires writing to database as well.
-class NotificationManager:
-    def __init__(self):
-        self.notifications = []  # hmm need to think about data class to handle this
-                                 # TODO Potentially use python dictionary?
-    
-    # TODO implement
-    def createNotification(self, calendar, event, window, repeats, frequency, method):
-        pass
-
-    # TODO implement
-    def deleteNotification(self, calendar, event):
-        pass
-
-    # TODO implement
-    def editNotification(self, calendar, event, repeats, method):
-        pass
