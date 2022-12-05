@@ -62,14 +62,12 @@ export const AddNotificationModalComponent = ({
   };
 
   const submit = () => {
-    console.log(calendarIndex);
-    console.log(eventIndex);
     const notification = {
+      // Should mark for deletion before spreading into data store on action
       calendarIndex,
       eventIndex,
       method: notifMethod,
       time: timePair,
-      event: allCalendars[calendarIndex].events[eventIndex],
       eventName: allCalendars[calendarIndex].events[eventIndex].name,
     };
     create(notification);
