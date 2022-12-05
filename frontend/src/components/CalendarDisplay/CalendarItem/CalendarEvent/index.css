@@ -1,10 +1,28 @@
 .calendar-event {
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  grid-template-columns: 10% auto 10%;
   justify-content: space-between;
   background-color: aquamarine;
-  padding: 0 0.5rem;
-  height: 3rem;
+  padding: 0 0.25rem;
+  margin: 0.25rem;
+  height: 2rem;
+}
+
+.calendar-event-due,
+.calendar-event-name,
+.calendar-event-official {
+  height: inherit;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+}
+
+.calendar-event-name {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .calendar-event:hover {
