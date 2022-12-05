@@ -3,10 +3,11 @@ import "react-datepicker/dist/react-datepicker.css";
 import { useState } from "react";
 import { connect } from "react-redux";
 import { closeModal } from "../../../store/actions/modalActions";
+import { createEvent } from "../../../store/actions/calendarActions";
+import { notifMethodList, ntpSelect } from "../modalConsts";
 import DatePicker from "react-datepicker";
 import TimePicker from "react-time-picker";
-import { createEvent } from "../../../store/actions/calendarActions";
-import { notificationTimepair, notifMethodList } from "../modalConsts";
+import Select from "react-select";
 
 export const AddEventModalComponent = ({
   close,
@@ -23,8 +24,7 @@ export const AddEventModalComponent = ({
   const [calendarIndex, setCalendarIndex] = useState(0);
 
   const [useNotif, setUseNotif] = useState(false);
-  // Same approach to calendars
-  const [notifIndex, setNotifIndex] = useState(0);
+  const [timePair, setTimePair] = useState(ntpSelect[0]);
   const [notifMethod, setNotifMethod] = useState(notifMethodList[0]);
 
   const dropdownChange = (e) => {
@@ -51,7 +51,7 @@ export const AddEventModalComponent = ({
     };
     if (useNotif)
       event["notification"] = {
-        time: notificationTimepair[notifIndex],
+        time: timePair,
         method: notifMethod,
       };
     create(event);
@@ -62,7 +62,7 @@ export const AddEventModalComponent = ({
   // React v18 groups these together ♥
   const checkUseNotif = () => {
     if (useNotif) {
-      setNotifIndex(0);
+      setTimePair(0);
       setNotifMethod(notifMethodList[0]);
     }
     setUseNotif(!useNotif);
@@ -147,13 +147,11 @@ export const AddEventModalComponent = ({
             )}
             {useNotif && <label className="text">Notify Time Before</label>}
             {useNotif && (
-              <select id="notif-select-method">
-                {notificationTimepair.map((tp, i) => (
-                  <option key={`notif-method-${i}`} value={i}>
-                    {`${tp.time}${tp.measure}`}
-                  </option>
-                ))}
-              </select>
+              <Select
+                options={ntpSelect}
+                defaultValue={timePair}
+                onChange={(e) => setTimePair(e.value)}
+              />
             )}
           </div>
         </form>
