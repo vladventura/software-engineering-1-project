@@ -86,3 +86,7 @@
 .clickable-img:hover {
   cursor: pointer;
 }
+
+.go-today-button:hover {
+  cursor: pointer;
+}

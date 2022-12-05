@@ -3,6 +3,7 @@ import avatar from "../../assets/avatar.png";
 import "./index.css";
 import { connect } from "react-redux";
 import {
+  getInitialInfo,
   goBackMonthly,
   goForwardMonthly,
 } from "../../store/actions/calendarActions";
@@ -10,6 +11,7 @@ import {
 const HeaderComponent = ({
   goBackMonth,
   goForwardMonth,
+  goToday,
   monthName,
   selectedYear,
 }) => {
@@ -33,11 +35,9 @@ const HeaderComponent = ({
       </div>
       <div className="month-name-container">
         <div className="display-mode-change-container">
-          <select id="modes">
-            <option value="mth">Month</option>
-            <option value="day">Day</option>
-            <option value="wk">Week</option>
-          </select>
+          <button className="go-today-button" onClick={goToday}>
+            Today
+          </button>
         </div>
         <div className="month-info-container">
           <div className="month-name-year-container">
@@ -75,6 +75,7 @@ const stateToProps = (state) => ({
 const dispatchToProps = (dispatch) => ({
   goBackMonth: () => dispatch(goBackMonthly()),
   goForwardMonth: () => dispatch(goForwardMonthly()),
+  goToday: () => dispatch(getInitialInfo()),
 });
 
 export const Header = connect(stateToProps, dispatchToProps)(HeaderComponent);
