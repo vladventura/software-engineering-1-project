@@ -35,3 +35,11 @@ export const lightOrDark = (color) => {
 export const getTextForColor = (color) => {
   return lightOrDark(color) === "light" ? "#000" : "#fff";
 };
+
+export const areEventsSimilar = (e1, e2) => {
+  if (e1.name !== e2.name) return false;
+  if (e1.date !== e2.date) return false;
+  if (e1.description !== e2.description) return false;
+  if (e1.dueTime !== e2.dueTime) return false;
+  return true;
+};
