@@ -10,20 +10,17 @@
 }
 
 .modalContainer {
-  width: 500px;
-  height: 500px;
   border-radius: 12px;
-  background-color: white;
+  background-color: #003049;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   display: flex;
   flex-direction: column;
-  padding: 25px;
+  padding: 0.5rem;
 }
 
 .modalContainer .title {
   display: inline-block;
   text-align: center;
-  margin-top: 10px;
 }
 
 .titleCloseBtn {
@@ -43,7 +40,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 1.7rem;
   text-align: center;
 }
 
@@ -52,14 +48,15 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 0.5rem;
 }
 
 .modalContainer .footer button {
-  width: 150px;
-  height: 45px;
-  margin: 10px;
+  width: 10rem;
+  height: 3rem;
+  margin: 0.5rem;
   border: none;
-  background-color: cornflowerblue;
+  background-color: green;
   color: white;
   border-radius: 8px;
   font-size: 20px;
@@ -67,5 +64,5 @@
 }
 
 #cancelBtn {
-  background-color: crimson;
+  background-color: #d62828;
 }

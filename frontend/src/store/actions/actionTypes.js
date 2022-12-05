@@ -1,2 +1,35 @@
-export const GET_ALL = "GET_ALL";
+export const GET_ALL_CALENDARS = "GET_ALL";
 export const TOGGLE_CALENDAR = "TOGGLE_CALENDAR";
+export const GET_INITIAL_INFO = "GET_INITIAL_INFO";
+
+// Calendar
+export const CREATE_CALENDAR = "CREATE_CALENDAR";
+export const CREATE_CALENDAR_FAIL = "CREATE_CALENDAR_FAIL";
+export const EDIT_CALENDAR = "EDIT_CALENDAR";
+export const EDIT_CALENDAR_FAIL = "EDIT_CALENDAR_FAIL";
+export const DELETE_CALENDAR = "DELETE_CALENDAR";
+export const DELETE_CALENDAR_FAIL = "DELETE_CALENDAR_FAIL";
+
+// Events
+export const CREATE_EVENT = "CREATE_EVENT";
+export const EDIT_EVENT = "EDIT_EVENT";
+export const CREATE_EVENT_FAIL = "CREATE_EVENT_FAIL";
+export const EDIT_EVENT_FAIL = "EDIT_EVENT_FAIL";
+export const DELETE_EVENT = "DELETE_EVENT";
+
+// Notifications
+export const CREATE_NOTIF = "CREATE_NOTIF";
+export const CREATE_NOTIF_FAIL = "CREATE_NOTIF_FAIL";
+export const DELETE_EVENT_FAIL = "DELETE_EVENT_FAIL";
+
+// Modal Actions
+export const OPEN_CREATE_MODAL = "OPEN_CREATE_MODAL";
+export const OPEN_ADD_EVENT_MODAL = "OPEN_ADD_EVENT_MODAL";
+export const OPEN_EDIT_EVENT_MODAL = "OPEN_EDIT_EVENT_MODAL";
+export const OPEN_ADD_NOTIF_MODAL = "OPEN_ADD_NOTIF_MODAL";
+export const OPEN_EDIT_CALENDAR_MODAL = "OPEN_EDIT_CALENDAR_MODAL";
+export const CLOSE_MODAL = "CLOSE_MODAL";
+
+// Calendar Display Control Actions
+export const GO_BACK_MONTHLY = "GO_BACK_MONTHLY";
+export const GO_FORWARD_MONTHLY = "GO_FORWARD_MONTHLY";

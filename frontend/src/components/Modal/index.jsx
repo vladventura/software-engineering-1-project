@@ -1,32 +1,21 @@
 // Credit https://github.com/machadop1407/React-Modal-Tutorial
 
 import React from "react";
+import { AddEventModal } from "./AddEventModal";
+import { AddNotificationModal } from "./AddNotificationModal";
+import { CreateCalendarModal } from "./CreateCalendarModal";
+import { EditCalendarModal } from "./EditCalendarModal";
+import { EditEventModal } from "./EditEventModal";
 import "./index.css";
 
-export const Modal = ({ setOpenModal, title, body }) => {
-  const closeModal = () => {
-    setOpenModal(false);
-  };
+export const Modal = ({ type }) => {
+  let modalInner = <></>;
 
-  return (
-    <div className="modalBackground">
-      <div className="modalContainer">
-        <div className="titleCloseBtn">
-          <button onClick={closeModal}>X</button>
-        </div>
-        <div className="title">
-          <h1>{title}</h1>
-        </div>
-        <div className="body">
-          <p>{body}</p>
-        </div>
-        <div className="footer">
-          <button onClick={closeModal} id="cancelBtn">
-            Cancel
-          </button>
-          <button onClick={closeModal}>Continue</button>
-        </div>
-      </div>
-    </div>
-  );
+  if (type === "create") modalInner = <CreateCalendarModal />;
+  if (type === "addevent") modalInner = <AddEventModal />;
+  if (type === "addnotif") modalInner = <AddNotificationModal />;
+  if (type === "editevent") modalInner = <EditEventModal />;
+  if (type === "editcal") modalInner = <EditCalendarModal />;
+
+  return <div className="modalBackground">{modalInner}</div>;
 };

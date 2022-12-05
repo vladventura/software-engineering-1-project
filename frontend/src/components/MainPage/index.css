@@ -8,6 +8,10 @@
 
 .header-section {
   grid-column-start: span 2;
+  background-color: white;
+  padding: 0 1rem;
+  /* KLUDGE: Padding 1rem 1rem should work, but it introduces scrolling to the page */
+  height: 90%;
 }
 
 .body-section-sidebar {

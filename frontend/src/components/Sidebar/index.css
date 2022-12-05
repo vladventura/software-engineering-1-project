@@ -3,6 +3,7 @@
   grid-template-columns: auto;
   height: 100%;
   margin-right: 1rem;
+  overflow: hidden;
 }
 
 .sidebar-buttons-container {
@@ -12,6 +13,17 @@
   row-gap: 1rem;
 }
 
+/* So weird that this is necessary */
+.sidebar-buttons-container > button:hover {
+  cursor: pointer;
+}
+
+.calendars-toggle-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
 .new-calendar-container {
   justify-self: center;
   margin-top: 1rem;
@@ -19,18 +31,4 @@
 
 .calendar-preview-container {
   margin: 1rem 0.5rem;
-}
-
-.calendar-preview-frame {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  text-align: center;
-  height: 100%;
-  background-color: bisque;
-}
-
-.calendar-preview-frame > p {
-  margin: 0;
-  padding: 0;
 }
