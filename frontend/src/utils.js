@@ -43,3 +43,10 @@ export const areEventsSimilar = (e1, e2) => {
   if (e1.dueTime !== e2.dueTime) return false;
   return true;
 };
+
+// https://www.geeksforgeeks.org/calculate-current-week-number-in-javascript/
+export const getWeekNumber = (date = new Date()) => {
+  const startDate = new Date(date.getFullYear(), 0, 1);
+  const days = Math.floor((date - startDate) / (24 * 60 * 60 * 1000));
+  return Math.ceil(days / 7);
+};
