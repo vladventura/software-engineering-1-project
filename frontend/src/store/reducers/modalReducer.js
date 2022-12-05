@@ -17,7 +17,6 @@ const initState = {
 export const modalReducer = (state = initState, action) => {
   switch (action.type) {
     case CREATE_CALENDAR_FAIL:
-      console.log("WOW");
       return state;
     case OPEN_CREATE_MODAL:
     case OPEN_ADD_EVENT_MODAL:

@@ -13,12 +13,14 @@ const EditEventModalComponent = ({
   close,
   edit,
   removeEvent,
+  allCalendars,
   modalData: incomingEvent,
 }) => {
   const [name, setName] = useState(incomingEvent.name);
   const [description, setDescription] = useState(incomingEvent.description);
   const [date, setDate] = useState(new Date(incomingEvent.date));
   const [time, setTime] = useState(incomingEvent.dueTime);
+  const [eventCal, setEventCal] = useState(incomingEvent.calendar);
   const [useNotif, setUseNotif] = useState(
     incomingEvent.notification &&
       Object.keys(incomingEvent.notification).length > 0
@@ -37,7 +39,7 @@ const EditEventModalComponent = ({
   );
 
   const submit = () => {
-    const targetCalendar = incomingEvent.calendar;
+    const targetCalendar = eventCal;
     const color = incomingEvent.color;
     const number = date.getDate();
     const month = date.getMonth() + 1;
@@ -64,6 +66,7 @@ const EditEventModalComponent = ({
     else {
       delete event["notification"];
     }
+    // Sending new and old name
     edit(event);
     alert("Event Edited!");
     close();
@@ -128,9 +131,16 @@ const EditEventModalComponent = ({
             openClockOnFocus={false}
           />
           <label className="text">Event Calendar</label>
-          <div id="event-chosen-calendar" className="text">
-            {incomingEvent.calendar}
-          </div>
+          <select
+            value={eventCal}
+            onChange={(e) => setEventCal(e.target.value)}
+          >
+            {allCalendars.map((c) => (
+              <option key={`event-edit-cal-option-${c.name}`} value={c.name}>
+                {c.name}
+              </option>
+            ))}
+          </select>
           <div className="use-notif-container">
             <div className="use-notif-banner">
               <label htmlFor="use-notif-check" className="text">

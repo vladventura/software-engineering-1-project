@@ -222,31 +222,31 @@ export const editEvent = (event) => {
     const { calendars } = getState();
     const { oldVersion } = event;
     delete event["oldVersion"];
+    const moveRequested = oldVersion.calendar !== event.calendar;
 
     const response = {
       code: 200,
       body: {
         ...event,
+        moveRequested,
         official: false,
       },
       error: "Name in use",
     };
-    const { code, body } = response;
+    const { code } = response;
 
     const newAllCals = [...calendars.allCalendars];
     let cI = 0;
     let eI = 0;
     newAllCals.every((c, i) => {
-      if (c.name === body.calendar) {
+      if (c.name === oldVersion.calendar) {
         c.events.every((e, ei) => {
-          console.log(e, oldVersion);
           if (
             e.name === oldVersion.name &&
             e.description === oldVersion.description &&
             e.date === oldVersion.date &&
             e.calendar === oldVersion.calendar
           ) {
-            console.log("Found");
             cI = i;
             eI = ei;
             return false;
@@ -257,8 +257,19 @@ export const editEvent = (event) => {
       }
       return true;
     });
-    newAllCals[cI].events[eI] = { ...event };
-    console.log(newAllCals[cI].events[eI]);
+    if (moveRequested) {
+      delete newAllCals[cI].events[eI];
+      // Insert onto new
+      newAllCals.forEach((c) => {
+        if (c.name === event.calendar) {
+          // Fixing the color
+          event = { ...event, color: c.color };
+          c.events.push(event);
+        }
+      });
+    } else {
+      newAllCals[cI].events[eI] = { ...event };
+    }
     if (code === 200) {
       return new Promise(() =>
         // Might need to dispatch two actions here
