@@ -1,8 +1,8 @@
+import "./index.css";
 import { useState } from "react";
 import { connect } from "react-redux";
 import { toggleCalendar } from "../../store/actions/calendarActions";
 import { getTextForColor } from "../../utils";
-import "./index.css";
 
 const SidebarToggleCalendarComponent = ({ calendar, toggleViewCalendar }) => {
   const [visible, setVisible] = useState(calendar.visible);
@@ -13,6 +13,10 @@ const SidebarToggleCalendarComponent = ({ calendar, toggleViewCalendar }) => {
     // but I'm running out of time to debug
     setVisible(!visible);
     toggleViewCalendar(name);
+  };
+
+  const threedotClicked = () => {
+    alert("Threedot clicked");
   };
 
   return (
@@ -29,6 +33,9 @@ const SidebarToggleCalendarComponent = ({ calendar, toggleViewCalendar }) => {
         style={{ color: getTextForColor(color) }}
       >
         {name}
+      </div>
+      <div className="calendar-toggle-threedot" onClick={threedotClicked}>
+        <i class="fa-solid fa-ellipsis-vertical"></i>
       </div>
     </div>
   );
