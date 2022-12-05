@@ -1,7 +1,9 @@
 import unittest
-from database import Database
-from datetime import datetime, time
-from notification import NotificationManager, NotificationMethod
+
+from datetime import datetime, time, timedelta
+from Database import Database
+from Notification import NotificationManager, NotificationMethod
+from Calendar import CalendarManager
 
 class UnitTest(unittest.TestCase):
     def testConstruction(self):
@@ -74,6 +76,34 @@ class UnitTest(unittest.TestCase):
         db_entry = nm.getDbObject("Calendar", "Event")
         self.assertEqual(db_entry["date"], str(date))
         self.assertEqual(db_entry["method"], NotificationMethod.SMS.name)
+
+    
+    def testCalendar(self):
+        file = "test_data.json"
+        db = Database(file)
+
+        cm = CalendarManager(db)
+        cm.createCalendar("blank", "#123456", False)
+
+        # color change test
+        new_color = "#654321"
+        cm.editCalendar("blank", color=new_color)
+        self.assertEqual(cm.calendar_db["blank"]["color"], new_color)
+        self.assertEqual(cm.calendars_tb["blank"].color, new_color)
+
+        # title change test
+        new_title = "Unga Bunga"
+        cm.editCalendar("blank", title=new_title)
+        self.assertTrue(new_title in cm.calendars_tb)
+        self.assertTrue(new_title in cm.calendar_db)
+        #check if old title can be used...
+        self.assertFalse("blank" in cm.calendars_tb)
+        self.assertFalse("blank" in cm.calendar_db)
+
+        # check if delete works
+        cm.deleteCalendar(new_title)
+        self.assertFalse(new_title in cm.calendars_tb)
+        self.assertFalse(new_title in cm.calendar_db)
 
         
 

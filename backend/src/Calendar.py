@@ -7,9 +7,9 @@
 # on if they are official or not.
 #
 
-import datetime
+from datetime import datetime, time, timedelta
 from Event import Event, ClassEvent
-from database import Database
+from Database import Database
 
 class Calendar:
     def __init__(self, title: str, color: str, official: bool):
@@ -21,10 +21,11 @@ class Calendar:
 
     def createEvent(self,   title: str, 
                             description: str, 
-                            date: datetime.datetime, 
-                            duration: datetime.datetime, 
+                            date: datetime, 
+                            duration: time, 
                             repeats: bool,
                             frequency):
+
         self.events[title] = Event(
             title, description, date, duration, repeats, frequency)
 
@@ -32,10 +33,11 @@ class Calendar:
     def editEvent(self, event: str, 
                         title: str = None, 
                         description: str = None, 
-                        date: datetime.datetime = None, 
-                        duration: datetime.datetime = None, 
+                        date: datetime = None, 
+                        duration: datetime = None, 
                         repeats: bool = None,
                         frequency: int = None):
+
         if title != None:
             self.events[event].title = title
         if description != None:
@@ -58,36 +60,35 @@ class Calendar:
 
 class CalendarManager:
     def __init__(self, database: Database):
-        self.dbRef = database.getCalendarData()  # data base ref to calendar section
+        self.calendar_db = database.getCalendarData()  # data base ref to calendar section
         # initializing calendars
-        self.calendars = {}
-        for key in self.dbRef:
+        self.calendars_tb = {}
+        for key in self.calendar_db:
             # create calendar object - and its associated events.
             # get required parts to create base calendar object
-            title = self.dbRef[key]["title"]
-            color = self.dbRef[key]["color"]
-            official = self.dbRef[key]["is_official"]
+            title    = self.calendar_db[key]["title"]
+            color    = self.calendar_db[key]["color"]
+            official = self.calendar_db[key]["is_official"]
             # create calendar - we want to attach new events into this.
             calendar = Calendar(title, color, official)
             if official:
-                calendar.events = self._makeEvents(self.dbRef[key]["events"])
+                calendar.events = self._makeEvents(self.calendar_db[key]["events"])
             else:
-                calendar.events = self._makeClassEvent(self.dbRef[key]["events"])
+                calendar.events = self._makeClassEvent(self.calendar_db[key]["events"])
             # add to the calendars dictionary
-            self.calendars[title] = calendar
+            self.calendars_tb[title] = calendar
 
     # d is a dictionary containing events
     def _makeEvents(self, d):
         events = {}
         for key in d:
-            event_d = d[key]  # event dictionary
             events[key] = Event(
-                event_d["title"],
-                event_d["description"],
-                event_d["date"],
-                event_d["duration"],
-                event_d["repeats"],
-                event_d["frequency"]
+                d[key]["title"],
+                d[key]["description"],
+                datetime.fromisoformat(d[key]["date"]),
+                datetime.fromisoformat(d[key]["duration"]),
+                d[key]["repeats"],
+                d[key]["frequency"]
             )
         return events
 
@@ -96,46 +97,75 @@ class CalendarManager:
     def _makeClassEvent(self, d):
         events = {}
         for key in d:
-            event_d = d[key]  # event dictionary
             events[key] = ClassEvent(
-                event_d["title"],
-                event_d["description"],
-                event_d["date"],
-                event_d["duration"],
-                event_d["repeats"],
-                event_d["frequency"]
-            )
+                d[key]["title"],
+                d[key]["description"],
+                datetime.fromisoformat(d[key]["date"]),
+                datetime.fromisoformat(d[key]["duration"]),
+                d[key]["repeats"],
+                d[key]["frequency"] )
         return events
 
 
+    # creates and pushes empty calendar into calendar table
+    # creates and adds database entry it into the database
     def createCalendar(self, title: str, color: str, official: bool):
-        self.calendars[title] = Calendar(title, color, official)
+        self.calendars_tb[title] = Calendar(title, color, official)
+
+        # allocate entry
+        entry = {
+            "title": title,
+            "events": {},
+            "is_official": official,
+            "color": color
+        }
+
+        # set entry into the calendar db
+        self.calendar_db[title] = entry
 
 
     def editCalendar(self,  calendar: str, 
                             title: str = None, 
                             color: str = None):
-        if (self.calendars[calendar].official == False):
-            if title != None:
-                self.calendars[calendar].title = title
-        if color != None:
-            self.calendars[calendar].color = color
+        # check if calendar exists..
+        if calendar in self.calendars_tb:
+            item = self.calendars_tb[calendar]
+            # title change also requires key change
+            if (item.official is False) and (title != None):
+                self.calendars_tb.pop(calendar)
+                self.calendars_tb[title] = item  # insert new element into the database
+                item.title = title
+            if color is not None:
+                item.color = color
+
+        # edit this in the db
+        if calendar in self.calendar_db:
+            item = self.calendar_db[calendar]
+            # title change also requires update on db
+            if (item["is_official"] is False) and (title is not None):
+                self.calendar_db.pop(calendar)
+                self.calendar_db[title] = item  # insert new element into the database
+                item["title"] = title
+            if color is not None:
+                item["color"] = color
 
 
     def deleteCalendar(self, calendar: str):
-        if (self.calendars[calendar].official == False):
-            self.calendars.pop(calendar)
+        if (self.calendars_tb[calendar].official == False) and (calendar in self.calendars_tb):
+            del self.calendars_tb[calendar]
+            del self.calendar_db[calendar]
+
 
 
     def createEvent(self,   calendar: str,
                             title: str, 
                             description: str, 
-                            date: datetime.datetime, 
-                            duration: datetime.datetime, 
+                            date: datetime, 
+                            duration: datetime, 
                             repeats: bool,
                             frequency: int):
-        if (self.calendars[calendar].official == False):
-            self.calendars[calendar].createEvent(
+        if (self.calendars_tb[calendar].official == False):
+            self.calendars_tb[calendar].createEvent(
                 title, description, date, duration, repeats, frequency)
 
 
@@ -143,28 +173,28 @@ class CalendarManager:
                         event: str,
                         title: str = None, 
                         description: str = None, 
-                        date: datetime.datetime = None, 
-                        duration: datetime.datetime = None, 
+                        date: datetime = None, 
+                        duration: datetime = None, 
                         repeats: bool = None,
                         frequency: int = None):
-        if (self.calendars[calendar].official == False):
+        if (self.calendars_tb[calendar].official == False):
             self.calendar[calendar].editEvent(
                 event, title, description, date, duration, repeats, frequency)
 
 
     def deleteEvent(self, calendar: str, event: str):
-        if (self.calendars[calendar].official == False):
-            self.calendars[calendar].deleteEvent(event)
+        if (self.calendars_tb[calendar].official == False):
+            self.calendars_tb[calendar].deleteEvent(event)
 
 
     def transferEvent(self, source: str, 
                             dest: str, 
                             event: str):
-        sourceOfficial = self.calendars[source].official
-        destOfficial = self.calendars[dest].official
+        sourceOfficial = self.calendars_tb[source].official
+        destOfficial = self.calendars_tb[dest].official
 
         if sourceOfficial == False and destOfficial == False:
-            original = self.calendars[source].events[event]
+            original = self.calendars_tb[source].events[event]
 
-            self.calendars[dest].events[event] = original
-            self.calendars[source].deleteEvent(event)
+            self.calendars_tb[dest].events[event] = original
+            self.calendars_tb[source].deleteEvent(event)

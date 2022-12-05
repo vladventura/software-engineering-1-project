@@ -32,8 +32,8 @@
           "Christmas!": {
             "title": "Christmas!",
             "description": "Special Holiday!",
-            "date": "2022-12-25",
-            "duration": "some duration",
+            "date": "2022-12-25T00:00:00",
+            "duration": "2022-12-25T00:00:00",
             "repeats": false,
             "frequency": 0
           }

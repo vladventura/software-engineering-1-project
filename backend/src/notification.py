@@ -3,7 +3,7 @@
 # - The manager should set it as a system timed event and the event activates notification on event handler
 
 from datetime import datetime, time
-from database import Database
+from Database import Database
 from enum import Enum, auto
 
 class NotificationMethod(Enum):
@@ -121,13 +121,13 @@ class NotificationManager:
             # find and modify the notification item
             if (key) in self.notifs_table:
                 item = self.notifs_table[key]  # get the object to mocify
-                item.info.repeat = item.info.repeat if (repeats is None)  else repeats
-                item.method      = item.method      if (method is None)   else method
+                if (repeats is not None):   item.info.repeat = repeats
+                if (method is not  None):   item.method      = method
             # find and modify the data entry
             if (key) in self.notifications:
                 entry = self.notifications[key]
-                entry["repeats"] = entry["repeats"] if (repeats is None)  else repeats
-                entry["method"]  = entry["method"]  if (method is None)   else method.name
+                if (repeats is not None):   entry["repeats"] = repeats
+                if (method is not None):    entry["method"]  = method.name
         except:
             print("ERROR: editNotification")
         # TODO IMPLEMENT notification edit

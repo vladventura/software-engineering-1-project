@@ -46,6 +46,6 @@ class ClassEvent(Event):
     grade = float
 
     def __init__(self, title, desc, date, dur, repeats = 0, freq = 2):
-        super.__init__(title, desc, date, dur, repeats, freq) 
+        super().__init__(title, desc, date, dur, repeats, freq) 
         self.submitted = False
         self.grade = 0.00
