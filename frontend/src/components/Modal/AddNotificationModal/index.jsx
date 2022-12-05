@@ -2,9 +2,11 @@ import "./index.css";
 import "react-datepicker/dist/react-datepicker.css";
 import { useState } from "react";
 import { connect } from "react-redux";
+import { areEventsSimilar } from "../../../utils";
 import { closeModal } from "../../../store/actions/modalActions";
 import { createNotification } from "../../../store/actions/calendarActions";
-import { notificationTimepair, notifMethodList } from "../modalConsts";
+import { ntpSelect, notifMethodList } from "../modalConsts";
+import Select from "react-select";
 
 export const AddNotificationModalComponent = ({
   close,
@@ -21,14 +23,13 @@ export const AddNotificationModalComponent = ({
       allCalendars.every((c, ci) => {
         if (c.name !== targetEvent.calendar) return false;
         c.events.every((e, ei) => {
-          if (e.name !== targetEvent.name) return false;
-          if (e.date !== targetEvent.date) return false;
-          if (e.description !== targetEvent.description) return false;
-          if (e.dueTime !== targetEvent.dueTime) return false;
-          cal = ci;
-          ev = ei;
-          nt = ev.notification;
-          return true;
+          if (areEventsSimilar(e, targetEvent)) {
+            cal = ci;
+            ev = ei;
+            nt = ev.notification;
+            return true;
+          }
+          return false;
         });
         return true;
       });
@@ -36,24 +37,16 @@ export const AddNotificationModalComponent = ({
     return { cal, ev, nt };
   };
 
-  const findNotifTimeIndex = (nt) => {
-    let r = 0;
-    notificationTimepair.forEach((tp, i) => {
-      if (`${tp.time}${tp.measure}` === `${nt.time}${nt.measure}`) return i;
-    });
-    return r;
-  };
-
   const targetResult = searchEventOnTarget();
 
   const [calendarIndex, setCalendarIndex] = useState(targetResult.cal);
   const [eventIndex, setEventIndex] = useState(targetResult.ev);
 
-  const [notifTimeIndex, setNotifTimeIndex] = useState(
-    targetResult.nt ? findNotifTimeIndex(targetResult.nt.time) : 0
+  const [timePair, setTimePair] = useState(
+    targetResult.nt?.time ?? ntpSelect[0]
   );
   const [notifMethod, setNotifMethod] = useState(
-    targetResult.nt ? targetResult.nt.method : notifMethodList[0]
+    targetResult.nt?.method ?? notifMethodList[0]
   );
 
   const calendarIndexOnChange = (e) => {
@@ -62,10 +55,6 @@ export const AddNotificationModalComponent = ({
 
   const eventIndexOnChange = (e) => {
     setEventIndex(e.target.value);
-  };
-
-  const notifTimeIndexOnChange = (e) => {
-    setNotifTimeIndex(e.target.value);
   };
 
   const notifMethodOnChange = (e) => {
@@ -79,7 +68,7 @@ export const AddNotificationModalComponent = ({
       calendarIndex,
       eventIndex,
       method: notifMethod,
-      time: notificationTimepair[notifTimeIndex],
+      time: timePair,
       event: allCalendars[calendarIndex].events[eventIndex],
       eventName: allCalendars[calendarIndex].events[eventIndex].name,
     };
@@ -133,16 +122,11 @@ export const AddNotificationModalComponent = ({
                 ))}
               </select>
               <label className="text">Notify Time Before</label>
-              <select
-                id="notif-select-method"
-                onChange={notifTimeIndexOnChange}
-              >
-                {notificationTimepair.map((tp, i) => (
-                  <option key={`notif-method-${i}`} value={i}>
-                    {`${tp.time}${tp.measure}`}
-                  </option>
-                ))}
-              </select>
+              <Select
+                options={ntpSelect}
+                defaultValue={timePair}
+                onChange={(e) => setTimePair(e.value)}
+              />
             </>
           ) : (
             <div className="Text">No events in this calendar!</div>
