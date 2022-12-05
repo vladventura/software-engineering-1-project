@@ -1,11 +1,14 @@
 import "./index.css";
 import { useState } from "react";
 import { connect } from "react-redux";
-import { editCalendar } from "../../../store/actions/calendarActions";
+import {
+  editCalendar,
+  deleteCalendar,
+} from "../../../store/actions/calendarActions";
 import { closeModal } from "../../../store/actions/modalActions";
 import { ChromePicker as Picker } from "react-color";
 
-const EditCalendarModalComponent = ({ close, edit, modalData }) => {
+const EditCalendarModalComponent = ({ close, edit, modalData, remove }) => {
   const [name, setName] = useState(modalData.name);
   const [color, setColor] = useState({
     hex: modalData.color,
@@ -23,6 +26,12 @@ const EditCalendarModalComponent = ({ close, edit, modalData }) => {
       alert("Calendar Edited!");
       close();
     }
+  };
+
+  const removeCalendar = () => {
+    remove(modalData.name);
+    alert("Calendar Deleted!");
+    close();
   };
 
   return (
@@ -52,8 +61,8 @@ const EditCalendarModalComponent = ({ close, edit, modalData }) => {
         </form>
       </div>
       <div className="footer">
-        <button onClick={close} id="cancelBtn">
-          Cancel
+        <button onClick={removeCalendar} id="cancelBtn">
+          Delete
         </button>
         <button onClick={submit}>Continue</button>
       </div>
@@ -66,6 +75,7 @@ const stateToProps = (state) => ({ modalData: state.modal.modalData });
 const dispatchToProps = (dispatch) => ({
   close: () => dispatch(closeModal()),
   edit: (name, color) => dispatch(editCalendar(name, color)),
+  remove: (name) => dispatch(deleteCalendar(name)),
 });
 
 export const EditCalendarModal = connect(
