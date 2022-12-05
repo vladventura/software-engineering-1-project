@@ -1,4 +1,4 @@
-import personalCalendar from "../../mocks/calendar";
+import personalCalendar, { guiCalendar } from "../../mocks/calendar";
 import {
   CREATE_CALENDAR,
   CREATE_CALENDAR_FAIL,
@@ -42,7 +42,7 @@ export const getAllCalendars = () => {
     const fakePromise = (response) => {
       dispatch({
         type: GET_ALL_CALENDARS,
-        payload: [personalCalendar],
+        payload: [personalCalendar, guiCalendar],
       });
     };
     return new Promise(fakePromise);
