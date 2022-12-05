@@ -32,7 +32,7 @@ class Database:
     # Internal function to update the data base when writing.
     def update(self):
         with open(self.out, "w") as outfile:
-            json.dump(self.data, outfile)
+            json.dump(self.data, outfile, default=str)
 
 
     # returns reference to calendars dictionary of database

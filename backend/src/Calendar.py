@@ -10,6 +10,19 @@
 from datetime import datetime, time, timedelta
 from Event import Event, ClassEvent
 from Database import Database
+from pydantic import BaseModel
+
+class CalendarEventModel(BaseModel):
+    title: str
+    description: str
+    date: datetime
+    duration: datetime
+    repeats: bool
+    frequency: int
+
+class CalendarClassEventModel(CalendarEventModel):
+    submitted: bool
+    grade: float
 
 class Calendar:
     def __init__(self, title: str, color: str, official: bool):
@@ -19,32 +32,18 @@ class Calendar:
         self.events = {}
 
 
-    def createEvent(self,   title: str, 
-                            description: str, 
-                            date: datetime, 
-                            duration: time, 
-                            repeats: bool,
-                            frequency):
-
-        self.events[title] = Event(
-            title, description, date, duration, repeats, frequency)
+    def createEvent(self, calendarEventModel: CalendarEventModel):
+        self.events[calendarEventModel.title] = calendarEventModel
 
 
-    def editEvent(self, event: str, 
-                        title: str = None, 
-                        description: str = None, 
-                        date: datetime = None, 
-                        duration: datetime = None, 
-                        repeats: bool = None,
-                        frequency: int = None):
-
-        item = self.events[event]
-        if title is not None:       item.title = title
-        if description is not None: item.description = description
-        if date is not None:        item.date = date
-        if duration is not None:    item.duration = duration
-        if repeats is not None:     item.repeats = repeats
-        if frequency is not None:   item.frequency = frequency
+    def editEvent(self, event: CalendarEventModel):
+        item = self.events[event.title]
+        if event.title is not None:       item.title = event.title
+        if event.description is not None: item.description = event.description
+        if event.date is not None:        item.date = event.date
+        if event.duration is not None:    item.duration = event.duration
+        if event.repeats is not None:     item.repeats = event.repeats
+        if event.frequency is not None:   item.frequency = event.frequency
 
 
     def deleteEvent(self, event: str):
@@ -154,26 +153,11 @@ class CalendarManager:
 
 
     # create a specified - insert this object into appropriate database and table
-    def createEvent(self,   calendar: str,
-                            title: str, 
-                            description: str, 
-                            date: datetime, 
-                            duration: datetime, 
-                            repeats: bool = False,
-                            frequency: int = 0):
+    def createEvent(self, calendar: str, event: CalendarEventModel):
         # we cannot create events for an official calendar
         if (self.calendars_tb[calendar].official == False):
-            self.calendars_tb[calendar].createEvent(
-                title, description, date, duration, repeats, frequency)
-            entry = {  # entry to be inserted into the database
-                "title":        title,
-                "description":  description,
-                "date":         str(date),
-                "duration":     str(duration),
-                "repeats":      repeats,
-                "frequency":    frequency
-            }
-            self.calendar_db[calendar][title] = entry
+            self.calendars_tb[calendar].createEvent(event)
+            self.calendar_db[calendar]["events"][event.title] = event.__dict__
 
 
 
@@ -182,24 +166,16 @@ class CalendarManager:
         item["title"] = new_title
         json_calendar[event] = item
 
-    def editEvent(self, calendar: str,
-                        event: str,
-                        title: str = None, 
-                        description: str = None, 
-                        date: datetime = None, 
-                        duration: datetime = None, 
-                        repeats: bool = None,
-                        frequency: int = None):
+    def editEvent(self, calendar: str, event: CalendarEventModel, title: str = None):
         if (self.calendars_tb[calendar].official == False):
-            self.calendars_tb[calendar].editEvent(
-                event, title, description, date, duration, repeats, frequency)
-            item = self.calendar_db[calendar][event]
-            if title        is not None: self._updateTitle(self.calendar_db[calendar], event, title)
-            if description  is not None: item["description"]    = description
-            if date         is not None: item["date"]           = str(date)
-            if duration     is not None: item["duration"]       = str(duration)
-            if repeats      is not None: item["repeats"]        = repeats
-            if frequency    is not None: item["frequency"]      = frequency
+            self.calendars_tb[calendar].editEvent(event)
+            item = self.calendar_db[calendar]["events"][event.title]
+            if title        is not None: self._updateTitle(self.calendar_db[calendar], event.title, title)
+            if event.description  is not None: item["description"]    = event.description
+            if event.date         is not None: item["date"]           = str(event.date)
+            if event.duration     is not None: item["duration"]       = str(event.duration)
+            if event.repeats      is not None: item["repeats"]        = event.repeats
+            if event.frequency    is not None: item["frequency"]      = event.frequency
 
 
     def deleteEvent(self, calendar: str, event: str):
