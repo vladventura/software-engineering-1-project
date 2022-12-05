@@ -35,7 +35,10 @@ const SidebarToggleCalendarComponent = ({ calendar, toggleViewCalendar }) => {
         {name}
       </div>
       <div className="calendar-toggle-threedot" onClick={threedotClicked}>
-        <i class="fa-solid fa-ellipsis-vertical"></i>
+        <i
+          class="fa-solid fa-ellipsis-vertical"
+          style={{ color: getTextForColor(color) }}
+        ></i>
       </div>
     </div>
   );
