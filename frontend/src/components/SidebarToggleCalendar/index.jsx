@@ -3,8 +3,13 @@ import { useState } from "react";
 import { connect } from "react-redux";
 import { toggleCalendar } from "../../store/actions/calendarActions";
 import { getTextForColor } from "../../utils";
+import { openEditCalendarModal } from "../../store/actions/modalActions";
 
-const SidebarToggleCalendarComponent = ({ calendar, toggleViewCalendar }) => {
+const SidebarToggleCalendarComponent = ({
+  calendar,
+  toggleViewCalendar,
+  openEdit,
+}) => {
   const [visible, setVisible] = useState(calendar.visible);
   const { name, color } = calendar;
 
@@ -16,7 +21,7 @@ const SidebarToggleCalendarComponent = ({ calendar, toggleViewCalendar }) => {
   };
 
   const threedotClicked = () => {
-    alert("Threedot clicked");
+    openEdit(calendar);
   };
 
   return (
@@ -36,7 +41,7 @@ const SidebarToggleCalendarComponent = ({ calendar, toggleViewCalendar }) => {
       </div>
       <div className="calendar-toggle-threedot" onClick={threedotClicked}>
         <i
-          class="fa-solid fa-ellipsis-vertical"
+          className="fa-solid fa-ellipsis-vertical"
           style={{ color: getTextForColor(color) }}
         ></i>
       </div>
@@ -46,6 +51,7 @@ const SidebarToggleCalendarComponent = ({ calendar, toggleViewCalendar }) => {
 
 const dispatchToProps = (dispatch) => ({
   toggleViewCalendar: (name) => dispatch(toggleCalendar(name)),
+  openEdit: (calendar) => dispatch(openEditCalendarModal(calendar)),
 });
 
 export const SidebarToggleCalendar = connect(
