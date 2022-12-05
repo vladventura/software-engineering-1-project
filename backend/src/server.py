@@ -56,6 +56,12 @@ async def createCalendar(request: CalendarRequest):
     database.update()
     return '{"status": calendar created success"}'
 
+@app.put("/api/calendar")
+async def createCalendar(request: CalendarRequest):
+    calendarManager.editCalendar(request.calendar, request.model)
+    database.update()
+    return '{"status": calendar created success"}'
+
 
 if __name__ == "__main__":
     pass

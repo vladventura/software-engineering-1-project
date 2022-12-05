@@ -31,6 +31,7 @@ class CalendarModel(BaseModel):
     color: str
 
 class Calendar:
+    NUL = "null"  # constant since request cannot contain null type
     def __init__(self, title: str, color: str, official: bool):
             self.title = title
             self.color = color
@@ -44,12 +45,12 @@ class Calendar:
 
     def editEvent(self, event: CalendarEventModel):
         item = self.events[event.title]
-        if event.title is not None:       item.title = event.title
-        if event.description is not None: item.description = event.description
-        if event.date is not None:        item.date = event.date
-        if event.duration is not None:    item.duration = event.duration
-        if event.repeats is not None:     item.repeats = event.repeats
-        if event.frequency is not None:   item.frequency = event.frequency
+        if event.title is not self.NUL:       item.title = event.title
+        if event.description is not self.NUL: item.description = event.description
+        if event.date is not self.NUL:        item.date = event.date
+        if event.duration is not self.NUL:    item.duration = event.duration
+        if event.repeats is not self.NUL:     item.repeats = event.repeats
+        if event.frequency is not self.NUL:   item.frequency = event.frequency
 
 
     def deleteEvent(self, event: str):
@@ -58,6 +59,7 @@ class Calendar:
 
 
 class CalendarManager:
+    NUL = "null" # constant since request cannot contain null type
     def __init__(self, database: Database):
         self.calendar_db = database.getCalendarData()  # data base ref to calendar section
         # initializing calendars
@@ -119,23 +121,23 @@ class CalendarManager:
         if calendar in self.calendars_tb:
             item = self.calendars_tb[calendar]
             # title change also requires key change
-            if (item.official is False) and (title != None):
+            if (item.official is False) and (model.title != self.NUL):
                 self.calendars_tb.pop(calendar)
-                self.calendars_tb[title] = item  # insert new element into the database
-                item.title = title
-            if color is not None:
-                item.color = color
+                self.calendars_tb[model.title] = item  # insert new element into the database
+                item.title = model.title
+            if model.color is not self.NUL:
+                item.color = model.color
 
         # edit this in the db
         if calendar in self.calendar_db:
             item = self.calendar_db[calendar]
             # title change also requires update on db
-            if (item["is_official"] is False) and (title is not None):
+            if (item["is_official"] is False) and (model.title is not self.NUL):
                 self.calendar_db.pop(calendar)
-                self.calendar_db[title] = item  # insert new element into the database
-                item["title"] = title
-            if color is not None:
-                item["color"] = color
+                self.calendar_db[model.title] = item  # insert new element into the database
+                item["title"] = model.title
+            if model.color is not self.NUL:
+                item["color"] = model.color
 
 
     # find and delete objects identified by the calendar string from database and table.
@@ -160,16 +162,16 @@ class CalendarManager:
         item["title"] = new_title
         json_calendar[event] = item
 
-    def editEvent(self, calendar: str, event: CalendarEventModel, title: str = None):
+    def editEvent(self, calendar: str, event: CalendarEventModel, title: str = NUL):
         if (self.calendars_tb[calendar].official == False):
             self.calendars_tb[calendar].editEvent(event)
             item = self.calendar_db[calendar]["events"][event.title]
-            if title        is not None: self._updateTitle(self.calendar_db[calendar], event.title, title)
-            if event.description  is not None: item["description"]    = event.description
-            if event.date         is not None: item["date"]           = str(event.date)
-            if event.duration     is not None: item["duration"]       = str(event.duration)
-            if event.repeats      is not None: item["repeats"]        = event.repeats
-            if event.frequency    is not None: item["frequency"]      = event.frequency
+            if title              is not self.NUL: self._updateTitle(self.calendar_db[calendar], event.title, title)
+            if event.description  is not self.NUL: item["description"]    = event.description
+            if event.date         is not self.NUL: item["date"]           = str(event.date)
+            if event.duration     is not self.NUL: item["duration"]       = str(event.duration)
+            if event.repeats      is not self.NUL: item["repeats"]        = event.repeats
+            if event.frequency    is not self.NUL: item["frequency"]      = event.frequency
 
 
     def deleteEvent(self, calendar: str, event: str):
