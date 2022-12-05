@@ -8,16 +8,16 @@ from enum import Enum, auto
 from pydantic import BaseModel
 
 class NotificationMethod(Enum):
-    EMAIL = auto()
-    SMS   = auto()
-    BOTH  = auto()
-    MUTE  = auto()
+    MUTE  = 0
+    EMAIL = 1
+    SMS   = 2
+    BOTH  = 3
 
 
 class NotificationModel(BaseModel):
     calendar: str
     event: str
-    method: NotificationMethod
+    method: int
     date :datetime
     triggerWindow: datetime
     frequency: int
