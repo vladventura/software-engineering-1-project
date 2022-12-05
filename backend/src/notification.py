@@ -131,3 +131,19 @@ class NotificationManager:
         except:
             print("ERROR: editNotification")
         # TODO IMPLEMENT notification edit
+
+    # implemented for test case
+    def getObject(self, calendar, event):
+        key = calendar+event
+        item = None
+        if key in self.notifs_table:
+            item = self.notifs_table[key]
+        return item
+
+    # implemented for test case
+    def getDbObject(self, calendar, event):
+        key = calendar+event
+        entry = None
+        if key in self.notifications:
+            entry = self.notifications[key]
+        return entry
