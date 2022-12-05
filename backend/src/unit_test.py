@@ -123,7 +123,11 @@ class UnitTest(unittest.TestCase):
         cm.transferEvent("Personal1", "Unga Bunga", "test event")
         self.assertTrue("test event" in cm.calendar_db["Unga Bunga"])
         self.assertTrue("test event" in cm.calendars_tb["Unga Bunga"].events)
+
+        # check if event transfers back properly
         cm.transferEvent("Unga Bunga", "Personal1", "test event")
+        self.assertTrue("test event" in cm.calendars_tb["Personal1"].events)
+        self.assertTrue("test event" in cm.calendar_db["Personal1"])
 
         # event deletion check
         cm.deleteEvent("Personal1", "test event")
