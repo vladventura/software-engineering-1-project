@@ -15,7 +15,8 @@ import {
 
 const initState = {
   allCalendars: [],
-  selectedDate: 0,
+  // Care, the real danger is on the calendar preview
+  selectedDate: new Date(),
   selectedMonth: 0,
   selectedYear: 0,
   selectedDay: 0,
