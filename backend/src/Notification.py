@@ -18,7 +18,6 @@ class NotificationModel(BaseModel):
     calendar: str
     event: str
     method: NotificationMethod
-    # notification information
     date :datetime
     triggerWindow: datetime
     frequency: int
@@ -57,28 +56,28 @@ class NotificationManager:
             calendar        = json_o["calendar"],
             event           = json_o["event"],
             date            = datetime.fromisoformat(json_o["date"]),
-            triggerWindow   = time.fromisoformat(json_o["window"]),
+            triggerWindow   = datetime.fromisoformat(json_o["window"]),
             repeats         = json_o["repeats"],
             frequency       = json_o["frequency"],
-            method          = NotificationMethod[json_o["method"]] )
+            method          = json_o["method"] )
         return notif
     
     ''' createNotification
     pass request model in as an argument and push it into the table.
     change the model to dictionary type so it can be used with the json object.
     '''
-    def createNotification(self, calendar, event, model:NotificationModel):
+    def createNotification(self, model:NotificationModel):
         # add onto notification table
         # key is concantenation of calendar string and event string
-        self.notifs_table[calendar+event] = model
-        self.notifications[calendar+event] = model.__dict__
+        self.notifs_table[model.calendar+model.event] = model
+        self.notifications[model.calendar+model.event] = model.__dict__
         # TODO ADD this notification to event handler
 
 
     # Removes associated notification from database and internal table storage for notifications
     # Also removes the notifications from event pool TODO-implement this feature
-    def deleteNotification(self, calendar, event):
-        key = calendar+event
+    def deleteNotification(self, model:NotificationModel):
+        key = model.calendar+model.event
         #TODO add removal of notifications from event
         try:
             # remove from database with stored reference to the json dictionary.
