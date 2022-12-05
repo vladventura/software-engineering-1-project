@@ -9,7 +9,7 @@
 
 from datetime import datetime, time, timedelta
 from Event import Event, ClassEvent
-from Database import Database
+from Database import Database, database
 from pydantic import BaseModel
 
 class CalendarEventModel(BaseModel):
@@ -24,12 +24,18 @@ class CalendarClassEventModel(CalendarEventModel):
     submitted: bool
     grade: float
 
+class CalendarModel(BaseModel):
+    title: str
+    events: dict
+    is_official: bool
+    color: str
+
 class Calendar:
     def __init__(self, title: str, color: str, official: bool):
-        self.title = title
-        self.color = color
-        self.official = official
-        self.events = {}
+            self.title = title
+            self.color = color
+            self.official = official
+            self.events = {}
 
 
     def createEvent(self, calendarEventModel: CalendarEventModel):
@@ -48,7 +54,6 @@ class Calendar:
 
     def deleteEvent(self, event: str):
         self.events.pop(event)
-
 
 
 
@@ -103,24 +108,13 @@ class CalendarManager:
 
     # creates and pushes empty calendar into calendar table
     # creates and adds database entry it into the database
-    def createCalendar(self, title: str, color: str, official: bool):
-        self.calendars_tb[title] = Calendar(title, color, official)
-
-        # allocate entry
-        entry = {
-            "title": title,
-            "events": {},
-            "is_official": official,
-            "color": color
-        }
-
-        # set entry into the calendar db
-        self.calendar_db[title] = entry
+    def createCalendar(self, model: CalendarModel):
+        self.calendars_tb[model.title] = Calendar(model.title, model.color, model.is_official)
+        # Put the model being constructed into the database
+        self.calendar_db[model.title] = model.__dict__
 
 
-    def editCalendar(self,  calendar: str, 
-                            title: str = None, 
-                            color: str = None):
+    def editCalendar(self,  calendar: str, model: CalendarModel):
         # check if calendar exists..
         if calendar in self.calendars_tb:
             item = self.calendars_tb[calendar]
@@ -200,3 +194,5 @@ class CalendarManager:
                 item = db_src.pop(event)
                 db_dst[event] = item
 
+# module variable exports
+calendarManager = CalendarManager(database)

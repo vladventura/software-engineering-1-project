@@ -51,3 +51,5 @@ class Database:
         if len(notifications) == 0:  # error checker to see if valid dictionary exists
             raise Exception("readAllNotifData error - cannot find notifications.")
         return notifications
+
+database = Database('data.json')
