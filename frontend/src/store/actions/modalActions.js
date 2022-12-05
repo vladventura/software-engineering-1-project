@@ -3,6 +3,7 @@ import {
   OPEN_ADD_EVENT_MODAL,
   OPEN_ADD_NOTIF_MODAL,
   OPEN_CREATE_MODAL,
+  OPEN_EDIT_CALENDAR_MODAL,
   OPEN_EDIT_EVENT_MODAL,
 } from "./actionTypes";
 
@@ -14,6 +15,19 @@ export const openCreateModal = (modalData = false) => {
         dispatch({
           type: OPEN_CREATE_MODAL,
           payload: { modalType: "create", modalData },
+        })
+      );
+  };
+};
+
+export const openEditCalendarModal = (modalData = false) => {
+  return (dispatch, getState) => {
+    const { modal } = getState();
+    if (!modal.isOpen)
+      return new Promise(() =>
+        dispatch({
+          type: OPEN_EDIT_CALENDAR_MODAL,
+          payload: { modalType: "editcal", modalData },
         })
       );
   };
