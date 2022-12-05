@@ -6,18 +6,18 @@ c1_dict = {
     "Homework1": {
         "title": "Homework1",
         "description": "Dummy Homework",
-        "date": "2022-12-6",
-        "duration": "some duration",
+        "date": "2022-12-06T23:59:00",
+        "duration": "2022-12-06T23:59:00",
         "repeats": False,
-        "frequency": 3,
+        "frequency": 3
     },
     "Quiz1": {
         "title": "Quiz1",
         "description": "Dummy Quiz Event",
-        "date": "2022-12-10",
-        "duration": "some duration",
+        "date": "2022-12-10T14:30:00",
+        "duration": "2022-12-10T15:00:00",
         "repeats": False,
-        "frequency": 3,
+        "frequency": 3
     }
 }
 
@@ -64,8 +64,8 @@ notifications = {
     "class1Homework1": {
         "calendar": "class1",
         "event": "Homework1",
-        "date": "2022-12-10",
-        "window":0,       # This probably should be a deltatime object
+        "date": "2022-12-06T23:59:00",
+        "window": "03:00:00",
         "repeats": False, # boolean field
         "frequency":0,
         "method": "EMAIL" # string matching the enum class in notifications.py
