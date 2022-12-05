@@ -23,6 +23,7 @@ const CalendarItemComponent = ({
 
   useEffect(() => {
     if (events.length > 2) setShouldPaginate(true);
+    else setShouldPaginate(false);
   }, [events]);
 
   useEffect(() => {
