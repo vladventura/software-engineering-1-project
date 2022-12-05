@@ -3,14 +3,11 @@ import "react-datepicker/dist/react-datepicker.css";
 import { useState } from "react";
 import { connect } from "react-redux";
 import { closeModal } from "../../../store/actions/modalActions";
-import {
-  findIndexOfTimepair,
-  notificationTimepair,
-  notifMethodList,
-} from "../modalConsts";
+import { deleteEvent, editEvent } from "../../../store/actions/calendarActions";
+import { notifMethodList, ntpSelect, toSelectValue } from "../modalConsts";
 import DatePicker from "react-datepicker";
 import TimePicker from "react-time-picker";
-import { deleteEvent, editEvent } from "../../../store/actions/calendarActions";
+import Select from "react-select";
 
 const EditEventModalComponent = ({
   close,
@@ -29,12 +26,14 @@ const EditEventModalComponent = ({
       : false
   );
 
-  // Same approach to calendars
-  const [notifTimepairIndex, setNotifTimepairIndex] = useState(
-    findIndexOfTimepair(useNotif ? incomingEvent.notification.time : 0)
-  );
   const [notifMethod, setNotifMethod] = useState(
-    useNotif ? incomingEvent.notification.method : notifMethodList[0]
+    incomingEvent.notification?.method ?? notifMethodList[0]
+  );
+
+  const [timePair, setTimePair] = useState(
+    incomingEvent.notification?.time
+      ? toSelectValue(incomingEvent.notification.time)
+      : ntpSelect[0]
   );
 
   const submit = () => {
@@ -59,10 +58,12 @@ const EditEventModalComponent = ({
     };
     if (useNotif)
       event["notification"] = {
-        time: notificationTimepair[notifTimepairIndex],
+        time: timePair,
         method: notifMethod,
       };
-    console.log(event);
+    else {
+      delete event["notification"];
+    }
     edit(event);
     alert("Event Edited!");
     close();
@@ -71,7 +72,7 @@ const EditEventModalComponent = ({
   // React v18 groups these together ♥
   const checkUseNotif = () => {
     if (useNotif) {
-      setNotifTimepairIndex(0);
+      setTimePair(0);
       setNotifMethod(notifMethodList[0]);
     }
     setUseNotif(!useNotif);
@@ -148,7 +149,11 @@ const EditEventModalComponent = ({
               <label className="text">Event Notification Method</label>
             )}
             {useNotif && (
-              <select id="notif-select-method">
+              <select
+                id="notif-select-method"
+                onChange={(e) => setNotifMethod(e.target.value)}
+                value={notifMethod}
+              >
                 {notifMethodList.map((nm) => (
                   <option key={`notif-method-${nm}`} value={nm}>
                     {nm}
@@ -158,13 +163,11 @@ const EditEventModalComponent = ({
             )}
             {useNotif && <label className="text">Notify Time Before</label>}
             {useNotif && (
-              <select id="notif-select-method">
-                {notificationTimepair.map((tp, i) => (
-                  <option key={`notif-method-${i}`} value={i}>
-                    {`${tp.time}${tp.measure}`}
-                  </option>
-                ))}
-              </select>
+              <Select
+                options={ntpSelect}
+                defaultValue={timePair}
+                onChange={(e) => setTimePair(e.value)}
+              />
             )}
           </div>
         </form>
