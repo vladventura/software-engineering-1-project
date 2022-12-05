@@ -36,13 +36,20 @@
             "duration": "2022-12-25T00:00:00",
             "repeats": false,
             "frequency": 0
-          },
-          "Bull crap": {
-            "title": "Bull crap",
-            "description": "Loads of bull MEN",
-            "date": "2022-12-05 11:59:59",
-            "duration": "2022-12-06 11:59:59",
-            "repeats": true,
+          }
+        },
+        "is_official": false,
+        "color": "#1C9730"
+      },
+      "Personal2": {
+        "title": "Personal2",
+        "events": {
+          "XMAS": {
+            "title": "XMAS",
+            "description": "Special Holiday!",
+            "date": "2022-12-25T00:00:00",
+            "duration": "2022-12-25T00:00:00",
+            "repeats": false,
             "frequency": 0
           }
         },

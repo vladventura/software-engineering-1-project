@@ -180,13 +180,11 @@ class CalendarManager:
 
     def deleteEvent(self, calendar: str, event: str):
         if (self.calendars_tb[calendar].official == False):
-            self.calendars_tb[calendar].deleteEvent(event)
-            del self.calendar_db[calendar][event]  # deletes line from database
+            self.calendars_tb[calendar].deleteEvent(event.title)
+            del self.calendar_db[calendar]["events"][event.title]  # deletes line from database
 
 
-    def transferEvent(self, source: str, 
-                            dest: str, 
-                            event: str):
+    def transferEvent(self, source: str, dest: str, event: str):
         sourceOfficial = self.calendars_tb[source].official
         destOfficial = self.calendars_tb[dest].official
 
@@ -196,8 +194,8 @@ class CalendarManager:
             self.calendars_tb[dest].events[event] = original
             self.calendars_tb[source].deleteEvent(event)
             
-            db_src = self.calendar_db[source]
-            db_dst = self.calendar_db[dest]
+            db_src = self.calendar_db[source]["events"]
+            db_dst = self.calendar_db[dest]["events"]
             if event in db_src:
                 item = db_src.pop(event)
                 db_dst[event] = item

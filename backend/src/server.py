@@ -10,6 +10,11 @@ class CalendarEventRequest(BaseModel):
     calendar: str
     model: CalendarEventModel
 
+class CalendarTransferRequest(BaseModel):
+    src: str
+    dst: str
+    event_title: str
+
 @app.post("/api/calendar/event")
 async def createEvent(request: CalendarEventRequest):
     db = Database()
@@ -34,6 +39,14 @@ async def deleteEvent(request: CalendarEventRequest):
     cm.deleteEvent(request.calendar, request.model)
     db.update()
     return '{"status": "success"}'
+
+@app.put("/api/calendar/transfer")
+async def transferEvent(request: CalendarTransferRequest):
+    db = Database()
+    cm = CalendarManager(db)
+    cm.transferEvent(request.src, request.dst, request.event_title)
+    db.update()
+    return 
 
 if __name__ == "__main__":
     pass
