@@ -1,25 +1,19 @@
-import { useState } from "react";
+import "./index.css";
 import { CalendarDisplay } from "../CalendarDisplay";
 import { Header } from "../Header";
 import { Sidebar } from "../Sidebar";
-import "./index.css";
 
 const MainPage = () => {
-  const [viewC, toggleViewC] = useState(true);
-  const toggleCalendar = (name) => {
-    toggleViewC(!viewC);
-  };
-
   return (
     <div className="main-page-container">
       <div className="header-section">
         <Header />
       </div>
       <div className="body-section-sidebar">
-        <Sidebar toggleViewCalendar={toggleCalendar} viewCalendar={viewC} />
+        <Sidebar />
       </div>
       <div className="body-section-calendar">
-        <CalendarDisplay viewCal={viewC} />
+        <CalendarDisplay />
       </div>
     </div>
   );

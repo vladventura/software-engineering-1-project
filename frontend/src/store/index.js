@@ -1,7 +1,8 @@
-import { combineReducers } from 'redux';
-import { mainReducer } from "./reducers/mainReducer";
-
+import { combineReducers } from "redux";
+import { calendarsReducer } from "./reducers/calendarsReducer";
+import { modalReducer } from "./reducers/modalReducer";
 
 export const rootReducer = combineReducers({
-    mainReducer: mainReducer
+  calendars: calendarsReducer,
+  modal: modalReducer,
 });

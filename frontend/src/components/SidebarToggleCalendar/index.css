@@ -1,11 +1,20 @@
 .calendar-toggle {
   display: grid;
-  grid-template-columns: 30% 70%;
+  grid-template-columns: 10% 80% 10%;
   grid-template-rows: auto;
+}
+
+.calendar-toggle-threedot {
+  display: none;
+  text-align: center;
 }
 
 .calendar-toggle:hover {
   cursor: pointer;
+}
+
+.calendar-toggle:hover > .calendar-toggle-threedot {
+  display: block;
 }
 
 .calendar-toggle-name {

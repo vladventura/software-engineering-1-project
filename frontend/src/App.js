@@ -1,32 +1,40 @@
+import { Route, Routes } from "react-router-dom";
 import { connect } from "react-redux";
-import { getAll } from "./store/actions/reducerActions";
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-  Switch,
-} from "react-router-dom";
-import MainPage from "./components/MainPage";
 import { useEffect } from "react";
+import {
+  getAllCalendars,
+  getInitialInfo,
+} from "./store/actions/calendarActions";
+import MainPage from "./components/MainPage";
+import { Modal } from "./components/Modal";
 
+// Do not change, this is for deploying on github pages
 const repoHomePath = "/software-engineering-1-project";
 
-const AppComponent = (props) => {
+const AppComponent = ({ getAll, getInitial, modal }) => {
+  const { isOpen, modalType } = modal;
   useEffect(() => {
-    props.getAll();
-  }, []);
+    getAll();
+    getInitial();
+  }, [getAll, getInitial]);
 
   return (
-    <Routes>
-      <Route exact path={repoHomePath} element={<MainPage />} />
-    </Routes>
+    <>
+      {isOpen && <Modal type={modalType} />}
+      <Routes>
+        <Route exact path={repoHomePath} element={<MainPage />} />
+      </Routes>
+    </>
   );
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    getAll: () => dispatch(getAll()),
-  };
-};
+const stateToProps = (state) => ({
+  modal: state.modal,
+});
 
-export default connect(null, mapDispatchToProps)(AppComponent);
+const dispatchToProps = (dispatch) => ({
+  getAll: () => dispatch(getAllCalendars()),
+  getInitial: () => dispatch(getInitialInfo()),
+});
+
+export default connect(stateToProps, dispatchToProps)(AppComponent);
