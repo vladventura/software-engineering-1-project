@@ -4,6 +4,7 @@ import {
   openAddNotifModal,
   openCreateModal,
 } from "../../store/actions/modalActions";
+import { CalendarPreview } from "../CalendarInfoPreview";
 import { SidebarToggleCalendar } from "../SidebarToggleCalendar";
 import "./index.css";
 
@@ -18,9 +19,7 @@ const SidebarComponent = ({
   return (
     <div className="sidebar-container">
       <div className="calendar-preview-container">
-        <div className="calendar-preview-frame">
-          <p>Calendar Preview</p>
-        </div>
+        <CalendarPreview />
       </div>
       <div className="calendars-toggle-container">
         {allCalendars.map((c) => (
