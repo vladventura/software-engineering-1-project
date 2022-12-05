@@ -1,12 +1,16 @@
 .calendar-item {
   font-family: "Barlow", "sans-serif";
-  background-color: #ffc;
+  background-color: #eae2b7;
   display: flex;
   flex-direction: column;
   border: 1px solid #777;
   box-sizing: content-box;
   width: 100%;
   height: 100%;
+}
+
+.calendar-item.today {
+  background-color: #fcbf49;
 }
 
 .calendar-item-number {
