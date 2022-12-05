@@ -8,7 +8,10 @@ import {
   CREATE_NOTIF_FAIL,
   DELETE_EVENT,
   DELETE_EVENT_FAIL,
+  EDIT_CALENDAR,
+  EDIT_CALENDAR_FAIL,
   EDIT_EVENT,
+  EDIT_EVENT_FAIL,
   GET_ALL_CALENDARS,
   GET_INITIAL_INFO,
   GO_BACK_MONTHLY,
@@ -227,7 +230,6 @@ export const editEvent = (event) => {
       error: "Name in use",
     };
     const { code, body } = response;
-    console.log(body);
 
     const newAllCals = [...calendars.allCalendars];
     let cI = 0;
@@ -266,7 +268,66 @@ export const editEvent = (event) => {
     }
     return new Promise(() =>
       dispatch({
-        type: CREATE_EVENT_FAIL,
+        type: EDIT_EVENT_FAIL,
+        payload: response.error,
+      })
+    );
+  };
+};
+
+// Ideally backend dictates if name exists
+export const editCalendar = (newName, newColor, oldName) => {
+  return (dispatch, getState) => {
+    // Server must return if valid operation or not
+    const { calendars } = getState();
+
+    const request = {
+      newName,
+      newColor,
+      oldName,
+    };
+
+    const response = {
+      code: 200,
+      body: {
+        ...request,
+        official: false,
+      },
+      error: "Name in use",
+    };
+
+    const { code, body } = response;
+
+    const newAllCals = [...calendars.allCalendars];
+    let cI = 0;
+    newAllCals.every((c, i) => {
+      if (c.name === body.oldName) {
+        cI = i;
+        return false;
+      }
+      return true;
+    });
+
+    newAllCals[cI].name = newName;
+    newAllCals[cI].color = newColor;
+    newAllCals[cI].events = [
+      ...newAllCals[cI].events.map((e) => ({
+        ...e,
+        color: newColor,
+        calendar: newName,
+      })),
+    ];
+    if (code === 200) {
+      return new Promise(() =>
+        dispatch({
+          type: EDIT_CALENDAR,
+          payload: newAllCals,
+        })
+      );
+    }
+    return new Promise(() =>
+      dispatch({
+        type: EDIT_CALENDAR_FAIL,
         payload: response.error,
       })
     );
