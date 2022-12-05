@@ -52,4 +52,5 @@ class Database:
             raise Exception("readAllNotifData error - cannot find notifications.")
         return notifications
 
+# module variable
 database = Database('data.json')
