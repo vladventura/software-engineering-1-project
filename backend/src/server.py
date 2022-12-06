@@ -38,8 +38,14 @@ class CalendarRequest(BaseModel):
     calendar: str
     model: CalendarModel
 
+
 class GetCalendarRequest(BaseModel):
     calendar: str
+
+class NotificationGetRequest(BaseModel):
+    calendar: str
+    event: str
+
 
 ''' Example input
 {
@@ -324,6 +330,18 @@ async def getAllCalendars():
 
 
 
+''' example of get request for notification
+{
+    "calendar": "calendar title"  # NOTE if key is "__all"
+    "event":    "event title"
+}
+'''
+@app.get("/api/calendar/notification")
+async def getNotification(request:NotificationGetRequest):
+    try:
+        return notificationMan.getNotification(request.calendar, request.event)
+    except:
+        return '{"status:": "get notification request failure"}'
 
 @app.put("/api/calendar/notification/send")
 async def sendNotification(request):

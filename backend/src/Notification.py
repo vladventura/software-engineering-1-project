@@ -56,7 +56,7 @@ class NotificationManager:
             calendar        = json_o["calendar"],
             event           = json_o["event"],
             date            = datetime.fromisoformat(json_o["date"]),
-            triggerWindow   = datetime.fromisoformat(json_o["window"]),
+            triggerWindow   = datetime.fromisoformat(json_o["triggerWindow"]),
             repeats         = json_o["repeats"],
             frequency       = json_o["frequency"],
             method          = json_o["method"] )
@@ -105,21 +105,16 @@ class NotificationManager:
             entry["method"]  = model.method
         # TODO IMPLEMENT notification edit
 
-    # implemented for test case
-    def getObject(self, calendar, event):
+    # if calender == "__all" then return all notifications
+    def getNotification(self, calendar, event):
         key = calendar+event
-        item = None
-        if key in self.notifs_table:
-            item = self.notifs_table[key]
-        return item
-
-    # implemented for test case
-    def getDbObject(self, calendar, event):
-        key = calendar+event
-        entry = None
+        val = {}
         if key in self.notifications:
-            entry = self.notifications[key]
-        return entry
+            val[key] = self.notifications[key]
+        elif calendar == "__all":
+            for k in self.notifications:
+                val[k] = self.notifications[k]
+        return val
 
 # module variable
 notificationMan = NotificationManager(database)
