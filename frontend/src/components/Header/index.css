@@ -83,10 +83,6 @@
   padding-top: 0.5rem;
 }
 
-.clickable-img:hover {
-  cursor: pointer;
-}
-
 .go-today-button:hover {
   cursor: pointer;
 }

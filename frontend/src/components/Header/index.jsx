@@ -15,10 +15,6 @@ const HeaderComponent = ({
   monthName,
   selectedYear,
 }) => {
-  const avatarOnClick = () => {
-    alert("Please make-believe that this is a proper user status pop-up");
-  };
-
   const logoOnClick = () => {
     window.open("https://uml.edu", "_blank", "noreferrer");
   };
@@ -59,7 +55,6 @@ const HeaderComponent = ({
           src={avatar}
           alt="User Avatar"
           className="avatar-picture clickable-img"
-          onClick={avatarOnClick}
         />
         <div className="student-name">John Doe</div>
       </div>
