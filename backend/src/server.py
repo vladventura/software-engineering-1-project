@@ -250,7 +250,7 @@ Singular item is grabbed for unique event string
         "frequency":    0
     }
 }
-If request event title has keyword "__all" then all events in the calendar are returned.
+NOTE If request event title has keyword "__all" then all events in the calendar are returned.
 {
     "calendar": "Personal1",
     "model": {
@@ -274,7 +274,7 @@ async def getEvent(request: CalendarEventRequest):
 
 
 ''' getCalendar
-If calendar field is __all grab all
+NOTE If calendar field is __all grab all
 Otherwise grab a specific calendar object - without its events In generic form...
 {
     "calendar": "title",
