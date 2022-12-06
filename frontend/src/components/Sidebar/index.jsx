@@ -14,7 +14,9 @@ const SidebarComponent = ({
   openAddEvent,
   openAddNotif,
 }) => {
-  const exportDisplayed = () => {};
+  const exportDisplayed = () => {
+    window.print();
+  };
 
   return (
     <div className="sidebar-container">

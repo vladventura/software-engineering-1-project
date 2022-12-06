@@ -1,19 +1,13 @@
+import axios from "axios";
 import personalCalendar, { guiCalendar } from "../../mocks/calendar";
 import {
   CREATE_CALENDAR,
-  CREATE_CALENDAR_FAIL,
   CREATE_EVENT,
-  CREATE_EVENT_FAIL,
   CREATE_NOTIF,
-  CREATE_NOTIF_FAIL,
   DELETE_CALENDAR,
-  DELETE_CALENDAR_FAIL,
   DELETE_EVENT,
-  DELETE_EVENT_FAIL,
   EDIT_CALENDAR,
-  EDIT_CALENDAR_FAIL,
   EDIT_EVENT,
-  EDIT_EVENT_FAIL,
   GET_ALL_CALENDARS,
   GET_INITIAL_INFO,
   GO_BACK_MONTHLY,
@@ -38,14 +32,40 @@ const monthNames = {
 
 export const getAllCalendars = () => {
   return (dispatch, getState) => {
-    // return axios....
-    const fakePromise = (response) => {
-      dispatch({
-        type: GET_ALL_CALENDARS,
-        payload: [personalCalendar, guiCalendar],
+    if (
+      window.location.hostname === "localhost" ||
+      window.location.hostname === "127.0.0.1"
+    )
+      return axios("http://localhost:8000/api/calendar/all", {
+        method: "get",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }).then((response) => {
+        console.log(response.data);
+        const allIncomingCalendars = Object.keys(response.data)
+          .map((calObj) => response.data[calObj])
+          .map((cal) => ({
+            name: cal.title,
+            events: Object.keys(cal.events).map((evObj) => ({
+              ...evObj,
+            })),
+            course: cal["is_official"],
+            color: cal.color,
+            visible: true,
+          }));
+        dispatch({
+          type: GET_ALL_CALENDARS,
+          payload: allIncomingCalendars,
+        });
       });
-    };
-    return new Promise(fakePromise);
+    else
+      return new Promise(() =>
+        dispatch({
+          type: GET_ALL_CALENDARS,
+          payload: [personalCalendar, guiCalendar],
+        })
+      );
   };
 };
 
@@ -135,31 +155,47 @@ export const getInitialInfo = () => {
 export const createCalendar = (name, color) => {
   return (dispatch, getState) => {
     // Server must return if valid operation or not
-    const response = {
-      code: 200,
-      body: {
-        name: name,
-        color: color,
-        events: [],
-        visible: true,
-        course: false,
-      },
-      error: "Name in use",
+    const localLanguage = {
+      name: name,
+      color: color,
+      events: [],
+      visible: true,
+      course: false,
     };
-    const { code } = response;
-    if (code === 200) {
-      return new Promise(() =>
-        // Might need to dispatch two actions here
+
+    const model = {
+      color,
+      title: localLanguage.name,
+      events: {},
+      is_official: localLanguage.course,
+    };
+
+    const body = {
+      model,
+      calendar: name,
+    };
+
+    if (
+      window.location.hostname === "localhost" ||
+      window.location.hostname === "127.0.0.1"
+    )
+      return axios("http://localhost:8000/api/calendar", {
+        method: "post",
+        data: JSON.stringify(body),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }).then((resp) => {
         dispatch({
           type: CREATE_CALENDAR,
-          payload: response.body,
-        })
-      );
-    }
+          payload: localLanguage,
+        });
+      });
     return new Promise(() =>
+      // Might need to dispatch two actions here
       dispatch({
-        type: CREATE_CALENDAR_FAIL,
-        payload: response.error,
+        type: CREATE_CALENDAR,
+        payload: localLanguage,
       })
     );
   };
@@ -169,36 +205,51 @@ export const createEvent = (event) => {
   return (dispatch, getState) => {
     // Server must return if valid operation or not
     const { calendars } = getState();
+    const localLanguage = { ...event, official: false };
 
-    const response = {
-      code: 200,
-      body: {
-        ...event,
-        official: false,
-      },
-      error: "Name in use",
+    const model = {
+      title: localLanguage.name,
+      description: localLanguage.description,
+      date: new Date(localLanguage.date),
+      duration: "2022-12-06T11:59:59",
+      repeats: false,
+      frequency: 0,
     };
-    const { code, body } = response;
+
+    const body = {
+      model,
+      calendar: localLanguage.calendar,
+    };
 
     const newAllCals = [...calendars.allCalendars];
     newAllCals.forEach((c) => {
-      if (c.name === body.calendar) {
-        c.events.push(body);
+      if (c.name === localLanguage.calendar) {
+        c.events.push(localLanguage);
       }
     });
-    if (code === 200) {
-      return new Promise(() =>
-        // Might need to dispatch two actions here
+
+    if (
+      window.location.hostname === "localhost" ||
+      window.location.hostname === "127.0.0.1"
+    )
+      return axios("http://localhost:8000/api/calendar/event", {
+        method: "post",
+        data: JSON.stringify(body),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }).then((resp) => {
         dispatch({
           type: CREATE_EVENT,
           payload: newAllCals,
-        })
-      );
-    }
+        });
+      });
+
     return new Promise(() =>
+      // Might need to dispatch two actions here
       dispatch({
-        type: CREATE_EVENT_FAIL,
-        payload: response.error,
+        type: CREATE_EVENT,
+        payload: newAllCals,
       })
     );
   };
@@ -211,17 +262,6 @@ export const editEvent = (event) => {
     const { oldVersion } = event;
     delete event["oldVersion"];
     const moveRequested = oldVersion.calendar !== event.calendar;
-
-    const response = {
-      code: 200,
-      body: {
-        ...event,
-        moveRequested,
-        official: false,
-      },
-      error: "Name in use",
-    };
-    const { code } = response;
 
     const newAllCals = [...calendars.allCalendars];
     let cI = 0;
@@ -258,19 +298,43 @@ export const editEvent = (event) => {
     } else {
       newAllCals[cI].events[eI] = { ...event };
     }
-    if (code === 200) {
-      return new Promise(() =>
-        // Might need to dispatch two actions here
+
+    const model = {
+      title: event.name,
+      description: event.description,
+      date: new Date(event.date),
+      duration: "2022-12-06T11:59:59",
+      repeats: false,
+      frequency: 0,
+    };
+
+    const body = {
+      model,
+      calendar: event.calendar,
+    };
+
+    if (
+      window.location.hostname === "localhost" ||
+      window.location.hostname === "127.0.0.1"
+    )
+      return axios("http://localhost:8000/api/calendar/event", {
+        method: "put",
+        data: JSON.stringify(body),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }).then((resp) => {
         dispatch({
           type: EDIT_EVENT,
           payload: newAllCals,
-        })
-      );
-    }
+        });
+      });
+
     return new Promise(() =>
+      // Might need to dispatch two actions here
       dispatch({
-        type: EDIT_EVENT_FAIL,
-        payload: response.error,
+        type: EDIT_EVENT,
+        payload: newAllCals,
       })
     );
   };
@@ -282,22 +346,17 @@ export const editCalendar = (newName, newColor, oldName) => {
     // Server must return if valid operation or not
     const { calendars } = getState();
 
-    const request = {
-      newName,
-      newColor,
-      oldName,
+    const model = {
+      title: newName,
+      events: {},
+      is_official: false,
+      color: newColor,
     };
 
-    const response = {
-      code: 200,
-      body: {
-        ...request,
-        official: false,
-      },
-      error: "Name in use",
+    const body = {
+      model,
+      calendar: oldName,
     };
-
-    const { code } = response;
 
     const previousCalendar = calendars.allCalendars.filter(
       (c) => c.name === oldName
@@ -323,18 +382,27 @@ export const editCalendar = (newName, newColor, oldName) => {
 
     newAllCals.push(newCalendarToSave);
 
-    if (code === 200) {
-      return new Promise(() =>
+    if (
+      window.location.hostname === "localhost" ||
+      window.location.hostname === "127.0.0.1"
+    )
+      return axios("http://localhost:8000/api/calendar", {
+        method: "put",
+        data: JSON.stringify(body),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }).then((resp) => {
         dispatch({
           type: EDIT_CALENDAR,
           payload: newAllCals,
-        })
-      );
-    }
+        });
+      });
+
     return new Promise(() =>
       dispatch({
-        type: EDIT_CALENDAR_FAIL,
-        payload: response.error,
+        type: EDIT_CALENDAR,
+        payload: newAllCals,
       })
     );
   };
@@ -345,32 +413,42 @@ export const deleteCalendar = (name) => {
     // Server must return if valid operation or not
     const { calendars } = getState();
 
-    const response = {
-      code: 200,
-      body: {
-        name,
-      },
-      error: "Name in use",
-    };
-
-    const { code, body } = response;
-
     const newAllCals = [
-      ...calendars.allCalendars.filter((x) => x.name !== body.name),
+      ...calendars.allCalendars.filter((x) => x.name !== name),
     ];
 
-    if (code === 200) {
-      return new Promise(() =>
+    const model = {
+      color: "#ffffff",
+      title: name,
+      events: {},
+      is_official: false,
+    };
+
+    const body = {
+      model,
+      calendar: name,
+    };
+
+    if (
+      window.location.hostname === "localhost" ||
+      window.location.hostname === "127.0.0.1"
+    )
+      return axios("http://localhost:8000/api/calendar", {
+        method: "delete",
+        data: JSON.stringify(body),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }).then((_) =>
         dispatch({
           type: DELETE_CALENDAR,
           payload: newAllCals,
         })
       );
-    }
     return new Promise(() =>
       dispatch({
-        type: DELETE_CALENDAR_FAIL,
-        payload: response.error,
+        type: DELETE_CALENDAR,
+        payload: newAllCals,
       })
     );
   };
@@ -381,27 +459,17 @@ export const deleteEvent = (event) => {
     // Server must return if valid operation or not
     const { calendars } = getState();
 
-    const response = {
-      code: 200,
-      body: {
-        ...event,
-        official: false,
-      },
-      error: "Name in use",
-    };
-    const { code, body } = response;
-
     const newAllCals = [...calendars.allCalendars];
     let cI = 0;
     let eI = 0;
     newAllCals.every((c, i) => {
-      if (c.name === body.calendar) {
+      if (c.name === event.calendar) {
         c.events.every((e, ei) => {
           if (
-            e.name === body.name &&
-            e.description === body.description &&
-            e.date === body.date &&
-            e.calendar === body.calendar
+            e.name === event.name &&
+            e.description === event.description &&
+            e.date === event.date &&
+            e.calendar === event.calendar
           ) {
             cI = i;
             eI = ei;
@@ -414,19 +482,41 @@ export const deleteEvent = (event) => {
       return true;
     });
     delete newAllCals[cI].events[eI];
-    if (code === 200) {
-      return new Promise(() =>
-        // Might need to dispatch two actions here
+    const model = {
+      title: event.name,
+      description: event.description,
+      date: new Date(event.date),
+      duration: "2022-12-06T11:59:59",
+      repeats: 1,
+      frequency: 0,
+    };
+
+    const body = {
+      model,
+      calendar: event.calendar,
+    };
+
+    if (
+      window.location.hostname === "localhost" ||
+      window.location.hostname === "127.0.0.1"
+    )
+      return axios("http://localhost:8000/api/calendar/event", {
+        method: "delete",
+        data: JSON.stringify(body),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }).then((_) =>
         dispatch({
           type: DELETE_EVENT,
           payload: newAllCals,
         })
       );
-    }
     return new Promise(() =>
+      // Might need to dispatch two actions here
       dispatch({
-        type: DELETE_EVENT_FAIL,
-        payload: response.error,
+        type: DELETE_EVENT,
+        payload: newAllCals,
       })
     );
   };
@@ -437,31 +527,44 @@ export const createNotification = (notif) => {
     // Server must return if valid operation or not
     const { calendars } = getState();
 
-    const response = {
-      code: 200,
-      body: {
-        ...notif,
-      },
-    };
-    const { code } = response;
-
     let newAllCals = [...calendars.allCalendars];
+    const parentCalendar = newAllCals[notif.calendarIndex];
+    const parentEvent = parentCalendar.events[notif.eventIndex];
+
     newAllCals[notif.calendarIndex].events[notif.eventIndex].notification =
       notif;
 
-    if (code === 200) {
-      return new Promise(() =>
-        // Might need to dispatch two actions here
+    const body = {
+      calendar: parentCalendar.name,
+      event: notif.eventName,
+      date: new Date(parentEvent.date),
+      triggerWindow: new Date(parentEvent.date),
+      repeats: false,
+      frequency: 0,
+      method: ["SMS", "Email", "Both"].indexOf(notif.method),
+    };
+
+    if (
+      window.location.hostname === "localhost" ||
+      window.location.hostname === "127.0.0.1"
+    )
+      return axios("http://localhost:8000/api/calendar/notification", {
+        method: "post",
+        data: JSON.stringify(body),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }).then((_) =>
         dispatch({
           type: CREATE_NOTIF,
           payload: newAllCals,
         })
       );
-    }
     return new Promise(() =>
+      // Might need to dispatch two actions here
       dispatch({
-        type: CREATE_NOTIF_FAIL,
-        payload: response.error,
+        type: CREATE_NOTIF,
+        payload: newAllCals,
       })
     );
   };
