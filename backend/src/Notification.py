@@ -79,36 +79,30 @@ class NotificationManager:
     def deleteNotification(self, model:NotificationModel):
         key = model.calendar+model.event
         #TODO add removal of notifications from event
-        try:
-            # remove from database with stored reference to the json dictionary.
-            if (key) in self.notifications:
-                del self.notifications[key]
+        # remove from database with stored reference to the json dictionary.
+        if (key) in self.notifications:
+            del self.notifications[key]
 
-            # remove from table as well
-            if (key) in self.notifs_table:
-                del self.notifs_table[key]
-        except:
-            print("ERROR deleteNotification")
+        # remove from table as well
+        if (key) in self.notifs_table:
+            del self.notifs_table[key]
 
 
 
     # Modify notification object
     # also modify the database through stored reference
     def editNotification(self, model:NotificationModel):
-        try:
-            key = model.calendar+model.event
-            # find and modify the notification item
-            if (key) in self.notifs_table:
-                item = self.notifs_table[key]  # get the object to mocify
-                if (model.repeats is not self.NUL):   item.repeats    = model.repeats
-                if (model.method is not  self.NUL):   item.method     = model.method
-            # find and modify the data entry
-            if (key) in self.notifications:
-                entry = self.notifications[key]
-                if (model.repeatss is not self.NUL):  entry["repeats"] = model.repeats
-                if (model.method is not self.NUL):    entry["method"]  = model.method.name
-        except:
-            print("ERROR editNotification")
+        key = model.calendar+model.event
+        # find and modify the notification item
+        if (key) in self.notifs_table:
+            item = self.notifs_table[key]  # get the object to mocify
+            item.repeats    = model.repeats
+            item.method     = model.method
+        # find and modify the data entry
+        if (key) in self.notifications:
+            entry = self.notifications[key]
+            entry["repeats"] = model.repeats
+            entry["method"]  = model.method
         # TODO IMPLEMENT notification edit
 
     # implemented for test case

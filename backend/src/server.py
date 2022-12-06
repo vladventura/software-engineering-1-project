@@ -171,25 +171,70 @@ async def editCalendarRequest(request: CalendarRequest):
     except:
         return '{"status": "edit calender request failure."}'
 
-'''
+
+''' create notification request example
+{
+    "calendar": "calender title",
+    "event": "event title",
+    "date": "2022-12-06T23:59:00",          # NOTE must be in datetime iso format
+    "triggerWindow": "2022-12-06T21:59:00", # NOTE must be in datetime iso format
+    "repeats": false,
+    "frequency": 0,
+    "method": 1
+}
 '''
 @app.post("/api/calendar/notification")
 async def createNotificationRequest(request: NotificationModel):
-    notificationMan.createNotification(request)
-    database.update()
-    return '{"status:": "notification creation success"}'
+    try:
+        notificationMan.createNotification(request)
+        database.update()
+        return '{"status:": "notification creation success"}'
+    except:
+        return '{"status:": "create notification request failure"}'
 
+
+
+''' edit notification request example
+{
+    "calendar": "calender title",
+    "event": "event title",
+    "date": "2022-12-06T23:59:00",          # NOTE must be in datetime iso format
+    "triggerWindow": "2022-12-06T21:59:00", # NOTE must be in datetime iso format
+    "repeats": false,
+    "frequency": 0,
+    "method": 1
+}
+'''
 @app.put("/api/calendar/notification")
 async def editNotificationRequest(request: NotificationModel):
-    notificationMan.editNotification(request)
-    database.update()
-    return '{"status:": "notification edit success"}'
+    try:
+        notificationMan.editNotification(request)
+        database.update()
+        return '{"status:": "notification edit success"}'
+    except:
+        return '{"status:": "edit notification request failure"}'
 
+
+
+''' delete notification request example
+{
+    "calendar": "calender title",           # NOTE titles are concatenated
+    "event": "event title",                 # NOTE titles are concatenated
+    "date": "2022-12-06T23:59:00",          # NOTE must be in datetime iso format
+    "triggerWindow": "2022-12-06T21:59:00", # NOTE must be in datetime iso format
+    "repeats": false,                       # NOTE value here doesn't matter
+    "frequency": 0,                         # NOTE value here doesn't matter
+    "method": 1                             # NOTE value here doesn't matter
+}
+'''
 @app.delete("/api/calendar/notification")
 async def deleteNotificationRequest(request: NotificationModel):
-    notificationMan.deleteNotification(request)
-    database.update()
-    return '{"status:": "notification delete success"}'
+    try:
+        notificationMan.deleteNotification(request)
+        database.update()
+        return '{"status:": "notification delete success"}'
+    except:
+        return '{"status:": "delete notification request failure"}'
 
 
 ''' EXAMPLE of a request item..
@@ -225,7 +270,7 @@ async def getEvent(request: CalendarEventRequest):
         print(events)
         return events
     except:
-        return '{"status:": "Failure"}'
+        return '{"status:": "get event request failure"}'
 
 
 ''' getCalendar
@@ -243,10 +288,10 @@ Otherwise grab a specific calendar object - without its events In generic form..
 '''
 @app.get("/api/calendar")
 async def getCalendar(request: CalendarRequest):
-    # try:
-    return calendarManager.getCalendar(request.calendar)
-    # except:
-    #     return '{"status:": "Failed to grab calendar"}'
+    try:
+        return calendarManager.getCalendar(request.calendar)
+    except:
+        return '{"status:": "get calender request failure"}'
 
 
 
