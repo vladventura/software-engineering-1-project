@@ -297,27 +297,32 @@ export const editCalendar = (newName, newColor, oldName) => {
       error: "Name in use",
     };
 
-    const { code, body } = response;
+    const { code } = response;
 
-    const newAllCals = [...calendars.allCalendars];
-    let cI = 0;
-    newAllCals.every((c, i) => {
-      if (c.name === body.oldName) {
-        cI = i;
-        return false;
-      }
-      return true;
-    });
+    const previousCalendar = calendars.allCalendars.filter(
+      (c) => c.name === oldName
+    )[0];
 
-    newAllCals[cI].name = newName;
-    newAllCals[cI].color = newColor;
-    newAllCals[cI].events = [
-      ...newAllCals[cI].events.map((e) => ({
+    const newCalendarToSave = {
+      ...previousCalendar,
+      name: newName,
+      color: newColor,
+    };
+
+    const newAllCals = [...calendars.allCalendars].filter(
+      (c) => c.name !== oldName
+    );
+
+    newCalendarToSave.events = [
+      ...newCalendarToSave.events.map((e) => ({
         ...e,
         color: newColor,
         calendar: newName,
       })),
     ];
+
+    newAllCals.push(newCalendarToSave);
+
     if (code === 200) {
       return new Promise(() =>
         dispatch({
