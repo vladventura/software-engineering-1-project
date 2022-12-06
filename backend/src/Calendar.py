@@ -201,5 +201,24 @@ class CalendarManager:
     def getEvent(self, calendar, event):
         return self.calendar_db[calendar]["events"] if (event == "__all") else self.calendar_db[calendar]["events"][event]
 
+    def getCalendar(self, title:str):
+        val = {}
+        if title == "__all":
+            for key in self.calendar_db:
+                val[key] = CalendarModel(
+                    title=self.calendar_db[key]["title"],
+                    events={},
+                    is_official=self.calendar_db[key]["is_official"],
+                    color=self.calendar_db[key]["color"]
+                )
+        else:
+            val[title] = CalendarModel(
+                title=self.calendar_db[title]["title"],
+                events={},
+                is_official=self.calendar_db[title]["is_official"],
+                color=self.calendar_db[title]["color"]
+            )
+        return val
+
 # module variable exports
 calendarManager = CalendarManager(database)
