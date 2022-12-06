@@ -27,6 +27,9 @@ class CalendarRequest(BaseModel):
     calendar: str
     model: CalendarModel
 
+class GetCalendarRequest(BaseModel):
+    calendar: str
+
 ''' Example input
 {
     "calendar": "Personal1",
@@ -294,7 +297,7 @@ Otherwise grab a specific calendar object - without its events In generic form..
 }
 '''
 @app.get("/api/calendar")
-async def getCalendar(request: CalendarRequest):
+async def getCalendar(request: GetCalendarRequest):
     try:
         return calendarManager.getCalendar(request.calendar)
     except:
