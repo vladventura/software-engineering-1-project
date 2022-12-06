@@ -55,8 +55,6 @@ for (let x = 1; x < 32; x++) {
 personalCalendar.events = events;
 gui1.events = gui1Events;
 
-console.log(gui1);
-
 export default personalCalendar;
 export const guiCalendar = gui1;
 export const singleEvent = events[0];
