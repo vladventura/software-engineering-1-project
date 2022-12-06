@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/software-engineering-1-project/static/css/main.26573f2b.css",
-    "main.js": "/software-engineering-1-project/static/js/main.4f5ceda5.js",
+    "main.css": "/software-engineering-1-project/static/css/main.5f220bc1.css",
+    "main.js": "/software-engineering-1-project/static/js/main.8225df1a.js",
     "static/media/avatar.png": "/software-engineering-1-project/static/media/avatar.deeebbe32324554c6933.png",
     "static/media/uml_logo.png": "/software-engineering-1-project/static/media/uml_logo.e45d60d8e75679179da4.png",
     "index.html": "/software-engineering-1-project/index.html",
-    "main.26573f2b.css.map": "/software-engineering-1-project/static/css/main.26573f2b.css.map",
-    "main.4f5ceda5.js.map": "/software-engineering-1-project/static/js/main.4f5ceda5.js.map"
+    "main.5f220bc1.css.map": "/software-engineering-1-project/static/css/main.5f220bc1.css.map",
+    "main.8225df1a.js.map": "/software-engineering-1-project/static/js/main.8225df1a.js.map"
   },
   "entrypoints": [
-    "static/css/main.26573f2b.css",
-    "static/js/main.4f5ceda5.js"
+    "static/css/main.5f220bc1.css",
+    "static/js/main.8225df1a.js"
   ]
 }
