@@ -15,6 +15,7 @@ export const AddEventModalComponent = ({
   modalData,
   create,
 }) => {
+  const calendars = allCalendars.filter((c) => !c.course);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [date, setDate] = useState(
@@ -32,7 +33,7 @@ export const AddEventModalComponent = ({
   };
 
   const submit = () => {
-    const targetCalendar = allCalendars[calendarIndex];
+    const targetCalendar = calendars[calendarIndex];
     const { color } = targetCalendar;
     const number = date.getDate();
     const month = date.getMonth() + 1;
@@ -78,90 +79,103 @@ export const AddEventModalComponent = ({
       <div className="title text">
         <h1>Add Event</h1>
       </div>
-      <div className="body">
-        <form className="create-event-form">
-          <label className="text" htmlFor="event-name">
-            Event Name
-          </label>
-          <input
-            id="event-name"
-            name="event-name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-          <label className="text" htmlFor="event-description">
-            Event Description
-          </label>
-          <input
-            id="event-description"
-            name="event-description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          />
-          <label className="text">Event Date</label>
-          <DatePicker
-            selected={date}
-            onChange={setDate}
-            dateFormat="MM/dd/yyyy"
-          />
-          <label className="text">Event Time</label>
-          <TimePicker
-            value={time}
-            onChange={setTime}
-            className="time-picker"
-            openClockOnFocus={false}
-          />
-          <label className="text">Event Calendar</label>
-          <select id="event-chosen-calendar" onChange={dropdownChange}>
-            {allCalendars.map((n, i) => (
-              <option key={`event-chosen-option-${n.name}-${i}`} value={i}>
-                {n.name}
-              </option>
-            ))}
-          </select>
-          <div className="use-notif-container">
-            <div className="use-notif-banner">
-              <label htmlFor="use-notif-check" className="text">
-                Use Notification
+      {calendars.length > 0 ? (
+        <>
+          <div className="body">
+            <form className="create-event-form">
+              <label className="text" htmlFor="event-name">
+                Event Name
               </label>
               <input
-                id="use-notif-check"
-                className="use-notification-checkmark"
-                checked={useNotif}
-                onChange={checkUseNotif}
-                type="checkbox"
+                id="event-name"
+                name="event-name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
               />
-            </div>
-            {/* This is not good */}
-            {useNotif && (
-              <label className="text">Event Notification Method</label>
-            )}
-            {useNotif && (
-              <select id="notif-select-method">
-                {notifMethodList.map((nm) => (
-                  <option key={`notif-method-${nm}`} value={nm}>
-                    {nm}
+              <label className="text" htmlFor="event-description">
+                Event Description
+              </label>
+              <input
+                id="event-description"
+                name="event-description"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              />
+              <label className="text">Event Date</label>
+              <DatePicker
+                selected={date}
+                onChange={setDate}
+                dateFormat="MM/dd/yyyy"
+              />
+              <label className="text">Event Time</label>
+              <TimePicker
+                value={time}
+                onChange={setTime}
+                className="time-picker"
+                openClockOnFocus={false}
+              />
+              <label className="text">Event Calendar</label>
+              <select id="event-chosen-calendar" onChange={dropdownChange}>
+                {calendars.map((n, i) => (
+                  <option key={`event-chosen-option-${n.name}-${i}`} value={i}>
+                    {n.name}
                   </option>
                 ))}
               </select>
-            )}
-            {useNotif && <label className="text">Notify Time Before</label>}
-            {useNotif && (
-              <Select
-                options={ntpSelect}
-                defaultValue={timePair}
-                onChange={(e) => setTimePair(e.value)}
-              />
-            )}
+              <div className="use-notif-container">
+                <div className="use-notif-banner">
+                  <label htmlFor="use-notif-check" className="text">
+                    Use Notification
+                  </label>
+                  <input
+                    id="use-notif-check"
+                    className="use-notification-checkmark"
+                    checked={useNotif}
+                    onChange={checkUseNotif}
+                    type="checkbox"
+                  />
+                </div>
+                {/* This is not good */}
+                {useNotif && (
+                  <label className="text">Event Notification Method</label>
+                )}
+                {useNotif && (
+                  <select id="notif-select-method">
+                    {notifMethodList.map((nm) => (
+                      <option key={`notif-method-${nm}`} value={nm}>
+                        {nm}
+                      </option>
+                    ))}
+                  </select>
+                )}
+                {useNotif && <label className="text">Notify Time Before</label>}
+                {useNotif && (
+                  <Select
+                    options={ntpSelect}
+                    defaultValue={timePair}
+                    onChange={(e) => setTimePair(e.value)}
+                  />
+                )}
+              </div>
+            </form>
           </div>
-        </form>
-      </div>
-      <div className="footer">
-        <button onClick={close} id="cancelBtn">
-          Cancel
-        </button>
-        <button onClick={submit}>Continue</button>
-      </div>
+          <div className="footer">
+            <button onClick={close} id="cancelBtn">
+              Cancel
+            </button>
+            <button onClick={submit}>Continue</button>
+          </div>
+        </>
+      ) : (
+        <div className="body">
+          <div className="text">No personal calendars</div>
+          <div className="footer">
+            <button onClick={close} id="cancelBtn">
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
