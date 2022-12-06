@@ -4,6 +4,13 @@ from Calendar import CalendarManager, calendarManager, CalendarEventModel, Calen
 from Database import Database, database
 from Notification import NotificationManager, notificationMan, NotificationModel
 from pydantic import BaseModel
+import smtplib, ssl
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 app = FastAPI()
 
@@ -294,6 +301,36 @@ async def getCalendar(request: CalendarRequest):
         return '{"status:": "get calender request failure"}'
 
 
+
+
+@app.put("/api/calendar/notification/send")
+async def sendNotification(request):
+    # https://realpython.com/python-send-email/
+    print("Beginning email sending process")
+
+    smtp_server = "smtp.gmail.com"
+    sender_email = "sofengcalbot@gmail.com"
+    receiver_email = request
+    password = os.getenv("BOT_PASSWORD")
+
+    message = MIMEMultipart("alternative")
+    message['Subject'] = "Notification creation successful"
+    message['From'] = sender_email
+    message['To'] = receiver_email
+
+    text = """Your notification has been created successfully!"""
+    part1 = MIMEText(text, "plain")
+
+    message.attach(part1);
+
+
+    context = ssl.create_default_context()
+    with smtplib.SMTP_SSL(smtp_server, 465, context=context) as server:
+        server.login(sender_email, password)
+        server.sendmail(sender_email, receiver_email, message.as_string())
+
+    print("Email sent successfully")
+    return {'code': 200}
 
 
 if __name__ == "__main__":
