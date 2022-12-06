@@ -2,6 +2,7 @@
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   grid-gap: 1px;
+  grid-auto-rows: 1fr;
   /* KLUDGE: The border on the items, 1px, is overflowing the grid */
   height: 99%;
 }

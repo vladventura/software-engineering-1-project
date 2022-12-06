@@ -44,28 +44,43 @@ const EditCalendarModalComponent = ({ close, edit, modalData, remove }) => {
       <div className="title text">
         <h1>Edit Calendar</h1>
       </div>
-      <div className="body">
-        <form className="edit-calendar-form">
-          <label className="text" htmlFor="cal-name">
-            Calendar Name
-          </label>
-          <input
-            id="cal-name"
-            name="cal-name"
-            className="cal-name"
-            value={name}
-            onChange={onChangeName}
-          />
-          <label className="text">Color Picker</label>
-          <Picker color={color} onChange={(c, e) => setColor(c)} />
-        </form>
-      </div>
-      <div className="footer">
-        <button onClick={removeCalendar} id="cancelBtn">
-          Delete
-        </button>
-        <button onClick={submit}>Continue</button>
-      </div>
+      {!modalData.course ? (
+        <>
+          <div className="body">
+            <form className="edit-calendar-form">
+              <label className="text" htmlFor="cal-name">
+                Calendar Name
+              </label>
+              <input
+                id="cal-name"
+                name="cal-name"
+                className="cal-name"
+                value={name}
+                onChange={onChangeName}
+              />
+              <label className="text">Color Picker</label>
+              <Picker color={color} onChange={(c, e) => setColor(c)} />
+            </form>
+          </div>
+          <div className="footer">
+            <button onClick={removeCalendar} id="cancelBtn">
+              Delete
+            </button>
+            <button onClick={submit}>Continue</button>
+          </div>
+        </>
+      ) : (
+        <>
+          <div className="body">
+            <div className="text">You cannot edit courses!</div>
+            <div className="footer">
+              <button id="cancelBtn" onClick={close}>
+                Close
+              </button>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };
@@ -74,7 +89,7 @@ const stateToProps = (state) => ({ modalData: state.modal.modalData });
 
 const dispatchToProps = (dispatch) => ({
   close: () => dispatch(closeModal()),
-  edit: (name, color) => dispatch(editCalendar(name, color)),
+  edit: (name, color, old) => dispatch(editCalendar(name, color, old)),
   remove: (name) => dispatch(deleteCalendar(name)),
 });
 
