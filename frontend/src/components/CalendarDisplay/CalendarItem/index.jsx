@@ -18,12 +18,14 @@ const CalendarItemComponent = ({
   const [shouldPaginate, setShouldPaginate] = useState(false);
   const [paginatedEvents, setPaginatedEvents] = useState([]);
   // If it works, it works
-  const [currentPage, setCurrentPage] = useState(events);
+  const [currentPage, setCurrentPage] = useState([]);
   const [pageIndex, setCurrentPageIndex] = useState(0);
 
   useEffect(() => {
     if (events.length > 2) setShouldPaginate(true);
-    else setShouldPaginate(false);
+    else {
+      setShouldPaginate(false);
+    }
   }, [events]);
 
   useEffect(() => {
