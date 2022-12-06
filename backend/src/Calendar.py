@@ -196,5 +196,10 @@ class CalendarManager:
                 item = db_src.pop(event)
                 db_dst[event] = item
 
+
+    # Returns the whole dictionary if keyword __all is the event, otherwise get single event.
+    def getEvent(self, calendar, event):
+        return self.calendar_db[calendar]["events"] if (event == "__all") else self.calendar_db[calendar]["events"][event]
+
 # module variable exports
 calendarManager = CalendarManager(database)

@@ -1,87 +1,51 @@
-# Author: Zachary McCann
-# COMP.4110-201 Software Engineering I 
-# Team 6, Enhanced Blackboard Calendar
+# Event classes
+# 
+# Written by: Max Tighe
 #
-# Functionality for printing and saving a calendar
+# Event Description: Class designed to store a calendar event's info
 #
-#
-#   Cowritten by: Max Tighe
+# Class Event Description: Class designed to store a class calendar event's 
+#                           info created by a class the user is taking
 #
 
-from Calendar import Calendar
+import datetime
 from enum import Enum
-from datetime import datetime
-from fpdf import FPDF
 
-#FPDF can be found and installed here:
-# https://pyfpdf.github.io/fpdf2/index.html
-#
+class Event:
+    title = str
+    description = str
 
-class DisplayMode(Enum): # Enum for each kind of frequency an event can repeat
-        MONTHLY = 1
+    date = datetime.datetime
+    duration = datetime.datetime
+
+    repeats = bool
+
+    class Repetition(Enum): # Enum for each kind of frequency an event can repeat
+        DAILY = 1
         WEEKLY = 2
-        DAILY = 3
+        MONTHLY = 3
+        YEARLY = 4
+
+    frequency = Repetition # how frequently the event repeats
 
 
-class Exporter:
-    # Used to print a list of Calendar objects
-    # Calendar objects list passed to Exporter from the Main Calendar Display
-    # For the prototype, we will just send text to the screen of the frontend
-    # for "printing".
-    # In a fully fleshed out application, we would send this information
-    # from the backend to the frontend, and then include display information
-    # from the frontend to create the printable file (i.e. PDF)
-    def printCalendar(self, calendars, month):
-        # Use to get the month number (index of array that matches month name is the month number) 
-        months = [
-            'January', 'February', 'March',
-            'April', 'May', 'June',
-            'July', 'August', 'September',
-            'October', 'November', 'December'
-        ]
-
-        month = month.capitalize()
-
-        events = []     # A list for storing all of the events particular to the month of interest
-        for cal in calendars:
-            for e in cal.events:
-                if(e.date.month == months.index(month)):    # Add to list if event's month is the month specified
-                                                            # by argument passed to function call
-                   events.append((cal.title, e))
-
-        # Hierarchical format for output text:
-        #
-        # Month
-        #   Day1
-        #       Event Title: Time
-        #       Event Title: StartTime - EndTime
-        #   Day2
-        #       Event Title: Time
-
-        message = month + '\n'
-        for i in range(events.__len__+1):
-            message += '\t' + events[i][0] + '\n'
-            message += '\t\t' + events[i][1].title + ' : ' + events[i][1].date.time()
-            if(events[i][1].duration.time() != events[i][1].date.time()):
-                message += ' - ' + events[i][1].duration.time()
-            message += '\n'
-            
-        return message
+    def __init__(self, title, desc, date, dur, repeats = 0, freq = 2):
+        self.title = title
+        self.description = desc
+        self.date = date
+        self.duration = dur
+        self.repeats = repeats
+        self.frequency = freq
 
 
-    # Used to export a list of Calendar objects to a file
-    # Calendar objects list passed to Exporter from the Main Calendar Display
-    # For the prototype, we will just save the information as a text file
-    # For a fully fleshed out application, we would have the options to save
-    # as a PDF and .ics file.
-    def exportCalendar(self, calendars, month) -> FPDF:
-        outPdf = FPDF(orientation="P", unit="mm", format="Letter")
+# Child class to store events created by classes the user is taking
+class ClassEvent(Event): 
 
-        outPdf.add_page()
-        outPdf.set_font("Times", size=12)
+    submitted = bool
 
-        outPdf.set_title("Saved Calendar")
+    grade = float
 
-        outPdf.cell(100, 1200, self.printCalendar(calendars, month))
-
-        return outPdf
+    def __init__(self, title, desc, date, dur, repeats = 0, freq = 2):
+        super().__init__(title, desc, date, dur, repeats, freq) 
+        self.submitted = False
+        self.grade = 0.00

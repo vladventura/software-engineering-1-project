@@ -81,5 +81,42 @@ async def deleteNotificationRequest(request: NotificationModel):
     database.update()
     return '{"status:": "notification delete success"}'
 
+
+''' EXAMPLE of a request item..
+Singular item is grabbed for unique event string
+{
+    "calendar": "Personal1",
+    "model": {
+        "title":        "Bull crap",
+        "description":  "Loads of bull - LOADS of bull",
+        "date":         "2022-12-05T11:59:59",
+        "duration":     "2022-12-06T11:59:59",
+        "repeats":      false,
+        "frequency":    0
+    }
+}
+If request event title has keyword "__all" then all events in the calendar are returned.
+{
+    "calendar": "Personal1",
+    "model": {
+        "title":        "__all",
+        "description":  "Loads of bull - LOADS of bull",
+        "date":         "2022-12-05T11:59:59",
+        "duration":     "2022-12-06T11:59:59",
+        "repeats":      false,
+        "frequency":    0
+    }
+}
+'''
+@app.get("/api/calendar/event")
+async def getEvent(request: CalendarEventRequest):
+    try:
+        events = calendarManager.getEvent(request.calendar, request.model.title)
+        print(events)
+        return events
+    except:
+        return '{"status:": Failure}'
+
+
 if __name__ == "__main__":
     pass

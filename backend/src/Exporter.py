@@ -3,11 +3,19 @@
 # Team 6, Enhanced Blackboard Calendar
 #
 # Functionality for printing and saving a calendar
-
+#
+#
+#   Cowritten by: Max Tighe
+#
 
 from Calendar import Calendar
 from enum import Enum
 from datetime import datetime
+from fpdf import FPDF
+
+#FPDF can be found and installed here:
+# https://pyfpdf.github.io/fpdf2/index.html
+#
 
 class DisplayMode(Enum): # Enum for each kind of frequency an event can repeat
         MONTHLY = 1
@@ -66,5 +74,14 @@ class Exporter:
     # For the prototype, we will just save the information as a text file
     # For a fully fleshed out application, we would have the options to save
     # as a PDF and .ics file.
-    def exportCalendar(self, calendars, month):
-        self.printCalendar(calendars, month)        # Calling this for now until we figure out how to send the file/message from server (backend) to client (frontend)
+    def exportCalendar(self, calendars, month) -> FPDF:
+        outPdf = FPDF(orientation="P", unit="mm", format="Letter")
+
+        outPdf.add_page()
+        outPdf.set_font("Times", size=12)
+
+        outPdf.set_title("Saved Calendar")
+
+        outPdf.cell(100, 1200, self.printCalendar(calendars, month))
+
+        return outPdf
