@@ -1,5 +1,6 @@
 # server service file
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from Calendar import CalendarManager, calendarManager, CalendarEventModel, CalendarModel
 from Database import Database, database
 from Notification import NotificationManager, notificationMan, NotificationModel
@@ -13,6 +14,16 @@ import os
 load_dotenv()
 
 app = FastAPI()
+
+origins = ['*']
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 class CalendarEventRequest(BaseModel):
     calendar: str
@@ -296,10 +307,18 @@ Otherwise grab a specific calendar object - without its events In generic form..
     }
 }
 '''
+# Get requests cannot have a body
 @app.get("/api/calendar")
-async def getCalendar(request: GetCalendarRequest):
+async def getCalendar(request):
     try:
-        return calendarManager.getCalendar(request.calendar)
+        return calendarManager.getCalendar(request)
+    except:
+        return '{"status:": "get calender request failure"}'
+
+@app.get("/api/calendar/all")
+async def getAllCalendars():
+    try:
+        return calendarManager.getCalendar('__all')
     except:
         return '{"status:": "get calender request failure"}'
 
