@@ -207,14 +207,15 @@ class CalendarManager:
             for key in self.calendar_db:
                 val[key] = CalendarModel(
                     title=self.calendar_db[key]["title"],
-                    events={},
+                    # Null coalesce to avoid returning undefined
+                    events=self.calendar_db[key]["events"] or {},
                     is_official=self.calendar_db[key]["is_official"],
                     color=self.calendar_db[key]["color"]
                 )
         else:
             val[title] = CalendarModel(
                 title=self.calendar_db[title]["title"],
-                events={},
+                events=self.calendar_db[title]["events"] or {},
                 is_official=self.calendar_db[title]["is_official"],
                 color=self.calendar_db[title]["color"]
             )
