@@ -42,14 +42,36 @@ export const getAllCalendars = () => {
           "Content-Type": "application/json",
         },
       }).then((response) => {
-        console.log(response.data);
         const allIncomingCalendars = Object.keys(response.data)
           .map((calObj) => response.data[calObj])
           .map((cal) => ({
             name: cal.title,
-            events: Object.keys(cal.events).map((evObj) => ({
-              ...evObj,
-            })),
+            events: Object.keys(cal.events).map((evObj) => {
+              const current = cal["events"][evObj];
+              const name = current.title;
+              const description = current.description;
+              const duration = new Date(current.duration);
+              const dueTime = `${duration.getHours()}:${duration.getMinutes()}`;
+              const incDate = new Date(current.date);
+              const date = incDate.toLocaleDateString();
+              const number = incDate.getDate();
+              const month = incDate.getMonth() + 1;
+              const official = cal["is_official"];
+              const color = cal.color;
+              const calendar = cal.title;
+              return {
+                date,
+                number,
+                month,
+                dueTime,
+                description,
+                official,
+                submitted: false,
+                calendar,
+                name,
+                color,
+              };
+            }),
             course: cal["is_official"],
             color: cal.color,
             visible: true,
