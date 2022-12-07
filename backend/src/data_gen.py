@@ -81,7 +81,7 @@ data = {
 # main student
 data_set = {
     "student": "Example Student",
-    "email": "jaec1989@gmail.com",
+    "email": "example@email.com",
     "data": data,
     "password": 1203875,
     "phonenumber": "xxx-xx-xxxx"

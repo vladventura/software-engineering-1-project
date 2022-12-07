@@ -1,6 +1,6 @@
 {
   "student": "Example Student",
-  "email": "jaec1989@gmail.com",
+  "email": "example@email.com",
   "data": {
     "calendars": {
       "class1": {
@@ -64,6 +64,14 @@
             "title": "Nagisa",
             "description": "A description, clearly",
             "date": "2022-12-05 05:00:00+00:00",
+            "duration": "2022-12-06 11:59:59",
+            "repeats": false,
+            "frequency": 0
+          },
+          "Fiction": {
+            "title": "Fiction",
+            "description": "Remember me",
+            "date": "2022-12-06 05:00:00+00:00",
             "duration": "2022-12-06 11:59:59",
             "repeats": false,
             "frequency": 0
